@@ -5,7 +5,7 @@ import SamplePage from "./mainField/samplePage";
 import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
 
 import {ColorModeContext, useMode} from "./theme";
-
+import Topbar2 from "./scenes/global/TopbarForAuth.jsx";
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import React, { useState, useEffect  } from 'react';
@@ -101,6 +101,7 @@ return (
      <div className="app"> 
      <main className="content" style={{overflow: 'auto'}}>
      {/* <Topbar onLogout={handleLogout}/> */}
+     <Topbar2/>
      {/* <Login onLogin={handleLogin}/> */}
      <Routes>
               <Route path="/register" element={<Register/>}/>
@@ -108,6 +109,7 @@ return (
              
               </Routes>
           </main>
+          
           </div>
    </ThemeProvider>
  </ColorModeContext.Provider>

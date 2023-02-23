@@ -1,11 +1,21 @@
 // material-ui
-import { useMediaQuery, Container, Link, Typography, Stack } from '@mui/material';
-
+import { useMediaQuery, Container, Link, Typography, Stack , useTheme} from '@mui/material';
+import { ColorModeContext, tokens} from "../../theme";
+import { useContext } from "react";
 // ==============================|| FOOTER - AUTHENTICATION ||============================== //
 
 const AuthFooter = () => {
     const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+    const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
+    const colorMode = useContext(ColorModeContext);
 
+    const toggleColorModea = () => {
+        colorMode.toggleColorMode();
+
+      };
+
+ 
     return (
         <Container maxWidth="xl">
             <Stack
@@ -14,13 +24,16 @@ const AuthFooter = () => {
                 spacing={2}
                 textAlign={matchDownSM ? 'center' : 'inherit'}
             >
-                <Typography variant="subtitle2" color="secondary" component="span">
-                    &copy; Mantis React Dashboard Template By&nbsp;
-                    <Typography component={Link} variant="subtitle2" href="https://codedthemes.com" target="_blank" underline="hover">
-                        CodedThemes
+                <Typography variant="subtitle2" component="span">
+                <Typography component="span"  color="#0288d1" variant="subtitle2" >
+                &copy; Human Resource Information System by&nbsp;
+                    </Typography>
+                    
+                    <Typography component="span" variant="subtitle2" >
+                        Cedrick James Orozo
                     </Typography>
                 </Typography>
-
+               
                 <Stack
                     direction={matchDownSM ? 'column' : 'row'}
                     spacing={matchDownSM ? 1 : 3}
@@ -28,17 +41,17 @@ const AuthFooter = () => {
                 >
                     <Typography
                         variant="subtitle2"
-                        color="secondary"
-                        component={Link}
-                        href="https://material-ui.com/store/contributors/codedthemes/"
+                        color="#0288d1"
+                        // component={Link}
+                        // href="https://material-ui.com/store/contributors/codedthemes/"
                         target="_blank"
                         underline="hover"
                     >
-                        MUI Templates
+                        MIS Section
                     </Typography>
                     <Typography
                         variant="subtitle2"
-                        color="secondary"
+                        color="#0288d1"
                         component={Link}
                         href="https://codedthemes.com"
                         target="_blank"
@@ -48,7 +61,7 @@ const AuthFooter = () => {
                     </Typography>
                     <Typography
                         variant="subtitle2"
-                        color="secondary"
+                        color="#0288d1"
                         component={Link}
                         href="https://codedthemes.support-hub.io/"
                         target="_blank"

@@ -1,3 +1,4 @@
+console.log('running on port 3001');
 const express = require('express')
 const bodyParser = require("body-parser");
 const mysql = require('mysql')
@@ -42,6 +43,7 @@ app.post("/login", (req, res)=>{
                     res.send(result)
                 }else{
                     res.send({message: "Wrong username/password combination!"});
+                    
 
                 }
             

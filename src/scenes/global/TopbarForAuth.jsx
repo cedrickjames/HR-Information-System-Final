@@ -8,7 +8,7 @@ import { useProSidebar  } from 'react-pro-sidebar';
 import {MenuOutlined} from "@mui/icons-material";
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-const Topbar = (propsLogout) => {
+const Topbar2 = (propsLogout) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const colorMode = useContext(ColorModeContext);
@@ -23,27 +23,43 @@ const Topbar = (propsLogout) => {
  
     return (
     <Box display="flex" spacing={2} style={{position: 'sticky', top: 0, padding:'30px', zIndex: 1}}  justifyContent="space-between" p={2}>
-         <svg   height="35" viewBox="0 0 40 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M4.63564 15.8644L6.94797 13.552L6.95038 13.5496H11.3006L9.56969 15.2806L9.12278 15.7275L7.35024 17.5L7.56977 17.7201L17.5 27.6498L27.6498 17.5L25.8766 15.7275L25.7518 15.602L23.6994 13.5496H28.0496L28.052 13.552L29.8644 15.3644L32 17.5L17.5 32L3 17.5L4.63564 15.8644ZM17.5 3L25.8784 11.3784H21.5282L17.5 7.35024L13.4718 11.3784H9.12158L17.5 3Z"
-                    fill={theme.palette.info.dark}
-                />
-                <path
-                    d="M7.35025 17.5L9.1228 15.7275L9.5697 15.2805L7.83937 13.5496H6.95039L6.94798 13.552L4.63564 15.8644L6.8551 18.073L7.35025 17.5Z"
-                    fill="url(#paint0_linear)"
-                />
-                <path
-                    d="M25.8767 15.7275L27.6498 17.5L27.4743 17.6755L27.4749 17.6761L29.8644 15.3644L28.0521 13.552L28.0497 13.5496H27.8736L25.7518 15.602L25.8767 15.7275Z"
-                    fill="url(#paint1_linear)"
-                />
-                <path
-                    d="M6.94549 13.5496L6.9479 13.552L9.12272 15.7275L17.4999 24.1041L28.0544 13.5496H6.94549Z"
-                    fill={theme.palette.info.main}
-                />       
-            </svg>
+        <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+ width="20.000000pt" height="20.000000pt" viewBox="0 0 1225.000000 1200.000000"
+ preserveAspectRatio="xMidYMid meet">
+
+<g transform="translate(0.000000,1000) scale(0.1,-0.1)"
+fill="#0400a4" stroke="none">
+<path d="M0 6000 l0 -6000 6125 0 6125 0 0 6000 0 6000 -6125 0 -6125 0 0
+-6000z m3068 493 l-3 -168 -690 -5 -690 -5 -3 -394 c-1 -282 1 -398 9 -407 16
+-19 1098 -21 1117 -2 8 8 12 50 12 125 l0 113 -390 0 -390 0 0 165 0 165 605
+0 605 0 0 -316 c0 -264 -3 -321 -15 -348 -21 -44 -224 -243 -255 -251 -14 -3
+-355 -4 -757 -3 l-733 3 -110 110 c-60 60 -117 124 -125 141 -22 46 -23 971
+-1 1012 15 28 193 198 230 219 16 9 208 12 804 13 l782 0 -2 -167z m822 -381
+c0 -413 3 -551 12 -560 9 -9 137 -12 515 -12 l503 0 0 -190 0 -190 -612 0
+c-566 0 -615 1 -639 18 -33 22 -213 211 -228 239 -8 16 -11 192 -11 632 l0
+611 230 0 230 0 0 -548z m2828 506 c109 -98 178 -164 189 -183 9 -15 12 -145
+13 -517 l0 -498 -111 -119 c-61 -65 -122 -124 -135 -130 -18 -8 -221 -11 -695
+-11 -558 0 -675 2 -697 14 -15 8 -75 63 -133 124 -76 78 -108 118 -112 142
+-11 55 -8 944 3 976 10 27 152 168 224 222 l30 22 688 0 688 0 48 -42z m2044
+-85 c72 -71 137 -142 144 -160 11 -24 14 -91 14 -270 0 -207 -2 -243 -18 -273
+-13 -26 -45 -51 -140 -108 l-123 -74 23 -26 c13 -15 104 -111 203 -215 99
+-104 184 -195 188 -203 5 -9 4 -21 -3 -30 -10 -11 -57 -14 -269 -14 l-257 0
+-218 225 -218 225 -284 0 -284 0 0 -225 0 -225 -205 0 -205 0 0 636 0 636 78
+75 c42 41 99 92 125 114 l49 39 635 0 635 0 130 -127z m963 -153 c173 -173
+286 -279 296 -278 9 2 144 128 299 281 l282 277 289 0 289 0 0 -23 c0 -22
+-213 -234 -812 -806 l-98 -93 0 -289 0 -289 -245 0 -245 0 0 283 0 283 -142
+140 c-148 144 -537 519 -690 664 -80 75 -100 105 -81 123 3 4 135 7 292 7
+l286 0 280 -280z"/>
+<path d="M5486 6274 c-14 -13 -16 -60 -16 -363 0 -256 3 -350 12 -359 9 -9
+134 -12 500 -12 472 0 488 1 498 19 6 13 10 142 10 353 0 286 -2 337 -16 356
+l-15 22 -479 0 c-422 0 -480 -2 -494 -16z"/>
+<path d="M7520 6135 l0 -185 489 0 490 0 15 22 c13 18 16 52 16 166 0 80 -5
+152 -10 163 -10 18 -27 19 -505 19 l-495 0 0 -185z"/>
+</g>
+</svg>
         {/* <MenuOutlined  sx={{ mr: 2 }}/> */}
-        <Typography variant="h3" noWrap component="div" sx={{ flexGrow: 1, fontWeight: "bold", fontFamily:"'Public Sans',sans-serif" }}>
-        HR Information System
+        <Typography variant="h3" noWrap component="div" sx={{ marginLeft: "10px", flexGrow: 1, fontWeight: "bold", fontFamily:"'Public Sans',sans-serif" }}>
+         HR Information System
       </Typography>
             {/* Search Bar */}
         {/* <Box 
@@ -72,4 +88,4 @@ const Topbar = (propsLogout) => {
         );
 };
 
-export default Topbar;
+export default Topbar2;
