@@ -1,11 +1,13 @@
-console.log('running on port 3001');
+
 const express = require('express')
-const bodyParser = require("body-parser");
-const mysql = require('mysql')
+const PORT = process.env.PORT || 3001;
 const cors = require("cors");
 const app = express()
-app.use(express.json())
-app.use(cors());
+app.use(cors())
+// const bodyParser = require("body-parser");
+const mysql = require('mysql')
+
+app.use(express.json());
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -50,6 +52,6 @@ app.post("/login", (req, res)=>{
     //    console.log(err);
     });
 });
-app.listen(3001, () =>{
+app.listen(PORT, () =>{
     console.log('running on port 3001');
 })
