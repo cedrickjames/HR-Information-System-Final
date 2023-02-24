@@ -63,10 +63,8 @@ const SidebarMain = () => {
       }}
       style={{ display: "flex", height: "100%" }}
     >
-      <Sidebar
-        customBreakPoint="800px"
-        image="../../assets/background sidebar.png"
-      >
+     <Sidebar   customBreakPoint="800px"  image="../../assets/backgroundsidebar.png"
+     >
         <Menu
           menuItemStyles={{
             button: ({ level, active, disabled }) => {
