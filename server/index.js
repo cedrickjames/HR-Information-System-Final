@@ -52,6 +52,18 @@ app.post("/login", (req, res)=>{
     //    console.log(err);
     });
 });
+
+app.get("/siadmin",(req, res)=>{
+    db.query("SELECT * FROM `salaryincrease`", (err, rows, fields)=>{
+        if(!err)
+        {
+        res.send(rows);
+        } else {
+            console.log(err);
+        }
+    })
+});
+
 app.listen(process.env.PORT, () =>{
     console.log('running on port 3001');
 })

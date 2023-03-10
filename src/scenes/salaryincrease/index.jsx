@@ -71,21 +71,6 @@ function createData(no,section, name, empnumber, position) {
   };
 }
 
-const rows = [
-  createData(1, 'cedrick', 3.7, 67, 4.3),
-  createData(2, 'cedrick', 25.0, 51, 4.9),
-  createData(3, 'cedrick', 16.0, 24, 6.0),
-  createData(4, 'cedrick', 6.0, 24, 4.0),
-  createData(5, 'cedrick', 16.0, 49, 3.9),
-  createData(6, 'cedrick', 3.2, 87, 6.5),
-  createData(7, 'cedrick', 9.0, 37, 4.3),
-  createData(8, 'cedrick', 0.0, 94, 0.0),
-  createData(9, 'cedrick', 26.0, 65, 7.0),
-  createData(10, 'cedrick', 0.2, 98, 0.0),
-  createData(11, 'cedrick', 0, 81, 2.0),
-  createData(12, 'cedrick', 19.0, 9, 37.0),
-  createData(13, 'cedrick', 18.0, 63, 4.0),
-];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -246,7 +231,7 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          Administration Department Employees
         </Typography>
       )}
 
@@ -273,13 +258,40 @@ EnhancedTableToolbar.propTypes = {
 
 const SalaryIncrease = () => {
 
+  const [data, setData] = useState([]);
+  const [rows, setRows] = useState([]);
+  useEffect(() => {
+    axios.get("http://localhost:3001/siadmin")
+      .then(response =>
+        { setData(response.data);
+          const newRows = response.data.map(row => createData(row.id, row.section, row.employeeName, row.empNo, row.position));
+          setRows(newRows);
+        })
+      .catch(error => console.log(error));
+  }, []);
+
+  // const rows = [
+  //   createData(1, 'cedricks', 3.7, 67, 4.3),
+  //   createData(2, 'cedrick', 25.0, 51, 4.9),
+  //   createData(3, 'cedrick', 16.0, 24, 6.0),
+  //   createData(4, 'cedrick', 6.0, 24, 4.0),
+  //   createData(5, 'cedrick', 16.0, 49, 3.9),
+  //   createData(6, 'cedrick', 3.2, 87, 6.5),
+  //   createData(7, 'cedrick', 9.0, 37, 4.3),
+  //   createData(8, 'cedrick', 0.0, 94, 0.0),
+  //   createData(9, 'cedrick', 26.0, 65, 7.0),
+  //   createData(10, 'cedrick', 0.2, 98, 0.0),
+  //   createData(11, 'cedrick', 0, 81, 2.0),
+  //   createData(12, 'cedrick', 19.0, 9, 37.0),
+  //   createData(13, 'cedrick', 18.0, 63, 4.0),
+  // ];
+
+  
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-
 
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
