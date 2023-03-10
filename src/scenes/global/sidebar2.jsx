@@ -39,7 +39,7 @@ const Sidebar = () => {
   useEffect(() => {
     if(location.pathname === "/") {
       setSelected("Dashboard");
-    } else if(location.pathname === "/bar") {
+    } else if(location.pathname === "/salaryincrease") {
       setSelected("Form");
     }
   else if(location.pathname === "/line") {
@@ -159,8 +159,8 @@ const Sidebar = () => {
               Data
             </Typography>
             <Item
-              title="Form"
-              to="/bar"
+              title="Salary Increase"
+              to="/salaryincrease"
               icon={<PeopleOutline />}
               selected={selected}
               setSelected={setSelected}

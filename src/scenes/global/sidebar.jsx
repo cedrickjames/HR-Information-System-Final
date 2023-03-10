@@ -9,6 +9,8 @@ import { useState, useEffect } from "react";
 import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 // import "react-pro-sidebar/dist/css/styles.css";
 import { useLocation } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faMoneyBillTrendUp } from '@fortawesome/free-solid-svg-icons'
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -38,8 +40,8 @@ const SidebarMain = () => {
   useEffect(() => {
     if (location.pathname === "/") {
       setSelected("Dashboard");
-    } else if (location.pathname === "/bar") {
-      setSelected("Form");
+    } else if (location.pathname === "/salaryincrease") {
+      setSelected("Salary Increase");
     } else if (location.pathname === "/line") {
       setSelected("Line");
     }
@@ -163,9 +165,9 @@ const SidebarMain = () => {
               Data
             </Typography>
             <Item
-              title="Form"
-              to="/bar"
-              icon={<PeopleOutline />}
+              title="Salary Increase"
+              to="/salaryincrease"
+              icon={ <FontAwesomeIcon icon={faMoneyBillTrendUp} size="lg"/>}
               selected={selected}
               setSelected={setSelected}
             />

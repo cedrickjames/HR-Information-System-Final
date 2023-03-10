@@ -16,7 +16,7 @@ import SidebarMain from "./scenes/global/sidebar.jsx";
 // import Team from "./scenes/team"
 // import Invoices from "./scenes/invoices"
 // import Contacts from "./scenes/Contacts"
-import Bar from "./scenes/bar"
+import SalaryIncrease from "./scenes/salaryincrease"
 // import Form from "./scenes/form"
 import Line from "./scenes/line"
 import Teams from "./scenes/team"
@@ -79,7 +79,7 @@ if (loggedIn) {
             <Topbar onLogout={handleLogout}/>
             <Routes>
               <Route path="/dashboard" element={<Dashboard/>}/>
-              <Route path="/bar" element={<Bar/>}/>
+              <Route path="/salaryincrease" element={<SalaryIncrease/>}/>
               <Route path="/line" element={<Line/>}/>
               <Route path="/team" element={<Teams/>}/>
               </Routes>
