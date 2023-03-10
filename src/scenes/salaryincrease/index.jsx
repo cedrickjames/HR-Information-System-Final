@@ -1,7 +1,7 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-import axios from "axios";
+import Axios from "axios";
 import React,  { useEffect, useState } from "react";
 import Sample from "../../components/Sample";
 import Paper from '@mui/material/Paper';
@@ -25,6 +25,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { alpha } from '@mui/material/styles';
+import SIAdmin from "./admin";
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -143,155 +144,40 @@ const headCells = [
   },
 ];
 
-function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'center' : 'left'}
-            // padding={headCell.disablePadding ? 'none' : 'normal'}
-            padding={headCell.checkboxLike ? 'checkbox' : (headCell.disablePadding ? 'none' : 'normal')}
-
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
-
-function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Administration Department Employees
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-}
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
 const SalaryIncrease = () => {
-
+  const [department, setDepartment] = useState([]);
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
-  useEffect(() => {
-    axios.get("http://localhost:3001/siadmin")
-      .then(response =>
-        { setData(response.data);
-          const newRows = response.data.map(row => createData(row.id, row.section, row.employeeName, row.empNo, row.position));
-          setRows(newRows);
-        })
-      .catch(error => console.log(error));
-  }, []);
 
-  // const rows = [
-  //   createData(1, 'cedricks', 3.7, 67, 4.3),
-  //   createData(2, 'cedrick', 25.0, 51, 4.9),
-  //   createData(3, 'cedrick', 16.0, 24, 6.0),
-  //   createData(4, 'cedrick', 6.0, 24, 4.0),
-  //   createData(5, 'cedrick', 16.0, 49, 3.9),
-  //   createData(6, 'cedrick', 3.2, 87, 6.5),
-  //   createData(7, 'cedrick', 9.0, 37, 4.3),
-  //   createData(8, 'cedrick', 0.0, 94, 0.0),
-  //   createData(9, 'cedrick', 26.0, 65, 7.0),
-  //   createData(10, 'cedrick', 0.2, 98, 0.0),
-  //   createData(11, 'cedrick', 0, 81, 2.0),
-  //   createData(12, 'cedrick', 19.0, 9, 37.0),
-  //   createData(13, 'cedrick', 18.0, 63, 4.0),
-  // ];
+
+    const login = () => {
+      Axios.post("http://localhost:3001/setsitable", {
+        department: "Administration",
+      }).then((response) => {
+        console.log(response);
+
+      });
+    };
+    
 
   
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
+    // console.log(newValue);
     setValue(newValue);
   };
+function clickTab(dept){
+  setDepartment(dept);
+  //  setTable();
+
+  // console.log(department)
+}
+
+useEffect(() => {
+  console.log(department);
+  // login();
+}, [department]);
 
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -366,8 +252,8 @@ const SalaryIncrease = () => {
           <Box sx={{ width: '100%'}}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example"   variant="scrollable" scrollButtons="auto" >
-          <Tab label="Administration" {...a11yProps(0)} />
-          <Tab label="Accounting" {...a11yProps(1)} />
+          <Tab label="Administration" onClick={login}  {...a11yProps(0)} />
+          <Tab label="Accounting"  onClick={login}  {...a11yProps(1)} />
           <Tab label="Japanese" {...a11yProps(2)} />
           <Tab label="Parts Inspection" {...a11yProps(3)} />
           <Tab label="Parts Production" {...a11yProps(4)} />
@@ -386,95 +272,10 @@ const SalaryIncrease = () => {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-      <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 , overflow: 'hidden'}}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-            stickyHeader aria-label="sticky table"
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.no);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.no)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
-                      tabIndex={-1}
-                      key={row.no}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': labelId,
-                          }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="checkbox"
-                      >
-                        {row.no}
-                      </TableCell>
-                      <TableCell padding="checkbox"align="left">{row.section}</TableCell>
-                      <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">{row.empnumber}</TableCell>
-                      <TableCell align="center">{row.position}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
-    </Box>
+      <SIAdmin/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+      <SIAdmin/>
       </TabPanel>
       <TabPanel value={value} index={2}>
         Item Three

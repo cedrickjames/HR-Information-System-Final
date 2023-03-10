@@ -52,6 +52,50 @@ app.post("/login", (req, res)=>{
     //    console.log(err);
     });
 });
+// app.post("/setsitable", (req, res)=>{
+//     const department = req.body.department;
+
+
+//     db.query(
+//         "SELECT * FROM `salaryincrease WHERE department = ?",
+//         [department],
+//         (err, result)=>{
+//             if(err){
+//                 res.send({err: err});
+//             }
+//                 if(result.length > 0){
+//                     res.send(result)
+//                 }else{
+//                     res.send({message: "No data available"});
+                    
+//                 }
+            
+//     //    console.log(err);
+//     });
+// });
+
+app.post("/setsitable", (req, res)=>{
+    const department = req.body.department;
+
+    // const sqlSelect = ;
+    db.query(
+        "SELECT * FROM `salaryincrease` WHERE department = ?",
+        [department],
+        (err, result)=>{
+            if(err){
+                res.send({err: err});
+            }
+                if(result.length > 0){
+                    res.send(result)
+                }else{
+                    res.send({message: "Wrong username/password combination!"});
+                    
+
+                }
+            
+    //    console.log(err);
+    });
+});
 
 app.get("/siadmin",(req, res)=>{
     db.query("SELECT * FROM `salaryincrease`", (err, rows, fields)=>{
