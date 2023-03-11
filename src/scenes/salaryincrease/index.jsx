@@ -150,11 +150,11 @@ const SalaryIncrease = () => {
   const [rows, setRows] = useState([]);
 
 
-    const login = () => {
+    const choosedept = (dept) => {
       Axios.post("http://localhost:3001/setsitable", {
-        department: "Administration",
+        department: dept,
       }).then((response) => {
-        console.log(response);
+        // console.log(response);
 
       });
     };
@@ -175,8 +175,8 @@ function clickTab(dept){
 }
 
 useEffect(() => {
-  console.log(department);
-  // login();
+  // console.log(department);
+  // choosedept();
 }, [department]);
 
   const [order, setOrder] = React.useState('asc');
@@ -252,8 +252,8 @@ useEffect(() => {
           <Box sx={{ width: '100%'}}>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example"   variant="scrollable" scrollButtons="auto" >
-          <Tab label="Administration" onClick={login}  {...a11yProps(0)} />
-          <Tab label="Accounting"  onClick={login}  {...a11yProps(1)} />
+          <Tab label="Administration" onClick={() => choosedept("Administration")}  {...a11yProps(0)} />
+          <Tab label="Accounting"  onClick={() => choosedept("Accounting")}  {...a11yProps(1)} />
           <Tab label="Japanese" {...a11yProps(2)} />
           <Tab label="Parts Inspection" {...a11yProps(3)} />
           <Tab label="Parts Production" {...a11yProps(4)} />
@@ -272,10 +272,10 @@ useEffect(() => {
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-      <SIAdmin/>
+      <SIAdmin department={"Administration"}/>
       </TabPanel>
       <TabPanel value={value} index={1}>
-      <SIAdmin/>
+      <SIAdmin department={"Accounting"}/>
       </TabPanel>
       <TabPanel value={value} index={2}>
         Item Three

@@ -45,7 +45,7 @@ app.post("/login", (req, res)=>{
                     res.send(result)
                 }else{
                     res.send({message: "Wrong username/password combination!"});
-                    
+                     
 
                 }
             
@@ -76,7 +76,7 @@ app.post("/login", (req, res)=>{
 
 app.post("/setsitable", (req, res)=>{
     const department = req.body.department;
-
+ 
     // const sqlSelect = ;
     db.query(
         "SELECT * FROM `salaryincrease` WHERE department = ?",

@@ -1,7 +1,7 @@
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
-import axios from "axios";
+import Axios from "axios";
 import React,  { useEffect, useState } from "react";
 import Sample from "../../components/Sample";
 import Paper from '@mui/material/Paper';
@@ -223,21 +223,22 @@ function EnhancedTableHead(props) {
     numSelected: PropTypes.number.isRequired,
   };
   
-const SIAdmin = () => {
-
+const SIAdmin = (props) => {
+    const { department } = props;
+    // console.log(props);
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
+
   useEffect(() => {
-    axios.get("http://localhost:3001/siadmin")
-      .then(response =>
-        { setData(response.data);
-          const newRows = response.data.map(row => createData(row.id, row.section, row.employeeName, row.empNo, row.position));
-          setRows(newRows);
-        })
-      .catch(error => console.log(error));
+    Axios.post("http://localhost:3001/setsitable", {
+        department: department,
+      }).then((response) => {
+        // console.log(response);
+        const newRows = response.data.map(row => createData(row.id, row.section, row.employeeName, row.empNo, row.position));
+        setRows(newRows);
+      });
   }, []);
-
-
+ 
   
   const [value, setValue] = React.useState(0);
 
