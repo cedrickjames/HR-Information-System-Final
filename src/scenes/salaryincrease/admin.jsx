@@ -122,13 +122,13 @@ function EnhancedTableHead(props) {
         <TableRow>
           <TableCell padding="checkbox">
             <Checkbox
-              color="primary"
-              indeterminate={numSelected > 0 && numSelected < rowCount}
-              checked={rowCount > 0 && numSelected === rowCount}
-              onChange={onSelectAllClick}
-              inputProps={{
-                'aria-label': 'select all desserts',
-              }}
+            color="primary"
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{
+              'aria-label': 'select all desserts',
+            }}
             />
           </TableCell>
           {headCells.map((headCell) => (
@@ -228,7 +228,16 @@ const SIAdmin = (props) => {
     // console.log(props);
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
-
+//   useEffect(() => {
+//     Axios.get("http://localhost:3001/siadmin")
+//       .then(response =>
+//         { setData(response.data);
+//             console.log(response);
+//           const newRows = response.data.map(row => createData(row.id, row.section, row.employeeName, row.empNo, row.position));
+//           setRows(newRows);
+//         })
+//       .catch(error => console.log(error));
+//   }, []);
   useEffect(() => {
     Axios.post("http://localhost:3001/setsitable", {
         department: department,
@@ -238,7 +247,22 @@ const SIAdmin = (props) => {
         setRows(newRows);
       });
   }, []);
- 
+// const rows = [
+//     createData(1, 'cedrick', 3.7, 67, 4.3),
+//     createData(2, 'cedrick', 25.0, 51, 4.9),
+//     createData(3, 'cedrick', 16.0, 24, 6.0),
+//     createData(4, 'cedrick', 6.0, 24, 4.0),
+//     createData(5, 'cedrick', 16.0, 49, 3.9),
+//     createData(6, 'cedrick', 3.2, 87, 6.5),
+//     createData(7, 'cedrick', 9.0, 37, 4.3),
+//     createData(8, 'cedrick', 0.0, 94, 0.0),
+//     createData(9, 'cedrick', 26.0, 65, 7.0),
+//     createData(10, 'cedrick', 0.2, 98, 0.0),
+//     createData(11, 'cedrick', 0, 81, 2.0),
+//     createData(12, 'cedrick', 19.0, 9, 37.0),
+//     createData(13, 'cedrick', 18.0, 63, 4.0),
+//   ];
+  
   
   const [value, setValue] = React.useState(0);
 
@@ -261,19 +285,20 @@ const SIAdmin = (props) => {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
+      const newSelected = rows.map((n) => n.no);
       setSelected(newSelected);
+      console.log(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, no) => {
+    const selectedIndex = selected.indexOf(no);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, no);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -301,7 +326,7 @@ const SIAdmin = (props) => {
     setDense(event.target.checked);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (no) => selected.indexOf(no) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -331,8 +356,13 @@ const SIAdmin = (props) => {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
+                    
+                    // console.log(isSelected(1))
                   const isItemSelected = isSelected(row.no);
+             
+
                   const labelId = `enhanced-table-checkbox-${index}`;
+                  
 
                   return (
                     <TableRow
@@ -345,7 +375,7 @@ const SIAdmin = (props) => {
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
-                        <Checkbox
+                      <Checkbox
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
@@ -359,7 +389,7 @@ const SIAdmin = (props) => {
                         scope="row"
                         padding="checkbox"
                       >
-                        {row.no}
+                        {index+1}
                       </TableCell>
                       <TableCell padding="checkbox"align="left">{row.section}</TableCell>
                       <TableCell align="center">{row.name}</TableCell>
