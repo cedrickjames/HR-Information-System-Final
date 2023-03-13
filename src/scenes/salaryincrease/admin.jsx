@@ -33,7 +33,9 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItem from '@mui/material/ListItem';
 import List from '@mui/material/List';
 import CloseIcon from '@mui/icons-material/Close';
-
+import Grid from '@mui/material/Unstable_Grid2';
+import { styled } from '@mui/material/styles';
+import TextField from '@mui/material/TextField';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -47,7 +49,13 @@ function createData(no,section, name, empnumber, position) {
     position,
   };
 }
-
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: 'center',
+  color: theme.palette.text.secondary,
+}));
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -341,8 +349,15 @@ const SIAdmin = (props) => {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
     const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-      setOpen(true);
+    const handleClickOpen = (type) => {
+      if(type==="checkbox"){
+        setOpen(false);
+
+      }
+      else{
+        setOpen(true);
+
+      }
     };
   
     const handleClose = () => {
@@ -385,15 +400,25 @@ const SIAdmin = (props) => {
                     
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, count)}
-                      role="checkbox"
+                      onClick={(event) => {             
+                          handleClickOpen(event.target.type);
+                      }}
+                      
                       aria-checked={isItemSelected}
-                      tabIndex={-1}
+                      tabIndex={0}
                       key={count}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
                       <Checkbox
+                      // onClick={(event) => handleClick(event, count)}
+                      onClick={(event) => {
+                        if (event.target.type !== "checkbox") {
+                          handleClickOpen(event.target.type);
+                        }
+                        handleClick(event, count)
+                        // console.log(event.target.type)
+                      }}
                           color="primary"
                           checked={isItemSelected}
                           inputProps={{
@@ -459,25 +484,178 @@ const SIAdmin = (props) => {
               <CloseIcon />
             </IconButton>
             <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Sound
+              Orozo, Cedrick James M.
             </Typography>
             <Button autoFocus color="inherit" onClick={handleClose}>
               save
             </Button>
           </Toolbar>
         </AppBar>
-        <List>
-          <ListItem button>
-            <ListItemText primary="Phone ringtone" secondary="Titania" />
-          </ListItem>
-          <Divider />
-          <ListItem button>
-            <ListItemText
-              primary="Default notification ringtone"
-              secondary="Tethys"
-            />
-          </ListItem>
-        </List>
+        <Box sx={{ mt: 2 ,flexGrow:1, height: '100%', padding: 1}}>
+          <Grid container spacing={2} sx={{ height: '100%'}}>
+            <Grid component="form" noValidate autoComplete="off" xs={4} sx={{ height: '100%', '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
+              <Item sx={{ height: '100%'}}>
+             
+                <TextField
+          required
+          id="outlined-required"
+          label="Position"
+          defaultValue=""
+          sx={{width: '45%' }}
+              />
+              <TextField
+                required
+                id="outlined-required"
+                label="Designation"
+                defaultValue=""
+                sx={{width: '45%' }}
+              />
+               <Typography variant="h5" gutterBottom align="left">
+                Basic Salary
+              </Typography>
+              <TextField
+          required
+          id="outlined-required"
+          label="Class"
+          defaultValue=""
+          sx={{width: '30%' }}
+              />
+              <TextField
+                required
+                id="outlined-required"
+                label="Level"
+                defaultValue=""
+                sx={{width: '30%' }}
+              />
+                            <TextField
+                required
+                id="outlined-required"
+                label="Salary"
+                defaultValue=""
+                sx={{width: '30%' }}
+              />
+                            <TextField
+          required
+          id="outlined-required"
+          label="Basic Salary"
+          defaultValue=""
+          sx={{width: '30%' }}
+              />
+              <TextField
+                required
+                id="outlined-required"
+                label="Daily"
+                defaultValue=""
+                sx={{width: '30%' }}
+              />
+                            <TextField
+                required
+                id="outlined-required"
+                label="Monthly Salary"
+                defaultValue=""
+                sx={{width: '30%' }}
+              />
+                  <Typography variant="h5" gutterBottom align="left">
+                Position
+              </Typography>
+              <TextField
+                required
+                id="outlined-required"
+                label="PE Point"
+                defaultValue=""
+                sx={{width: '20%' }}
+              />
+                            <TextField
+                required
+                id="outlined-required"
+                label="Allowance"
+                defaultValue=""
+                sx={{width: '50%' }}
+              />
+                            <TextField
+                required
+                id="outlined-required"
+                label="Rank"
+                defaultValue=""
+                sx={{width: '20%' }}
+              />
+                  </Item>
+              
+            </Grid>
+            <Grid component="form" noValidate autoComplete="off" xs={4} sx={{ height: '100%', '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
+              <Item sx={{ height: '100%'}}>
+              <Typography variant="h5" gutterBottom align="left">
+                Technical Skills / Special Experience
+              </Typography>
+              <TextField
+                required
+                id="outlined-required"
+                label="PE Point"
+                defaultValue=""
+                sx={{width: '20%' }}
+              />
+                            <TextField
+                required
+                id="outlined-required"
+                label="Allowance"
+                defaultValue=""
+                sx={{width: '50%' }}
+              />
+                            <TextField
+                required
+                id="outlined-required"
+                label="Rank"
+                defaultValue=""
+                sx={{width: '20%' }}
+              />
+               <Typography variant="h5" gutterBottom align="left">
+                License Evaluation
+              </Typography>
+              <TextField
+                required
+                id="outlined-required"
+                label="License Fee"
+                defaultValue=""
+                sx={{width: '22%' }}
+              />
+              <TextField
+                required
+                id="outlined-required"
+                label="PE Point"
+                defaultValue=""
+                sx={{width: '22%' }}
+              />
+                            <TextField
+                required
+                id="outlined-required"
+                label="Allowance"
+                defaultValue=""
+                sx={{width: '22%' }}
+              />
+                            <TextField
+                required
+                id="outlined-required"
+                label="Rank"
+                defaultValue=""
+                sx={{width: '22%' }}
+              />
+               <Typography variant="h5" gutterBottom align="left">
+               Specialization
+              </Typography>
+              <TextField
+                required
+                id="outlined-required"
+                label="Rank"
+                defaultValue=""
+                sx={{width: '95%' }}
+              />
+              </Item>
+            </Grid>
+            <Grid xs={4}>
+              <Item sx={{ height: '100%'}}>Basic Information</Item>
+            </Grid>
+          </Grid>
+        </Box>
       </Dialog>
     </Box>
 
