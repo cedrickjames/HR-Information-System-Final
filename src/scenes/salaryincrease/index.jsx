@@ -3,28 +3,9 @@
   import Header from "../../components/Header";
   import Axios from "axios";
   import React,  { useEffect, useState } from "react";
-  import Sample from "../../components/Sample";
-  import Paper from '@mui/material/Paper';
-  import Table from '@mui/material/Table';
-  import TableBody from '@mui/material/TableBody';
-  import TableCell from '@mui/material/TableCell';
-  import TableContainer from '@mui/material/TableContainer';
-  import TableHead from '@mui/material/TableHead';
-  import TablePagination from '@mui/material/TablePagination';
-  import TableRow from '@mui/material/TableRow';
   import PropTypes from 'prop-types';
   import Tabs from '@mui/material/Tabs';
   import Tab from '@mui/material/Tab';
-  import TableSortLabel from '@mui/material/TableSortLabel';
-  import Toolbar from '@mui/material/Toolbar';
-  import Checkbox from '@mui/material/Checkbox';
-  import Tooltip from '@mui/material/Tooltip';
-  import FormControlLabel from '@mui/material/FormControlLabel';
-  import Switch from '@mui/material/Switch';
-  import DeleteIcon from '@mui/icons-material/Delete';
-  import FilterListIcon from '@mui/icons-material/FilterList';
-  import { visuallyHidden } from '@mui/utils';
-  import { alpha } from '@mui/material/styles';
   import SIAdmin from "./admin";
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -278,7 +259,8 @@
         <SIAdmin department={"Accounting"}/>
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Item Three
+        <SIAdmin department={"Japanese"}/>
+
         </TabPanel>
         <TabPanel value={value} index={3}>
           4
