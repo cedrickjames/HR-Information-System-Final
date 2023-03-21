@@ -36,17 +36,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import Grid from '@mui/material/Unstable_Grid2';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
+import useMediaQuery from '@mui/material/useMediaQuery';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-
-function createData(no,section, name, empnumber, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) {
+// tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total
+function createData(no,section, name, empNo, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank,tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total, birthday, age, department, sex, dateHired, serviceTerm,) {
   return {
     no,
     section,
     name,
-    empnumber,
+    empNo,
     position,
     designation,
     empClass,
@@ -58,6 +59,25 @@ function createData(no,section, name, empnumber, position, designation, empClass
     pPEPoint,
     pAllowance,
     pRank,
+    tsPEPoint,
+    tsAllowance, 
+    tsRank,
+    leLicenseFee, 
+    lePEPoint,
+    leAllowance, 
+    leRank,
+    ceCertificateOnFee,
+    cePEPoint, 
+    ceAllowance, 
+    ceRank, 
+    Specialization,
+    total,
+    birthday,
+    age,
+    department,
+    sex,
+    dateHired,
+    serviceTerm,
   };
 }
 const Item = styled(Paper)(({ theme }) => ({
@@ -251,11 +271,15 @@ function EnhancedTableHead(props) {
   };
   
 const SIAdmin = (props) => {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const { department } = props;
     // console.log(props);
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
   const [empName, setEmpName] = React.useState('');
+  const [empNumber, setEmpNumber] = React.useState('');
+
 
 
   //Data of the employee
@@ -270,6 +294,29 @@ const SIAdmin = (props) => {
   const [posPe, setPosPe] = React.useState('');
   const [posAllowance, setPosAllowance] = React.useState('');
   const [posRank, setPosRank] = React.useState('');
+
+  const [tsPEPoint, settsPEPoint] = React.useState('');
+  const [tsAllowance, settsAllowance] = React.useState('');
+  const [tsRank, settsRank] = React.useState('');
+  const [leLicenseFee, setleLicenseFee] = React.useState('');
+  const [lePEPoint, setlePEPoint] = React.useState('');
+  const [leAllowance, setleAllowance] = React.useState('');
+  const [leRank, setleRank] = React.useState('');
+  const [ceCertificateOnFee, setceCertificateOnFee] = React.useState('');
+  const [cePEPoint, setcePEPoint] = React.useState('');
+  const [ceAllowance, setceAllowance] = React.useState('');
+  const [ceRank, setceRank] = React.useState('');
+  const [Specialization, setSpecialization] = React.useState('');
+  const [total, settotal] = React.useState('');
+  const [birthday, setbirthday] = React.useState('');
+  const [age, setage] = React.useState('');
+  const [department2, setdepartment2] = React.useState('');
+  const [sex, setsex] = React.useState('');
+  const [dateHired, setdateHired] = React.useState('');
+  const [serviceTerm, setserviceTerm] = React.useState('');
+  const [section, setSection] = React.useState('');
+
+
 
 
 
@@ -305,7 +352,25 @@ const SIAdmin = (props) => {
           row.pPEPoint,
           row.pAllowance,
           row.pRank,
-
+          row.tsPEPoint,
+          row.tsAllowance,
+          row.tsRank,
+          row.leLicenseFee, 
+          row.lePEPoint, 
+          row.leAllowance, 
+          row.leRank, 
+          row.ceCertificateOnFee, 
+          row.cePEPoint, 
+          row.ceAllowance, 
+          row.ceRank, 
+          row.Specialization, 
+          row.total,
+          row.birthday,
+          row.age,
+          row.department,
+          row.sex,
+          row.dateHired,
+          row.serviceTerm,
           ));
         setRows(newRows);
       });
@@ -398,6 +463,8 @@ const SIAdmin = (props) => {
 
     const handleClickOpen = (type, employee) => {
       setEmpName(employee.name);
+      setEmpNumber(employee.empNo);
+
       setPosition(employee.position);
       setDesignation(employee.designation);
       setEmpClass(employee.empClass);
@@ -410,7 +477,28 @@ const SIAdmin = (props) => {
       setPosAllowance(employee.pAllowance);
       setPosRank(employee.pRank);
 
+      settsPEPoint(employee.tsPEPoint);
+      settsAllowance(employee.tsAllowance);
+      settsRank(employee.tsRank);
+      setleLicenseFee(employee.leLicenseFee); 
+      setlePEPoint(employee.lePEPoint) ;
+      setleAllowance(employee.leAllowance) ;
+      setleRank(employee.leRank) ;
+      setceCertificateOnFee(employee.ceCertificateOnFee) ;
+      setcePEPoint(employee.cePEPoint) ;
+      setceAllowance(employee.ceAllowance) ;
+      setceRank(employee.ceRank) 
+      setSpecialization(employee.Specialization) ;
+      settotal(employee.total);
+      setSection(employee.section)
+      setbirthday(employee.birthday)
+      setage(employee.age)
+      setdepartment2(employee.department)
+      setsex(employee.sex)
+      setdateHired(employee.dateHired)
+      setserviceTerm(employee.serviceTerm)
 
+      
       if(type==="checkbox"){
         setOpen(false);
 
@@ -479,7 +567,7 @@ const SIAdmin = (props) => {
                   </TableCell>
                   <TableCell padding="checkbox" align="left">{row.section}</TableCell>
                   <TableCell align="center">{row.name}</TableCell>
-                  <TableCell align="center">{row.empnumber}</TableCell>
+                  <TableCell align="center">{row.empNo}</TableCell>
                   <TableCell align="center">{row.position}</TableCell>
                 </TableRow>
                 );
@@ -516,23 +604,28 @@ const SIAdmin = (props) => {
             </Toolbar>
           </AppBar>
           <Box sx={{ mt: 2 ,flexGrow:1, height: '100%', padding: 1}}>
-            <Grid container spacing={2} sx={{ height: '100%'}}>
-              <Grid component="form" noValidate autoComplete="off"  lg={4} sm={6} xs={12} sx={{ height: '100%', '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
-                <Item sx={{ height: '100%'}}>
+            <Grid container spacing={2} sx={{'& .MuiInputLabel-root': {fontSize: '20px'},'& .MuiOutlinedInput-root': {
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'green',
+                  }, fontSize:'20px'
+                },height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
+              <Grid  noValidate autoComplete="off"  lg={4} sm={6} xs={12}
+                sx={{ height: '100%' , ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
+                <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
                 <Grid container spacing={1}>
-                <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Position" value={position} defaultValue="" fullWidth /></Grid>
-                  <Grid xs={12} sm={6}> <TextField required id="outlined-required" label="Designation" value={designation} defaultValue="" fullWidth /> </Grid>
+                <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Position" defaultValue={position}  fullWidth /></Grid>
+                  <Grid xs={12} sm={6}> <TextField required id="outlined-required" label="Designation" defaultValue={designation}  fullWidth /> </Grid>
                   </Grid>  
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Basic Salary
                   </Typography>
                   <Grid container spacing={1} >
-                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Class" value={empClass} defaultValue="" fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Level" value={level} defaultValue="" fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Salary" value={salary} defaultValue=""  fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Basic Salary" value={basicSalary} defaultValue=""fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Daily" value={daily} defaultValue="" fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Monthly Salary" value={monthlySalary} defaultValue="" fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField  required id="outlined-required" label="Class" defaultValue={empClass}  fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Level" defaultValue={level}  fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Salary" defaultValue={salary}   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Basic Salary" defaultValue={basicSalary} fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Daily" defaultValue={daily}  fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Monthly Salary" defaultValue={monthlySalary}  fullWidth /></Grid>
 
                   </Grid>  
                   
@@ -540,40 +633,50 @@ const SIAdmin = (props) => {
                     Position
                   </Typography>
                   <Grid container spacing={1}>
-                    <Grid lg={3} sm={6} xs={12}><TextField required id="outlined-required" label="PE Point" value={posPe} defaultValue="" fullWidth /></Grid>
-                    <Grid lg={6} sm={6} xs={12}><TextField required id="outlined-required" label="Allowance" value={posAllowance} defaultValue="" fullWidth /></Grid>
-                    <Grid lg={3} sm={6} xs={12}><TextField required id="outlined-required" label="Rank" value={posRank} defaultValue="" fullWidth/></Grid>
+                    <Grid lg={3} sm={6} xs={12}><TextField required id="outlined-required" label="PE Point" defaultValue={posPe}  fullWidth /></Grid>
+                    <Grid lg={6} sm={6} xs={12}><TextField required id="outlined-required" label="Allowance" defaultValue={posAllowance}  fullWidth /></Grid>
+                    <Grid lg={3} sm={6} xs={12}><TextField required id="outlined-required" label="Rank" defaultValue={posRank}  fullWidth/></Grid>
                   </Grid>
+                 
+
                 </Item>
 
               </Grid>
               <Grid component="form" noValidate autoComplete="off"  lg={4} sm={6} xs={12}
                 sx={{ height: '100%', '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
-                <Item sx={{ height: '100%'}}>
+                <Item sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Technical Skills / Special Experience
                   </Typography>
                   <Grid container spacing={1}>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue="" fullWidth /></Grid>
-                  <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Allowance" defaultValue="" fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank" defaultValue="" fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue={tsPEPoint} fullWidth /></Grid>
+                  <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Allowance"defaultValue={tsAllowance}   fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank"defaultValue={tsRank}   fullWidth /></Grid>
                   </Grid>
-                
+
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     License Evaluation
                   </Typography>
                   <Grid container spacing={1}>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="License Fee" defaultValue="" fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue="" fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Allowance" defaultValue="" fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank" defaultValue="" fullWidth /></Grid>   
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="License Fee" defaultValue={leLicenseFee}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue={lePEPoint}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Allowance (PF1)" defaultValue={leAllowance}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank" defaultValue={leRank}  fullWidth /></Grid>   
                   </Grid>
-                 
+                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Certification / Evaluation
+                  </Typography>
+                  <Grid container spacing={1}>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Certification Fee" defaultValue={ceCertificateOnFee}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue={cePEPoint}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Allowance (PF2)" defaultValue={ceAllowance}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank" defaultValue={ceRank}  fullWidth /></Grid>   
+                  </Grid>
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Specialization
                   </Typography>
                   <Grid container spacing={1}>
-                  <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Rank" defaultValue="" fullWidth /></Grid>   
+                  <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Rank" defaultValue={Specialization}  fullWidth /></Grid>   
                   </Grid>
                 </Item>
               </Grid>
@@ -584,15 +687,15 @@ const SIAdmin = (props) => {
                     Basic Information
                   </Typography>             
                   <Grid container spacing={1}>
-                  <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Employee Number" defaultValue="" fullWidth /></Grid>
-                     <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Full Name" defaultValue="" fullWidth /></Grid>
-                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Department" defaultValue="" fullWidth /></Grid>
-                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Section" defaultValue="" fullWidth /></Grid>
-                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Birthday" defaultValue="" fullWidth /></Grid>
-                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Age" defaultValue="" fullWidth /></Grid>
-                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Sex" defaultValue="" fullWidth /></Grid>
-                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Date Hired" defaultValue="" fullWidth /></Grid>
-                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Service Term" defaultValue="" fullWidth /></Grid>
+                  <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Employee Number" defaultValue={empNumber} fullWidth /></Grid>
+                     <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Full Name" defaultValue={empName} fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Department" defaultValue={department2}   fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Section" defaultValue={section}   fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Birthday" defaultValue={birthday}  fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Age" defaultValue={age}  fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Sex" defaultValue={sex}  fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Date Hired" defaultValue={dateHired}  fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Service Term" defaultValue={serviceTerm}  fullWidth /></Grid>
 
 
 
