@@ -40,13 +40,24 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function createData(no,section, name, empnumber, position) {
+
+function createData(no,section, name, empnumber, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) {
   return {
     no,
     section,
     name,
     empnumber,
     position,
+    designation,
+    empClass,
+    level,
+    salaryType,
+    basicSalary,
+    daily,
+    monthlySalary,
+    pPEPoint,
+    pAllowance,
+    pRank,
   };
 }
 const Item = styled(Paper)(({ theme }) => ({
@@ -244,6 +255,25 @@ const SIAdmin = (props) => {
     // console.log(props);
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
+  const [empName, setEmpName] = React.useState('');
+
+
+  //Data of the employee
+  const [position, setPosition] = React.useState('');
+  const [designation, setDesignation] = React.useState('');
+  const [empClass, setEmpClass] = React.useState('');
+  const [level, setLevel] = React.useState('');
+  const [salary, setSalary] = React.useState('');
+  const [basicSalary, setBasicSalary] = React.useState('');
+  const [daily, setDaily] = React.useState('');
+  const [monthlySalary, setMonthlySalary] = React.useState('');
+  const [posPe, setPosPe] = React.useState('');
+  const [posAllowance, setPosAllowance] = React.useState('');
+  const [posRank, setPosRank] = React.useState('');
+
+
+
+
 //   useEffect(() => {
 //     Axios.get("http://localhost:3001/siadmin")
 //       .then(response =>
@@ -258,8 +288,25 @@ const SIAdmin = (props) => {
     Axios.post("http://localhost:3001/setsitable", {
         department: department,
       }).then((response) => {
-        // console.log(response);
-        const newRows = response.data.map(row => createData(row.id, row.section, row.employeeName, row.empNo, row.position));
+        // console.log(response);(no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
+        const newRows = response.data.map(row => createData(
+          row.id, 
+          row.section,
+          row.employeeName,
+          row.empNo, 
+          row.position,
+          row.designation,
+          row.class,
+          row.level,
+          row.salaryType,
+          row.basicSalary,
+          row.daily,
+          row.monthlySalary,
+          row.pPEPoint,
+          row.pAllowance,
+          row.pRank,
+
+          ));
         setRows(newRows);
       });
   }, []);
@@ -349,7 +396,21 @@ const SIAdmin = (props) => {
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
     const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = (type) => {
+    const handleClickOpen = (type, employee) => {
+      setEmpName(employee.name);
+      setPosition(employee.position);
+      setDesignation(employee.designation);
+      setEmpClass(employee.empClass);
+      setLevel(employee.level);
+      setSalary(employee.salaryType);
+      setBasicSalary(employee.basicSalary);
+      setDaily(employee.daily);
+      setMonthlySalary(employee.monthlySalary);
+      setPosPe(employee.pPEPoint);
+      setPosAllowance(employee.pAllowance);
+      setPosRank(employee.pRank);
+
+
       if(type==="checkbox"){
         setOpen(false);
 
@@ -366,298 +427,184 @@ const SIAdmin = (props) => {
     return (
  
       <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 , overflow: 'hidden'}}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-            stickyHeader aria-label="sticky table"
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+        <Paper sx={{ width: '100%', mb: 2 , overflow: 'hidden'}}>
+          <EnhancedTableToolbar numSelected={selected.length} />
+          <TableContainer sx={{ maxHeight: 440 }}>
+            <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium' } stickyHeader
+              aria-label="sticky table">
+              <EnhancedTableHead numSelected={selected.length} order={order} orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick} onRequestSort={handleRequestSort} rowCount={rows.length} />
+              <TableBody>
+                {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                    
-                    // console.log(isSelected(1))
-                    const count = parseInt(index)+1;
-                  const isItemSelected = isSelected(count);
-             
 
-                  const labelId = `enhanced-table-checkbox-${index}`;
-                  
-                  
-                  return (
-                    
-                    <TableRow
-                      hover
-                      onClick={(event) => {             
-                          handleClickOpen(event.target.type);
-                      }}
-                      
-                      aria-checked={isItemSelected}
-                      tabIndex={0}
-                      key={count}
-                      selected={isItemSelected}
-                    >
-                      <TableCell padding="checkbox">
-                      <Checkbox
-                      // onClick={(event) => handleClick(event, count)}
+                // console.log(isSelected(1))
+                const count = parseInt(index)+1;
+                const isItemSelected = isSelected(count);
+
+
+                const labelId = `enhanced-table-checkbox-${index}`;
+
+
+                return (
+
+                <TableRow hover onClick={(event)=> {
+                  handleClickOpen(event.target.type, row);
+                  }}
+
+                  aria-checked={isItemSelected}
+                  tabIndex={0}
+                  key={count}
+                  selected={isItemSelected}
+                  >
+                  <TableCell padding="checkbox">
+                    <Checkbox // onClick={(event)=> handleClick(event, count)}
                       onClick={(event) => {
-                        if (event.target.type !== "checkbox") {
-                          handleClickOpen(event.target.type);
-                        }
-                        handleClick(event, count)
-                        // console.log(event.target.type)
+                      if (event.target.type !== "checkbox") {
+                      handleClickOpen(event.target.type, row);
+                      }
+                      handleClick(event, count)
+                      // console.log(event.target.type)
                       }}
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
+                      color="primary"
+                      checked={isItemSelected}
+                      inputProps={{
                             'aria-labelledby': labelId,
                           }}
-                        />
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="checkbox"
-                      >
-                        {count}
-                      </TableCell>
-                      <TableCell padding="checkbox"align="left">{row.section}</TableCell>
-                      <TableCell align="center">{row.name}</TableCell>
-                      <TableCell align="center">{row.empnumber}</TableCell>
-                      <TableCell align="center">{row.position}</TableCell>
-                    </TableRow>
-                  );
+                      />
+                  </TableCell>
+                  <TableCell component="th" id={labelId} scope="row" padding="checkbox">
+                    {count}
+                  </TableCell>
+                  <TableCell padding="checkbox" align="left">{row.section}</TableCell>
+                  <TableCell align="center">{row.name}</TableCell>
+                  <TableCell align="center">{row.empnumber}</TableCell>
+                  <TableCell align="center">{row.position}</TableCell>
+                </TableRow>
+                );
                 })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
+                {emptyRows > 0 && (
+                <TableRow style={{
                     height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
+                  }}>
                   <TableCell colSpan={6} />
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination rowsPerPageOptions={[5, 10, 25]} component="div" count={rows.length}
+            rowsPerPage={rowsPerPage} page={page} onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage} />
+        </Paper>
+        <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
-      />
-       <Dialog
-        fullScreen
-        open={open}
-        onClose={handleClose}
-        TransitionComponent={Transition}
-      >
-        <AppBar sx={{ position: 'relative' }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Orozo, Cedrick James M.
-            </Typography>
-            <Button autoFocus color="inherit" onClick={handleClose}>
-              save
-            </Button>
-          </Toolbar>
-        </AppBar>
-        <Box sx={{ mt: 2 ,flexGrow:1, height: '100%', padding: 1}}>
-          <Grid container spacing={2} sx={{ height: '100%'}}>
-            <Grid component="form" noValidate autoComplete="off" xs={4} sx={{ height: '100%', '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
-              <Item sx={{ height: '100%'}}>
-             
-                <TextField
-          required
-          id="outlined-required"
-          label="Position"
-          defaultValue=""
-          sx={{width: '45%' }}
-              />
-              <TextField
-                required
-                id="outlined-required"
-                label="Designation"
-                defaultValue=""
-                sx={{width: '45%' }}
-              />
-               <Typography variant="h5" gutterBottom align="left">
-                Basic Salary
+        />
+        <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+          <AppBar sx={{ position: 'relative', backgroundColor:'#0C366B'}}>
+            <Toolbar>
+              <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+                <CloseIcon />
+              </IconButton>
+              <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+                {empName}
               </Typography>
-              <TextField
-          required
-          id="outlined-required"
-          label="Class"
-          defaultValue=""
-          sx={{width: '30%' }}
-              />
-              <TextField
-                required
-                id="outlined-required"
-                label="Level"
-                defaultValue=""
-                sx={{width: '30%' }}
-              />
-                            <TextField
-                required
-                id="outlined-required"
-                label="Salary"
-                defaultValue=""
-                sx={{width: '30%' }}
-              />
-                            <TextField
-          required
-          id="outlined-required"
-          label="Basic Salary"
-          defaultValue=""
-          sx={{width: '30%' }}
-              />
-              <TextField
-                required
-                id="outlined-required"
-                label="Daily"
-                defaultValue=""
-                sx={{width: '30%' }}
-              />
-                            <TextField
-                required
-                id="outlined-required"
-                label="Monthly Salary"
-                defaultValue=""
-                sx={{width: '30%' }}
-              />
-                  <Typography variant="h5" gutterBottom align="left">
-                Position
-              </Typography>
-              <TextField
-                required
-                id="outlined-required"
-                label="PE Point"
-                defaultValue=""
-                sx={{width: '20%' }}
-              />
-                            <TextField
-                required
-                id="outlined-required"
-                label="Allowance"
-                defaultValue=""
-                sx={{width: '50%' }}
-              />
-                            <TextField
-                required
-                id="outlined-required"
-                label="Rank"
-                defaultValue=""
-                sx={{width: '20%' }}
-              />
-                  </Item>
-              
+              <Button autoFocus color="inherit" onClick={handleClose}>
+                save
+              </Button>
+            </Toolbar>
+          </AppBar>
+          <Box sx={{ mt: 2 ,flexGrow:1, height: '100%', padding: 1}}>
+            <Grid container spacing={2} sx={{ height: '100%'}}>
+              <Grid component="form" noValidate autoComplete="off"  lg={4} sm={6} xs={12} sx={{ height: '100%', '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
+                <Item sx={{ height: '100%'}}>
+                <Grid container spacing={1}>
+                <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Position" value={position} defaultValue="" fullWidth /></Grid>
+                  <Grid xs={12} sm={6}> <TextField required id="outlined-required" label="Designation" value={designation} defaultValue="" fullWidth /> </Grid>
+                  </Grid>  
+                  <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Basic Salary
+                  </Typography>
+                  <Grid container spacing={1} >
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Class" value={empClass} defaultValue="" fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Level" value={level} defaultValue="" fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Salary" value={salary} defaultValue=""  fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Basic Salary" value={basicSalary} defaultValue=""fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Daily" value={daily} defaultValue="" fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Monthly Salary" value={monthlySalary} defaultValue="" fullWidth /></Grid>
+
+                  </Grid>  
+                  
+                  <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Position
+                  </Typography>
+                  <Grid container spacing={1}>
+                    <Grid lg={3} sm={6} xs={12}><TextField required id="outlined-required" label="PE Point" value={posPe} defaultValue="" fullWidth /></Grid>
+                    <Grid lg={6} sm={6} xs={12}><TextField required id="outlined-required" label="Allowance" value={posAllowance} defaultValue="" fullWidth /></Grid>
+                    <Grid lg={3} sm={6} xs={12}><TextField required id="outlined-required" label="Rank" value={posRank} defaultValue="" fullWidth/></Grid>
+                  </Grid>
+                </Item>
+
+              </Grid>
+              <Grid component="form" noValidate autoComplete="off"  lg={4} sm={6} xs={12}
+                sx={{ height: '100%', '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
+                <Item sx={{ height: '100%'}}>
+                  <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Technical Skills / Special Experience
+                  </Typography>
+                  <Grid container spacing={1}>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue="" fullWidth /></Grid>
+                  <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Allowance" defaultValue="" fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank" defaultValue="" fullWidth /></Grid>
+                  </Grid>
+                
+                  <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    License Evaluation
+                  </Typography>
+                  <Grid container spacing={1}>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="License Fee" defaultValue="" fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue="" fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Allowance" defaultValue="" fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank" defaultValue="" fullWidth /></Grid>   
+                  </Grid>
+                 
+                  <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Specialization
+                  </Typography>
+                  <Grid container spacing={1}>
+                  <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Rank" defaultValue="" fullWidth /></Grid>   
+                  </Grid>
+                </Item>
+              </Grid>
+              <Grid  component="form" noValidate autoComplete="off"  lg={4} sm={6} xs={12}
+                sx={{ height: '100%', '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
+                <Item sx={{ height: '100%'}} >
+                <Typography variant="h5" gutterBottom align="center" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Basic Information
+                  </Typography>             
+                  <Grid container spacing={1}>
+                  <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Employee Number" defaultValue="" fullWidth /></Grid>
+                     <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Full Name" defaultValue="" fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Department" defaultValue="" fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Section" defaultValue="" fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Birthday" defaultValue="" fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Age" defaultValue="" fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Sex" defaultValue="" fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Date Hired" defaultValue="" fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Service Term" defaultValue="" fullWidth /></Grid>
+
+
+
+                  </Grid> 
+                  
+                </Item>
+               
+              </Grid>
             </Grid>
-            <Grid component="form" noValidate autoComplete="off" xs={4} sx={{ height: '100%', '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
-              <Item sx={{ height: '100%'}}>
-              <Typography variant="h5" gutterBottom align="left">
-                Technical Skills / Special Experience
-              </Typography>
-              <TextField
-                required
-                id="outlined-required"
-                label="PE Point"
-                defaultValue=""
-                sx={{width: '20%' }}
-              />
-                            <TextField
-                required
-                id="outlined-required"
-                label="Allowance"
-                defaultValue=""
-                sx={{width: '50%' }}
-              />
-                            <TextField
-                required
-                id="outlined-required"
-                label="Rank"
-                defaultValue=""
-                sx={{width: '20%' }}
-              />
-               <Typography variant="h5" gutterBottom align="left">
-                License Evaluation
-              </Typography>
-              <TextField
-                required
-                id="outlined-required"
-                label="License Fee"
-                defaultValue=""
-                sx={{width: '22%' }}
-              />
-              <TextField
-                required
-                id="outlined-required"
-                label="PE Point"
-                defaultValue=""
-                sx={{width: '22%' }}
-              />
-                            <TextField
-                required
-                id="outlined-required"
-                label="Allowance"
-                defaultValue=""
-                sx={{width: '22%' }}
-              />
-                            <TextField
-                required
-                id="outlined-required"
-                label="Rank"
-                defaultValue=""
-                sx={{width: '22%' }}
-              />
-               <Typography variant="h5" gutterBottom align="left">
-               Specialization
-              </Typography>
-              <TextField
-                required
-                id="outlined-required"
-                label="Rank"
-                defaultValue=""
-                sx={{width: '95%' }}
-              />
-              </Item>
-            </Grid>
-            <Grid xs={4}>
-              <Item sx={{ height: '100%'}}>Basic Information</Item>
-            </Grid>
-          </Grid>
-        </Box>
-      </Dialog>
-    </Box>
+          </Box>
+        </Dialog>
+      </Box>
 
      
 
