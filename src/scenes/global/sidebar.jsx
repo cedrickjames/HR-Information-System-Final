@@ -33,7 +33,8 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
     </Link>
   );
 };
-const SidebarMain = () => {
+const SidebarMain = (props) => {
+  const {name} = props;
   const location = useLocation();
   const [selected, setSelected] = useState("Dashboard");
 
@@ -131,21 +132,33 @@ const SidebarMain = () => {
                 }}
               ></div>
             </Box>
-            {broken && (
-              <Box textAlign="center">
+            {!collapsed ? (
+            <Box textAlign="center">
                 <Typography
                   variant="h2"
                   color={colors.grey2[100]}
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  Cedrick James
+                  {name}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent2[300]}>
                   MIS Admin
                 </Typography>
               </Box>
-            )}
+            ):( <Box textAlign="center">
+            <Typography
+              variant="h2"
+              color={colors.grey2[100]}
+              fontWeight="bold"
+              sx={{ m: "10px 0 0 0" }}
+            >
+              
+            </Typography>
+            <Typography variant="h5" color={colors.greenAccent2[300]}>
+       
+            </Typography>
+          </Box>)}
           </Box>
 
           <Box paddingLeft={broken ? undefined : "10%"}>

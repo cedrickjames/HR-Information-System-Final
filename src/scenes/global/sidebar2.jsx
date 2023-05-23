@@ -31,7 +31,7 @@ const Item = ({title, to, icon, selected,setSelected})=>{
       </MenuItem>
   )
 }
-const Sidebar = () => {
+const Sidebar = ({name}) => {
 
     const location = useLocation();
     const [selected, setSelected] = useState("Dashboard");
@@ -133,7 +133,7 @@ const Sidebar = () => {
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                 Cedrick James
+                 {name}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent2[300]}>
                   MIS Admin

@@ -43,6 +43,8 @@ function LoginFormtest(props) {
   const [loginStatus2, setloginStatus2] = useState();
 
   const [showPassword, setShowPassword] = React.useState(false);
+  // const [name, setName] = React.useState();
+
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -64,18 +66,23 @@ function LoginFormtest(props) {
   };
 
   const theme = useTheme();
-  const login = () => {
-    Axios.post("http://localhost:3001/login", {
+  const login = (nameprop) => {
+    // const {setName } = nameprop;
+    Axios.post("http://192.168.60.53:3001/login", {
       username: username,
       password: password,
     }).then((response) => {
       console.log(response);
       if (response.data.message) {
         setloginStatus(response.data.message);
-      
+      // console.log(loginStatus)
         handleClick();
       } else {
         setloginStatus(response.data[0].username);
+        // setName(response.data[0].name);
+        // setValue(tabNumber);
+      // console.log(loginStatus)
+        
         props.onLogin(username);
       }
     });

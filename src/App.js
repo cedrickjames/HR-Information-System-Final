@@ -33,6 +33,8 @@ import { useNavigate } from "react-router-dom";
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [name, setName] = useState();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,6 +53,7 @@ function App() {
     navigate('/dashboard');
     
   }
+
 
   function handleLogout(logout) {
     setLoggedIn(logout);
@@ -74,10 +77,11 @@ if (loggedIn) {
         <div className="app">
     
          
-          <SidebarMain/>
+          <SidebarMain name={name}/>
           <main className="content" style={{overflow: 'auto'}}>
             <Topbar onLogout={handleLogout}/>
             <Routes>
+            <Route path="/" element={<Dashboard/>}/>
               <Route path="/dashboard" element={<Dashboard/>}/>
               <Route path="/salaryincrease" element={<SalaryIncrease/>}/>
               <Route path="/line" element={<Line/>}/>
@@ -105,7 +109,7 @@ return (
      {/* <Login onLogin={handleLogin}/> */}
      <Routes>
               <Route path="/register" element={<Register/>}/>
-              <Route path="/login" element={<Login onLogin={handleLogin}/>}/>
+              <Route path="/login" element={<Login setName={setName} onLogin={handleLogin}/>}/>
              
               </Routes>
           </main>

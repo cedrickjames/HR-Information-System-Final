@@ -2,7 +2,7 @@ import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import Axios from "axios";
-import React,  { useEffect, useState } from "react";
+import React,  { useEffect, useState, useContext } from "react";
 import Sample from "../../components/Sample";
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -37,6 +37,10 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import EnhancedTable from './history';
+// import  SalaryIncrease  from './index';
+
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -215,8 +219,10 @@ function EnhancedTableHead(props) {
     rowCount: PropTypes.number.isRequired,
   };
   
-  function EnhancedTableToolbar(props) {
+  function EnhancedTableToolbar(dept, props) {
     const { numSelected } = props;
+    const { department } = dept;
+
   
     return (
       <Toolbar
@@ -245,7 +251,7 @@ function EnhancedTableHead(props) {
             id="tableTitle"
             component="div"
           >
-            Administration Department Employees
+            {department} Department Employees
           </Typography>
         )}
   
@@ -270,13 +276,24 @@ function EnhancedTableHead(props) {
     numSelected: PropTypes.number.isRequired,
   };
   
-const SIAdmin = (props) => {
+const SIAdmin = (props ) => {
+  // const { setValue } = useContext(SalaryIncrease);
+
+  // const refreshTable = (tablenumber) => {
+  //   // Change the value using the setValue function
+  //   setValue(tablenumber);
+  // };
+  const { tabNumber, setValue } = props;
+
+  const [employeeId, setEmployeeId] = useState([]);
+
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const { department } = props;
     // console.log(props);
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
+  const [empId, setEmpId] = React.useState('');
   const [empName, setEmpName] = React.useState('');
   const [empNumber, setEmpNumber] = React.useState('');
 
@@ -318,7 +335,108 @@ const SIAdmin = (props) => {
 
 
 
+  const refreshTable = () => {
+    Axios.post("http://192.168.60.53:3001/setsitable", {
+      department: department,
+    }).then((response) => {
+      // console.log(response);
+      // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
+      const newRows = response.data.map(row => createData(
+        row.id, 
+        row.section,
+        row.employeeName,
+        row.empNo, 
+        row.position,
+        row.designation,
+        row.class,
+        row.level,
+        row.salaryType,
+        row.basicSalary,
+        row.daily,
+        row.monthlySalary,
+        row.pPEPoint,
+        row.pAllowance,
+        row.pRank,
+        row.tsPEPoint,
+        row.tsAllowance,
+        row.tsRank,
+        row.leLicenseFee, 
+        row.lePEPoint, 
+        row.leAllowance, 
+        row.leRank, 
+        row.ceCertificateOnFee, 
+        row.cePEPoint, 
+        row.ceAllowance, 
+        row.ceRank, 
+        row.Specialization, 
+        row.total,
+        row.birthday,
+        row.age,
+        row.department,
+        row.sex,
+        row.dateHired,
+        row.serviceTerm,
+        ));
+      setRows(newRows);
+    });
 
+  };
+  const updateSI = (id) => {
+    
+    console.log(daily);
+    console.log(id);
+    const choosedept = (dept) => {
+      Axios.post("http://192.168.60.53:3001/setsitable", {
+        department: dept,
+      }).then((response) => {
+        // console.log(response);
+
+      });
+    };
+
+    Axios.post("http://192.168.60.53:3001/updatesirecord", {
+      section: section,
+      daily: daily,
+      id: id,
+      empName :empName, 
+      empNumber :empNumber, 
+      position :position, 
+      designation :designation, 
+      empClass :empClass, 
+      level :level, 
+      salary :salary, 
+      basicSalary :basicSalary, 
+      monthlySalary :monthlySalary, 
+      posPe :posPe, 
+      posAllowance :posAllowance, 
+      posRank :posRank, 
+      tsPEPoint :tsPEPoint, 
+      tsAllowance :tsAllowance, 
+      tsRank :tsRank, 
+      leLicenseFee :leLicenseFee, 
+      lePEPoint :lePEPoint, 
+      leAllowance :leAllowance, 
+      leRank :leRank, 
+      ceCertificateOnFee :ceCertificateOnFee, 
+      cePEPoint :cePEPoint, 
+      ceAllowance :ceAllowance, 
+      ceRank :ceRank, 
+      Specialization :Specialization, 
+      total :total, 
+      birthday :birthday, 
+      age :age, 
+      department :department2, 
+      sex :sex, 
+      dateHired :dateHired, 
+      serviceTerm :serviceTerm, 
+    }).then((response) => {
+      console.log(response)
+      // setValue(tabNumber);
+      refreshTable();
+      handleClose();
+    });
+
+  };
 
 
 //   useEffect(() => {
@@ -332,49 +450,60 @@ const SIAdmin = (props) => {
 //       .catch(error => console.log(error));
 //   }, []);
   useEffect(() => {
-    Axios.post("http://localhost:3001/setsitable", {
-        department: department,
-      }).then((response) => {
-        // console.log(response);(no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
-        const newRows = response.data.map(row => createData(
-          row.id, 
-          row.section,
-          row.employeeName,
-          row.empNo, 
-          row.position,
-          row.designation,
-          row.class,
-          row.level,
-          row.salaryType,
-          row.basicSalary,
-          row.daily,
-          row.monthlySalary,
-          row.pPEPoint,
-          row.pAllowance,
-          row.pRank,
-          row.tsPEPoint,
-          row.tsAllowance,
-          row.tsRank,
-          row.leLicenseFee, 
-          row.lePEPoint, 
-          row.leAllowance, 
-          row.leRank, 
-          row.ceCertificateOnFee, 
-          row.cePEPoint, 
-          row.ceAllowance, 
-          row.ceRank, 
-          row.Specialization, 
-          row.total,
-          row.birthday,
-          row.age,
-          row.department,
-          row.sex,
-          row.dateHired,
-          row.serviceTerm,
-          ));
-        setRows(newRows);
-      });
+    // Axios.post("http://192.168.60.53:3001/setsitable", {
+    //     department: department,
+    //   }).then((response) => {
+    //     // console.log(response);
+    //     // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
+    //     const newRows = response.data.map(row => createData(
+    //       row.id, 
+    //       row.section,
+    //       row.employeeName,
+    //       row.empNo, 
+    //       row.position,
+    //       row.designation,
+    //       row.class,
+    //       row.level,
+    //       row.salaryType,
+    //       row.basicSalary,
+    //       row.daily,
+    //       row.monthlySalary,
+    //       row.pPEPoint,
+    //       row.pAllowance,
+    //       row.pRank,
+    //       row.tsPEPoint,
+    //       row.tsAllowance,
+    //       row.tsRank,
+    //       row.leLicenseFee, 
+    //       row.lePEPoint, 
+    //       row.leAllowance, 
+    //       row.leRank, 
+    //       row.ceCertificateOnFee, 
+    //       row.cePEPoint, 
+    //       row.ceAllowance, 
+    //       row.ceRank, 
+    //       row.Specialization, 
+    //       row.total,
+    //       row.birthday,
+    //       row.age,
+    //       row.department,
+    //       row.sex,
+    //       row.dateHired,
+    //       row.serviceTerm,
+    //       ));
+    //     setRows(newRows);
+    //   });
+
+    refreshTable();
+
+
+
   }, []);
+  
+  useEffect(() => {
+    // console.log(department);
+    // choosedept();
+  }, [employeeId]);
 // const rows = [
 //     createData(1, 'cedrick', 3.7, 67, 4.3),
 //     createData(2, 'cedrick', 25.0, 51, 4.9),
@@ -392,12 +521,6 @@ const SIAdmin = (props) => {
 //   ];
   
   
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
@@ -439,6 +562,7 @@ const SIAdmin = (props) => {
     }
 
     setSelected(newSelected);
+    console.log(newSelected);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -462,6 +586,7 @@ const SIAdmin = (props) => {
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = (type, employee) => {
+      setEmpId(employee.no);
       setEmpName(employee.name);
       setEmpNumber(employee.empNo);
 
@@ -516,7 +641,7 @@ const SIAdmin = (props) => {
  
       <Box sx={{ width: '100%' }}>
         <Paper sx={{ width: '100%', mb: 2 , overflow: 'hidden'}}>
-          <EnhancedTableToolbar numSelected={selected.length} />
+          <EnhancedTableToolbar department = {department} numSelected={selected.length} />
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium' } stickyHeader
               aria-label="sticky table">
@@ -598,34 +723,34 @@ const SIAdmin = (props) => {
               <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                 {empName}
               </Typography>
-              <Button autoFocus color="inherit" onClick={handleClose}>
+              <Button autoFocus color="inherit"  onClick={() => updateSI(empId)}>
                 save
               </Button>
             </Toolbar>
           </AppBar>
-          <Box sx={{ mt: 2 ,flexGrow:1, height: '100%', padding: 1}}>
-            <Grid container spacing={2} sx={{'& .MuiInputLabel-root': {fontSize: '20px'},'& .MuiOutlinedInput-root': {
+          <Box sx={{ mt: 2 ,flexGrow:1, padding: 1}}>
+            <Grid container spacing={2} sx={{mb: 2, '& .MuiInputLabel-root': {fontSize: '20px'},'& .MuiOutlinedInput-root': {
                   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                     borderColor: 'green',
                   }, fontSize:'20px'
-                },height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
+                }, ...(isSmallScreen && { height: 'auto' })}}>
               <Grid  noValidate autoComplete="off"  lg={4} sm={6} xs={12}
-                sx={{ height: '100%' , ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
+                sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
                 <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
                 <Grid container spacing={1}>
-                <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Position" defaultValue={position}  fullWidth /></Grid>
-                  <Grid xs={12} sm={6}> <TextField required id="outlined-required" label="Designation" defaultValue={designation}  fullWidth /> </Grid>
+                <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Position" defaultValue={position} onChange={(e) => setPosition(e.target.value)}  fullWidth /></Grid>
+                  <Grid xs={12} sm={6}> <TextField required id="outlined-required" label="Designation" defaultValue={designation}  onChange={(e) => setDesignation(e.target.value)}   fullWidth /> </Grid>
                   </Grid>  
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Basic Salary
                   </Typography>
                   <Grid container spacing={1} >
-                    <Grid lg={4} sm={6} xs={12}><TextField  required id="outlined-required" label="Class" defaultValue={empClass}  fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Level" defaultValue={level}  fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Salary" defaultValue={salary}   fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Basic Salary" defaultValue={basicSalary} fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Daily" defaultValue={daily}  fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Monthly Salary" defaultValue={monthlySalary}  fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField  required id="outlined-required" label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Level" defaultValue={level} onChange={(e) => setLevel(e.target.value)}   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Salary" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Basic Salary" defaultValue={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Daily" defaultValue={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required id="outlined-required" label="Monthly Salary" defaultValue={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
 
                   </Grid>  
                   
@@ -633,9 +758,9 @@ const SIAdmin = (props) => {
                     Position
                   </Typography>
                   <Grid container spacing={1}>
-                    <Grid lg={3} sm={6} xs={12}><TextField required id="outlined-required" label="PE Point" defaultValue={posPe}  fullWidth /></Grid>
-                    <Grid lg={6} sm={6} xs={12}><TextField required id="outlined-required" label="Allowance" defaultValue={posAllowance}  fullWidth /></Grid>
-                    <Grid lg={3} sm={6} xs={12}><TextField required id="outlined-required" label="Rank" defaultValue={posRank}  fullWidth/></Grid>
+                    <Grid lg={3} sm={6} xs={12}><TextField required id="outlined-required" label="PE Point" defaultValue={posPe} onChange={(e) => setPosPe(e.target.value)} fullWidth /></Grid>
+                    <Grid lg={6} sm={6} xs={12}><TextField required id="outlined-required" label="Allowance" defaultValue={posAllowance} onChange={(e) => setPosAllowance(e.target.value)} fullWidth /></Grid>
+                    <Grid lg={3} sm={6} xs={12}><TextField required id="outlined-required" label="Rank" defaultValue={posRank} onChange={(e) => setPosRank(e.target.value)}  fullWidth/></Grid>
                   </Grid>
                  
 
@@ -643,59 +768,59 @@ const SIAdmin = (props) => {
 
               </Grid>
               <Grid component="form" noValidate autoComplete="off"  lg={4} sm={6} xs={12}
-                sx={{ height: '100%', '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
+                sx={{ '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
                 <Item sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Technical Skills / Special Experience
                   </Typography>
                   <Grid container spacing={1}>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue={tsPEPoint} fullWidth /></Grid>
-                  <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Allowance"defaultValue={tsAllowance}   fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank"defaultValue={tsRank}   fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue={tsPEPoint} onChange={(e) => settsPEPoint(e.target.value)} fullWidth /></Grid>
+                  <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Allowance"defaultValue={tsAllowance} onChange={(e) => settsAllowance(e.target.value)}   fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank" defaultValue={tsRank} onChange={(e) => settsRank(e.target.value)}   fullWidth /></Grid>
                   </Grid>
 
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     License Evaluation
                   </Typography>
                   <Grid container spacing={1}>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="License Fee" defaultValue={leLicenseFee}  fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue={lePEPoint}  fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Allowance (PF1)" defaultValue={leAllowance}  fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank" defaultValue={leRank}  fullWidth /></Grid>   
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="License Fee" defaultValue={leLicenseFee} onChange={(e) => setleLicenseFee(e.target.value)}   fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue={lePEPoint} onChange={(e) => setlePEPoint(e.target.value)}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Allowance (PF1)" defaultValue={leAllowance} onChange={(e) => setleAllowance(e.target.value)}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank" defaultValue={leRank} onChange={(e) => setleRank(e.target.value)}  fullWidth /></Grid>   
                   </Grid>
                    <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Certification / Evaluation
                   </Typography>
                   <Grid container spacing={1}>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Certification Fee" defaultValue={ceCertificateOnFee}  fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue={cePEPoint}  fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Allowance (PF2)" defaultValue={ceAllowance}  fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank" defaultValue={ceRank}  fullWidth /></Grid>   
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Certification Fee" defaultValue={ceCertificateOnFee} onChange={(e) => setceCertificateOnFee(e.target.value)}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="PE Point" defaultValue={cePEPoint} onChange={(e) => setcePEPoint(e.target.value)}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Allowance (PF2)" defaultValue={ceAllowance} onChange={(e) => setceAllowance(e.target.value)}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required id="outlined-required" label="Rank" defaultValue={ceRank} onChange={(e) => setceRank(e.target.value)}  fullWidth /></Grid>   
                   </Grid>
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Specialization
                   </Typography>
                   <Grid container spacing={1}>
-                  <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Rank" defaultValue={Specialization}  fullWidth /></Grid>   
+                  <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Rank" defaultValue={Specialization} onChange={(e) => setSpecialization(e.target.value)}  fullWidth /></Grid>   
                   </Grid>
                 </Item>
               </Grid>
               <Grid  component="form" noValidate autoComplete="off"  lg={4} sm={6} xs={12}
-                sx={{ height: '100%', '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
+                sx={{  '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
                 <Item sx={{ height: '100%'}} >
                 <Typography variant="h5" gutterBottom align="center" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Basic Information
                   </Typography>             
                   <Grid container spacing={1}>
-                  <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Employee Number" defaultValue={empNumber} fullWidth /></Grid>
-                     <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Full Name" defaultValue={empName} fullWidth /></Grid>
-                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Department" defaultValue={department2}   fullWidth /></Grid>
-                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Section" defaultValue={section}   fullWidth /></Grid>
-                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Birthday" defaultValue={birthday}  fullWidth /></Grid>
-                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Age" defaultValue={age}  fullWidth /></Grid>
-                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Sex" defaultValue={sex}  fullWidth /></Grid>
-                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Date Hired" defaultValue={dateHired}  fullWidth /></Grid>
-                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Service Term" defaultValue={serviceTerm}  fullWidth /></Grid>
+                  <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Employee Number" defaultValue={empNumber} onChange={(e) => setEmpNumber(e.target.value)}  fullWidth /></Grid>
+                     <Grid xs={12} sm={12}><TextField required id="outlined-required" label="Full Name" defaultValue={empName} onChange={(e) => setEmpName(e.target.value)}  fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Department" defaultValue={department2} onChange={(e) => setdepartment2(e.target.value)}   fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Section" defaultValue={section} onChange={(e) => setSection(e.target.value)}   fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Age" defaultValue={age} onChange={(e) => setage(e.target.value)}   fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField required id="outlined-required" label="Sex" defaultValue={sex} onChange={(e) => setsex(e.target.value)}  fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Date Hired" defaultValue={dateHired} onChange={(e) => setdateHired(e.target.value)}  fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField required id="outlined-required" label="Service Term" defaultValue={serviceTerm} onChange={(e) => setserviceTerm(e.target.value)}  fullWidth /></Grid>
 
 
 
@@ -705,7 +830,10 @@ const SIAdmin = (props) => {
                
               </Grid>
             </Grid>
+                <EnhancedTable employeeid={empNumber} />
+                
           </Box>
+          
         </Dialog>
       </Box>
 

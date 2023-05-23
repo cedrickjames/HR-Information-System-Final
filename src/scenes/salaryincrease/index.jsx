@@ -127,12 +127,14 @@
 
   const SalaryIncrease = () => {
     const [department, setDepartment] = useState([]);
+    const [tabNumber, setTabNumber] = useState([]);
+
     const [data, setData] = useState([]);
     const [rows, setRows] = useState([]);
 
 
       const choosedept = (dept) => {
-        Axios.post("http://localhost:3001/setsitable", {
+        Axios.post("http://192.168.60.53:3001/setsitable", {
           department: dept,
         }).then((response) => {
           // console.log(response);
@@ -158,7 +160,7 @@
   useEffect(() => {
     // console.log(department);
     // choosedept();
-  }, [department]);
+  }, [department, tabNumber]);
 
     // const [order, setOrder] = React.useState('asc');
     // const [orderBy, setOrderBy] = React.useState('calories');
@@ -235,7 +237,7 @@
           <Tabs value={value} onChange={handleChange} aria-label="basic tabs example"   variant="scrollable" scrollButtons="auto" >
             <Tab label="Administration" sx={{  borderColor: 'Violet' }} onClick={() => choosedept("Administration")}  {...a11yProps(0)} />
             <Tab label="Accounting"  onClick={() => choosedept("Accounting")}  {...a11yProps(1)} />
-            <Tab label="Japanese" {...a11yProps(2)} />
+            <Tab label="Japanese" onClick={() => choosedept("Japanese")} {...a11yProps(2)} />
             <Tab label="Parts Inspection" {...a11yProps(3)} />
             <Tab label="Parts Production" {...a11yProps(4)} />
             <Tab label="Production 1" {...a11yProps(4)} />
@@ -253,13 +255,13 @@
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-        <SIAdmin department={"Administration"}/>
+        <SIAdmin department={"Administration"} tabNumber = {0} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
-        <SIAdmin department={"Accounting"}/>
+        <SIAdmin department={"Accounting"} tabNumber = {1} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={2}>
-        <SIAdmin department={"Japanese"}/>
+        <SIAdmin department={"Japanese"} tabNumber = {2}/>
 
         </TabPanel>
         <TabPanel value={value} index={3}>

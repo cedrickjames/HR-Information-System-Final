@@ -55,7 +55,7 @@ function LoginFormtest(props) {
 
   const theme = useTheme();
   const register = ()=>{
-    Axios.post("http://localhost:3001/register",{
+    Axios.post("http://192.168.60.53:3001/register",{
         username: usernameReg,
         password: passwordReg,
     }).then((response)=>{
