@@ -283,8 +283,8 @@ const SIAdmin = (props ) => {
   //   // Change the value using the setValue function
   //   setValue(tablenumber);
   // };
-  const { tabNumber, setValue } = props;
-
+  const { tabNumber, setValue,fullName } = props;
+// console.log({fullName});
   const [employeeId, setEmployeeId] = useState([]);
 
   const theme = useTheme();
@@ -429,9 +429,11 @@ const SIAdmin = (props ) => {
       sex :sex, 
       dateHired :dateHired, 
       serviceTerm :serviceTerm, 
+      fullName: fullName,
     }).then((response) => {
       console.log(response)
       // setValue(tabNumber);
+      // console.log("this is it: "+tabNumber);
       refreshTable();
       handleClose();
     });

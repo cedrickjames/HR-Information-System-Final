@@ -36,7 +36,14 @@ import Grid from "@mui/material/Grid";
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-function LoginFormtest(props) {
+function createData(name) {
+  return {
+    name,
+  }
+}
+function Login(props) {
+  const {setName } = props;
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setloginStatus] = useState("");
@@ -66,13 +73,18 @@ function LoginFormtest(props) {
   };
 
   const theme = useTheme();
-  const login = (nameprop) => {
-    // const {setName } = nameprop;
+  const login = () => {
     Axios.post("http://192.168.60.53:3001/login", {
       username: username,
       password: password,
     }).then((response) => {
       console.log(response);
+
+        console.log(response.data[0].name);
+        setName(response.data[0].name);
+        // console.log(setName);
+        console.log("this is it: "+setName);
+
       if (response.data.message) {
         setloginStatus(response.data.message);
       // console.log(loginStatus)
@@ -87,7 +99,32 @@ function LoginFormtest(props) {
       }
     });
   };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
+    // Perform validation or other client-side checks here
+
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, password }),
+    });
+
+    const data = await response.json();
+    if (response.ok) {
+      // Login successful
+      setName(data[0].name);
+      props.onLogin(username);
+
+      console.log(data);
+    } else {
+      // Login failed
+      console.error(data.message);
+    }
+    // Handle the response from the server, such as displaying an error message or redirecting
+  };
   return (
     <div
    
@@ -234,6 +271,7 @@ function LoginFormtest(props) {
             </Typography>
           </Stack>
           <Box paddingTop={"30px"}>
+            <form method="post" onSubmit={handleSubmit}>
             <TextField
               name="username"
               onChange={(e) => {
@@ -299,16 +337,16 @@ function LoginFormtest(props) {
               </Typography>
             </Stack>
             <Button
-              onClick={login}
-              sx={{  p: 1.5,mb:2, width: "100%" }}
-              size="large"
-              variant="contained"
-              color="info"
-              // fullWidth
-            >
-              Login
-            </Button>
-        
+      type="submit"
+      // onClick={handleSubmit}
+      sx={{ p: 1.5, mb: 2, width: "100%" }}
+      size="large"
+      variant="contained"
+      color="info"
+    >
+      Login
+    </Button>
+    </form>
           <Stack  spacing={2} sx={{ width: '100%'}}>
       <Snackbar  open={open} autoHideDuration={60000} onClose={handleClose} sx={{ position:'inherit', width: "100%"}}>
         <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
@@ -319,6 +357,7 @@ function LoginFormtest(props) {
      
 
     </Stack>
+ 
     </Box>
         </Paper>
       </Box>
@@ -333,4 +372,4 @@ function LoginFormtest(props) {
   );
 }
 
-export default LoginFormtest;
+export default Login;

@@ -98,7 +98,7 @@ const SidebarMain = (props) => {
                 justifyContent="center"
               >
                 <Typography variant="h3" color={colors.grey2[100]}>
-                  HR Information
+                  HR Information Sys.
                 </Typography>
               </Box>
             ) : (
@@ -110,7 +110,7 @@ const SidebarMain = (props) => {
                 padding="10px"
               >
                 <Typography variant="h3" color={colors.grey2[100]}>
-                  HR
+                  HRIS
                 </Typography>
               </Box>
             )}
@@ -143,7 +143,7 @@ const SidebarMain = (props) => {
                   {name}
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent2[300]}>
-                  MIS Admin
+                 Administration
                 </Typography>
               </Box>
             ):( <Box textAlign="center">

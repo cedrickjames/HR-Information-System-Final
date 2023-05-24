@@ -50,6 +50,7 @@ function App() {
   function handleLogin() {
     setLoggedIn(true);
     localStorage.setItem('loggedIn', 'true');
+    // console.log(name)
     navigate('/dashboard');
     
   }
@@ -81,9 +82,9 @@ if (loggedIn) {
           <main className="content" style={{overflow: 'auto'}}>
             <Topbar onLogout={handleLogout}/>
             <Routes>
-            <Route path="/" element={<Dashboard/>}/>
-              <Route path="/dashboard" element={<Dashboard/>}/>
-              <Route path="/salaryincrease" element={<SalaryIncrease/>}/>
+            <Route path="/" element={<Dashboard name={name}/>}/>
+              <Route path="/dashboard" element={<Dashboard name={name} />}/>
+              <Route path="/salaryincrease" element={<SalaryIncrease name={name}/>}/>
               <Route path="/line" element={<Line/>}/>
               <Route path="/team" element={<Teams/>}/>
               </Routes>

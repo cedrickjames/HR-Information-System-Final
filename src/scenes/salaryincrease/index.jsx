@@ -125,11 +125,15 @@
   //   },
   // ];
 
-  const SalaryIncrease = () => {
+  const SalaryIncrease = (props) => {
+    const {name} = props;
+    // console.log({name});
     const [department, setDepartment] = useState([]);
     const [tabNumber, setTabNumber] = useState([]);
 
     const [data, setData] = useState([]);
+    const [fullName, setFullName] = useState([]);
+
     const [rows, setRows] = useState([]);
 
 
@@ -255,7 +259,7 @@
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-        <SIAdmin department={"Administration"} tabNumber = {0} setValue={setValue}/>
+        <SIAdmin department={"Administration"} fullName = {name} tabNumber = {0} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
         <SIAdmin department={"Accounting"} tabNumber = {1} setValue={setValue}/>

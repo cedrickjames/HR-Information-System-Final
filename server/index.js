@@ -162,6 +162,7 @@ app.post("/updatesirecord", (req, res)=>{
     const sex = req.body.sex;
     const dateHired = req.body.dateHired;
     const serviceTerm = req.body.serviceTerm;
+    const fullName = req.body.fullName;
 console.log(id);
 
 
@@ -202,7 +203,7 @@ if (department !== previousRecord.department) {
     const category = "Salary Increase";
     const field = "Department";
 
-    const modifier = "Cedrick James Orozo";
+    const modifier = fullName;
 
     db.query(
         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
