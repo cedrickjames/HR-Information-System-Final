@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import { HistoryRouterProps } from 'react-router-dom';
 import Axios from "axios";
@@ -41,13 +41,28 @@ function createData(name) {
     name,
   }
 }
+
+
 function Login(props) {
+
+
+
   const {setName } = props;
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loginStatus, setloginStatus] = useState("");
   const [loginStatus2, setloginStatus2] = useState();
+  const [fullName, setFullName] = useState();
+
+  useEffect(() => {
+    const storedFullName = localStorage.getItem('fullName');
+    if (storedFullName) {
+      setFullName(storedFullName);
+      setName(storedFullName);
+
+    }
+  }, []);
 
   const [showPassword, setShowPassword] = React.useState(false);
   // const [name, setName] = React.useState();
@@ -115,7 +130,11 @@ function Login(props) {
     const data = await response.json();
     if (response.ok) {
       // Login successful
-      setName(data[0].name);
+      // setFullName(data[0].name);
+      localStorage.setItem('fullName', data[0].name);
+
+      // setName(fullName);
+
       props.onLogin(username);
 
       console.log(data);

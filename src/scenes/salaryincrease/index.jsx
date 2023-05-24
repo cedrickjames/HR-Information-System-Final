@@ -127,15 +127,15 @@
 
   const SalaryIncrease = (props) => {
     const {name} = props;
-    // console.log({name});
+    console.log({name});
     const [department, setDepartment] = useState([]);
     const [tabNumber, setTabNumber] = useState([]);
 
     const [data, setData] = useState([]);
-    const [fullName, setFullName] = useState([]);
+    // const [fullName, setFullName] = useState([]);
 
     const [rows, setRows] = useState([]);
-
+    // setFullName({name});
 
       const choosedept = (dept) => {
         Axios.post("http://192.168.60.53:3001/setsitable", {
@@ -231,7 +231,7 @@
           <Box m="20px" style={{position: 'sticky', top: 87, zIndex: 1}}>
           {/* HEADER */}
           <Box display="flex" justifyContent="space-between" alignItems="center"  >
-            <Header title="Salary Increase" subtitle="Welcome to your dashboard" />
+            <Header title="Salary Increase" subtitle="Sana all may salary increase!" />
             {/* <Sample/> */}
             
             </Box>
@@ -262,47 +262,50 @@
         <SIAdmin department={"Administration"} fullName = {name} tabNumber = {0} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
-        <SIAdmin department={"Accounting"} tabNumber = {1} setValue={setValue}/>
+        <SIAdmin department={"Accounting"}  fullName = {name} tabNumber = {1} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={2}>
-        <SIAdmin department={"Japanese"} tabNumber = {2}/>
+        <SIAdmin department={"Japanese"} fullName = {name} tabNumber = {2} setValue={setValue}/>
 
         </TabPanel>
         <TabPanel value={value} index={3}>
-          4
+        <SIAdmin department={"Parts Inspection"} fullName = {name} tabNumber = {3} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={4}>
-          5
+        <SIAdmin department={"Parts Production"} fullName = {name} tabNumber = {4} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={5}>
-          6
+        <SIAdmin department={"Production 1"} fullName = {name} tabNumber = {5} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={6}>
-        7
+        <SIAdmin department={"Production 2"} fullName = {name} tabNumber = {6} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={7}>
-          8
+        <SIAdmin department={"Production Management"} fullName = {name} tabNumber = {7} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={8}>
-          9
+        <SIAdmin department={"Production Technology"} fullName = {name} tabNumber = {8} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={9}>
-          10
+        <SIAdmin department={"PPIC"} fullName = {name} tabNumber = {9} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={10}>
-          11
+        <SIAdmin department={"Purchasing"} fullName = {name} tabNumber = {10} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={11}>
-          12
+        <SIAdmin department={"Quality Assurance"} fullName = {name} tabNumber = {11} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={12}>
-          13
+        <SIAdmin department={"Quality Control"} fullName = {name} tabNumber = {12} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={13}>
-          14
+        <SIAdmin department={"System Kaizen"} fullName = {name} tabNumber = {13} setValue={setValue}/>
         </TabPanel>
         <TabPanel value={value} index={14}>
-          15
+        <SIAdmin department={"Warehouse"} fullName = {name} tabNumber = {14} setValue={setValue}/>
+        </TabPanel>
+        <TabPanel value={value} index={15}>
+        <SIAdmin department={"DOK"} fullName = {name} tabNumber = {15} setValue={setValue}/>
         </TabPanel>
 
       </Box>

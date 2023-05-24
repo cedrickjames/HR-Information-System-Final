@@ -46,7 +46,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 // tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total
-function createData(no,section, name, empNo, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank,tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total, birthday, age, department, sex, dateHired, serviceTerm,) {
+function createData(no,section, name, empNo, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank,tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total, birthday, age, department, sex, dateHired, serviceTerm,dateModified) {
   return {
     no,
     section,
@@ -82,6 +82,7 @@ function createData(no,section, name, empNo, position, designation, empClass, le
     sex,
     dateHired,
     serviceTerm,
+    dateModified,
   };
 }
 const Item = styled(Paper)(({ theme }) => ({
@@ -156,6 +157,13 @@ const headCells = [
     numeric: true,
     disablePadding: false,
     label: 'Position',
+    checkboxLike: false,
+  },
+  {
+    id: 'dateModified',
+    numeric: true,
+    disablePadding: false,
+    label: 'Last Date Modified',
     checkboxLike: false,
   },
 ];
@@ -251,7 +259,7 @@ function EnhancedTableHead(props) {
             id="tableTitle"
             component="div"
           >
-            {department} Department Employees
+            {department} Employees
           </Typography>
         )}
   
@@ -339,7 +347,7 @@ const SIAdmin = (props ) => {
     Axios.post("http://192.168.60.53:3001/setsitable", {
       department: department,
     }).then((response) => {
-      // console.log(response);
+      console.log(response);
       // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
       const newRows = response.data.map(row => createData(
         row.id, 
@@ -376,8 +384,11 @@ const SIAdmin = (props ) => {
         row.sex,
         row.dateHired,
         row.serviceTerm,
+        row.dateModified,
+        
         ));
       setRows(newRows);
+      // console.log(rows)
     });
 
   };
@@ -528,7 +539,7 @@ const SIAdmin = (props ) => {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(100);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -696,6 +707,8 @@ const SIAdmin = (props ) => {
                   <TableCell align="center">{row.name}</TableCell>
                   <TableCell align="center">{row.empNo}</TableCell>
                   <TableCell align="center">{row.position}</TableCell>
+                  <TableCell align="center">{row.dateModified}</TableCell>
+
                 </TableRow>
                 );
                 })}
@@ -709,7 +722,7 @@ const SIAdmin = (props ) => {
               </TableBody>
             </Table>
           </TableContainer>
-          <TablePagination rowsPerPageOptions={[5, 10, 25]} component="div" count={rows.length}
+          <TablePagination rowsPerPageOptions={[10, 50, 100]} component="div" count={rows.length}
             rowsPerPage={rowsPerPage} page={page} onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage} />
         </Paper>

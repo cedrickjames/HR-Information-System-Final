@@ -34,18 +34,26 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState();
+ 
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
+    const fullName = localStorage.getItem('fullName');
 
+    console.log(fullName)
+    setName(fullName);
     if (isLoggedIn) {
       setLoggedIn(true);
 
     }
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    console.log(name);
+  }, [name]);
 
   function handleLogin() {
     setLoggedIn(true);

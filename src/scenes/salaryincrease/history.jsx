@@ -236,7 +236,7 @@ const EnhancedTable = (emp) => {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -363,7 +363,7 @@ const EnhancedTable = (emp) => {
           
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10,20,100]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
