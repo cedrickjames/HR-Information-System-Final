@@ -5,13 +5,12 @@ import { tokens } from "../../theme";
 import { HomeOutlined } from "@mui/icons-material";
 import { PeopleOutline } from "@mui/icons-material";
 import { ContactsOutlined } from "@mui/icons-material";
-import { useState, useEffect } from "react";
 import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 // import "react-pro-sidebar/dist/css/styles.css";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMoneyBillTrendUp } from '@fortawesome/free-solid-svg-icons'
-
+import React,  { useEffect, useState, useContext } from "react";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -33,8 +32,20 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
     </Link>
   );
 };
+
 const SidebarMain = (props) => {
-  const {name} = props;
+  const [name, setName] = useState();
+
+  useEffect(() => {
+  
+    const fullName = localStorage.getItem('fullName');
+
+    console.log(fullName)
+    setName(fullName)
+   
+  }, []);
+
+  // const {fullName} = localStorage.getItem('fullName');
   const location = useLocation();
   const [selected, setSelected] = useState("Dashboard");
 

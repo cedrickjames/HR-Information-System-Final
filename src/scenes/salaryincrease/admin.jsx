@@ -285,14 +285,14 @@ function EnhancedTableHead(props) {
   };
   
 const SIAdmin = (props ) => {
-  // const { setValue } = useContext(SalaryIncrease);
 
-  // const refreshTable = (tablenumber) => {
-  //   // Change the value using the setValue function
-  //   setValue(tablenumber);
-  // };
-  const { tabNumber, setValue,fullName } = props;
-// console.log({fullName});
+  const [fullName, setFullName] = useState();
+  useEffect(() => {
+    const fullName = localStorage.getItem('fullName');
+    setFullName(fullName)
+   
+  }, []);
+console.log({fullName});
   const [employeeId, setEmployeeId] = useState([]);
 
   const theme = useTheme();

@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Topbar from "../global/TopbarForAuth";
+import Snackbar from '@mui/material/Snackbar';
 import { useTheme } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import { Stack } from "@mui/material";
@@ -29,15 +30,20 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import AuthFooter from "../global/AuthFooter";
 import Grid from "@mui/material/Grid";
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 function LoginFormtest(props) {
   const [usernameReg, setUsernameReg] = useState('')
+  const [name, setName] = useState('')
+
   const [passwordReg, setPasswordReg] = useState('')
   
   const [conPassword, setConPassword] = useState("");
 
   const [loginStatus, setloginStatus] = useState("");
-  const [loginStatus2, setloginStatus2] = useState();
-
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -51,23 +57,56 @@ function LoginFormtest(props) {
   const handleMouseDownPassword2 = (event) => {
     event.preventDefault();
   };
+  const [open, setOpen] = React.useState(false);
+  const [openSuccess, setOpenSuccess] = React.useState(false);
 
+  const handleClick = () => {
+    setOpen(true);
+  };
+  const handleClickSuccess = () => {
+    setOpenSuccess(true);
+  };
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
 
+    setOpen(false);
+  };
+  
+  const handleCloseSuccess = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSuccess(false);
+  };
   const theme = useTheme();
   const register = ()=>{
     Axios.post("http://192.168.60.53:3001/register",{
+      fullname: name,
         username: usernameReg,
         password: passwordReg,
+        confirmpassword: conPassword,
     }).then((response)=>{
-        console.log(response);
+        console.log(response.data.message);
+        if (response.data.message ==="Registered successfully. Please wait HR to approve your registration") {
+          setloginStatus(response.data.message);
+          handleClickSuccess();
+          handleClose();
+        } else {
+          handleClick();
+          handleCloseSuccess();
+          setloginStatus(response.data.message);
+  
+        }
     })
 }
 
   return (
     <div
       display="flex"
-      justifyContent="center"
-      alignItems="center"
+
       height="100vh"
     >
       {/* <Topbar /> */}
@@ -207,6 +246,17 @@ function LoginFormtest(props) {
           </Stack>
           <Box paddingTop={"30px"}>
             <TextField
+              name="name"
+              onChange={(e)=> {
+                setName(e.target.value)
+                }} 
+              sx={{ m: 1 }}
+              fullWidth
+              required
+              id="outlined-required"
+              label="Full Name"
+            />
+            <TextField
               name="username"
               onChange={(e)=> {
                 setUsernameReg(e.target.value)
@@ -217,7 +267,6 @@ function LoginFormtest(props) {
               id="outlined-required"
               label="Username"
             />
-
             <FormControl
               name="password"
               onChange={(e)=> {
@@ -290,6 +339,21 @@ function LoginFormtest(props) {
             >
               Register
             </Button>
+            <Stack  spacing={2} sx={{ width: '100%'}}>
+      <Snackbar  open={open} autoHideDuration={60000} onClose={handleClose} sx={{ position:'inherit', width: "100%"}}>
+        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+        {loginStatus}
+        </Alert>
+        
+      </Snackbar>
+      <Snackbar  open={openSuccess} autoHideDuration={60000} onClose={handleCloseSuccess} sx={{ position:'inherit', width: "100%"}}>
+        <Alert onClose={handleCloseSuccess} severity="success" sx={{ width: '100%' }}>
+        {loginStatus}
+        </Alert>
+        
+      </Snackbar>
+
+    </Stack>
           </Box>
 
           {/* <label>

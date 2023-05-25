@@ -21,14 +21,39 @@ const db = mysql.createConnection({
 // app.use(bodyParser.urlencoded({extended:true}));
 app.post("/register", (req, res)=>{
     const username = req.body.username;
+    const name = req.body.fullname;
     const password = req.body.password;
+    const confirmPass = req.body.confirmpassword;
     const level = "user";
     // const sqlSelect = ;
-    db.query(
-        "INSERT INTO `user`(`id`, `username`, `password`, `level`) VALUES (?,?,?,?)",
-        ['',username, password,level],(err, result)=>{
-       console.log(err);
+    if(confirmPass != password){
+      res.send({message: "Passwords does not matched."});
+
+    }
+    else{
+      db.query(
+        "INSERT INTO `user`(`id`, `name`, `username`, `password`, `level`, `approved`) VALUES (?,?,?,?,?,?)",
+        ['',name,username, password,level,0],(err, result)=>{
+          if(err){
+            res.send({err: err});
+            return;
+        }
+            if(result){
+              res.send({message: "Registered successfully. Please wait HR to approve your registration"});
+
+
+
+                return;
+            }else{
+                res.send({message: "There is something wrong. Please contact your administrator."});
+       
+
+                return;
+          
+            }
     })
+    }
+
 })
 
 app.post("/login", (req, res)=>{
@@ -45,7 +70,7 @@ app.post("/login", (req, res)=>{
                 return;
             }
                 if(result.length > 0){
-                    res.send(result)
+                    res.send({result,message: "Success"});
                     return;
                 }else{
                     res.send({message: "Wrong username/password combination!"});

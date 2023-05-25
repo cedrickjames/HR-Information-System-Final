@@ -56,12 +56,7 @@ function Login(props) {
   const [fullName, setFullName] = useState();
 
   useEffect(() => {
-    const storedFullName = localStorage.getItem('fullName');
-    if (storedFullName) {
-      setFullName(storedFullName);
-      setName(storedFullName);
 
-    }
   }, []);
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -128,18 +123,25 @@ function Login(props) {
     });
 
     const data = await response.json();
-    if (response.ok) {
+    // console.log(data.message);
+
+    if (data.message==="Success") {
       // Login successful
+      console.log(data);
+
       // setFullName(data[0].name);
-      localStorage.setItem('fullName', data[0].name);
+      localStorage.setItem('fullName', data.result[0].name);
 
       // setName(fullName);
 
       props.onLogin(username);
 
-      console.log(data);
+      console.log(data[0].name);
     } else {
       // Login failed
+      setloginStatus(data.message);
+      // console.log(loginStatus)
+        handleClick();
       console.error(data.message);
     }
     // Handle the response from the server, such as displaying an error message or redirecting
