@@ -325,9 +325,125 @@ const EnhancedTable = (emp) => {
                 .map((row, index) => {
                     const count = parseInt(index)+1;
                     const isItemSelected = isSelected(count);
-
+                    var displayField = "";
                 const labelId = `enhanced-table-checkbox-${index}`;
+                switch (row.field) {
+                  case "department":
 
+                    displayField = "Department";
+                    
+                    break;
+                  case "section":
+                    displayField = "Section";
+                   
+                    break;
+                 
+                    case "employeeName":
+                      displayField = "Employee Name";
+                    
+                    break;
+                    case "sex":
+                      displayField = "Sex";
+                    
+                    break;
+                    case "birthday":
+                      displayField = "Birthday";
+                    
+                    break;
+                    case "age":
+                      displayField = "Age";
+                    
+                    break;
+                    case "empNo":
+                      displayField = "Employee No.";
+                    
+                    break;
+                    case "dateHired":
+                      displayField = "Date Hired";
+                    
+                    break;
+                  
+                    case "designation":
+                      displayField = "Designation";
+                    
+                    break;
+                    case "class":
+                      displayField = "Class";
+                    
+                    break;
+                    case "level":
+                      displayField = "Level";
+                    
+                    break;
+                    case "salaryType":
+                      displayField = "Salary Type";
+                    
+                    break;
+                    case "basicSalary":
+                      displayField = "Basic Salary";
+                    
+                    break;
+                    case "daily":
+                      displayField = "Daily";
+                    
+                    break;
+                    case "monthlySalary":
+                      displayField = "Monthly Salary";
+                    
+                    break;
+                    case "pPEPoint":
+                      displayField = "PE Point";
+                    
+                    break;
+                    case "pAllowance":
+                      displayField = "Allowance";
+                    
+                    break;
+                    case "pRank":
+                      displayField = "Rank";
+                    
+                    break;
+                    case "tsPEPoint":
+                      displayField = "PE Point";
+                    
+                    break;
+                    case "tsAllowance":
+                      displayField = "Allowance";
+                    
+                    break;
+                    case "tsRank":
+                      displayField = "Rank";
+                    break;
+                    case "leLicenseFee":
+                      displayField = "License Fee";
+                    break;
+                    case "lePEPoint":
+                      displayField = "PE Point";
+                    break;
+                    case "leAllowance":
+                      displayField = "Allowance";
+                    break;
+                    case "leRank":
+                      displayField = "Rank";
+                    break;
+                    case "ceCertificateOnFee":
+                      displayField = "Certification On Fee";
+                    break;
+                    case "ceAllowance":
+                      displayField = "Allowance";
+                      break;
+                    case "ceRank":
+                      displayField = "Rank";
+                      break;
+                    case "Specialization":
+                      displayField = "Specialization";
+                    
+                    break;
+
+                  default:
+                   
+                    break;
+                }
                 return (
                   <TableRow
                     hover
@@ -341,7 +457,7 @@ const EnhancedTable = (emp) => {
 
                     <TableCell align="center">{row.date}</TableCell>
                     <TableCell align="center">{row.category}</TableCell>
-                    <TableCell align="center">{row.field}</TableCell>
+                    <TableCell align="center">{displayField}</TableCell>
                     <TableCell align="center">{row.from}</TableCell>
                     <TableCell align="center">{row.to}</TableCell>
                     <TableCell align="center">{row.modifier}</TableCell>

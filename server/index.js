@@ -227,7 +227,7 @@ if (department !== previousRecord.department) {
     console.log("Updated department:", department);
     
     const category = "Basic Information";
-    const field = "Department";
+    const field = "department";
 
     const modifier = fullName;
 
@@ -238,598 +238,581 @@ if (department !== previousRecord.department) {
       );
   }
   
-//   if (section !== previousRecord.section) {
-//     updatedFields.section = {
-//       previousValue: previousRecord.section,
-//       updatedValue: section,
-//     };
-//     console.log("Previous section:", previousRecord.section);
-//     console.log("Updated section:", section);
+  if (section !== previousRecord.section) {
+    updatedFields.section = {
+      previousValue: previousRecord.section,
+      updatedValue: section,
+    };
+    console.log("Previous section:", previousRecord.section);
+    console.log("Updated section:", section);
     
-//     const category = "Basic Information";
-//     const field = "Section";
+    const category = "Basic Information";
+    const field = "section";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.section, section, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.section, section, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (empName !== previousRecord.employeeName) {
-//     updatedFields.employeeName = {
-//       previousValue: previousRecord.employeeName,
-//       updatedValue: empName,
-//     };
-//     console.log("Previous employeeName:", previousRecord.employeeName);
-//     console.log("Updated employeeName:", empName);
-//     const category = "Basic Information";
-//     const field = "Employee Name";
+  if (empName !== previousRecord.employeeName) {
+    updatedFields.employeeName = {
+      previousValue: previousRecord.employeeName,
+      updatedValue: empName,
+    };
+    console.log("Previous employeeName:", previousRecord.employeeName);
+    console.log("Updated employeeName:", empName);
+    const category = "Basic Information";
+    const field = "employeeName";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.employeeName, empName, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.employeeName, empName, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (sex !== previousRecord.sex) {
-//     updatedFields.sex = {
-//       previousValue: previousRecord.sex,
-//       updatedValue: sex,
-//     };
-//     console.log("Previous sex:", previousRecord.sex);
-//     console.log("Updated sex:", sex);
-//     const category = "Basic Information";
-//     const field = "Sex";
+  if (sex !== previousRecord.sex) {
+    updatedFields.sex = {
+      previousValue: previousRecord.sex,
+      updatedValue: sex,
+    };
+    console.log("Previous sex:", previousRecord.sex);
+    console.log("Updated sex:", sex);
+    const category = "Basic Information";
+    const field = "sex";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.sex, sex, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.sex, sex, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (birthday !== previousRecord.birthday) {
-//     updatedFields.birthday = {
-//       previousValue: previousRecord.birthday,
-//       updatedValue: birthday,
-//     };
-//     console.log("Previous birthday:", previousRecord.birthday);
-//     console.log("Updated birthday:", birthday);
-//     const category = "Basic Information";
-//     const field = "Birthday";
+  if (birthday !== previousRecord.birthday) {
+    updatedFields.birthday = {
+      previousValue: previousRecord.birthday,
+      updatedValue: birthday,
+    };
+    console.log("Previous birthday:", previousRecord.birthday);
+    console.log("Updated birthday:", birthday);
+    const category = "Basic Information";
+    const field = "birthday";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.birthday, birthday, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.birthday, birthday, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (age !== previousRecord.age) {
-//     updatedFields.age = {
-//       previousValue: previousRecord.age,
-//       updatedValue: age,
-//     };
-//     console.log("Previous age:", previousRecord.age);
-//     console.log("Updated age:", age);
-//     const category = "Basic Information";
-//     const field = "Age";
+  if (age !== previousRecord.age) {
+    updatedFields.age = {
+      previousValue: previousRecord.age,
+      updatedValue: age,
+    };
+    console.log("Previous age:", previousRecord.age);
+    console.log("Updated age:", age);
+    const category = "Basic Information";
+    const field = "age";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.age, age, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.age, age, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (empNumber !== previousRecord.empNo) {
-//     updatedFields.empNo = {
-//       previousValue: previousRecord.empNo,
-//       updatedValue: empNumber,
-//     };
-//     console.log("Previous empNo:", previousRecord.empNo);
-//     console.log("Updated empNo:", empNumber);
-//     const category = "Basic Information";
-//     const field = "Employee Id Number";
+  if (empNumber !== previousRecord.empNo) {
+    updatedFields.empNo = {
+      previousValue: previousRecord.empNo,
+      updatedValue: empNumber,
+    };
+    console.log("Previous empNo:", previousRecord.empNo);
+    console.log("Updated empNo:", empNumber);
+    const category = "Basic Information";
+    const field = "empNo";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.empNo, empNumber, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.empNo, empNumber, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (dateHired !== previousRecord.dateHired) {
-//     updatedFields.dateHired = {
-//       previousValue: previousRecord.dateHired,
-//       updatedValue: dateHired,
-//     };
-//     console.log("Previous dateHired:", previousRecord.dateHired);
-//     console.log("Updated dateHired:", dateHired);
-//     const category = "Basic Information";
-//     const field = "Date Hired";
+  if (dateHired !== previousRecord.dateHired) {
+    updatedFields.dateHired = {
+      previousValue: previousRecord.dateHired,
+      updatedValue: dateHired,
+    };
+    console.log("Previous dateHired:", previousRecord.dateHired);
+    console.log("Updated dateHired:", dateHired);
+    const category = "Basic Information";
+    const field = "dateHired";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.dateHired, dateHired, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.dateHired, dateHired, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (serviceTerm !== previousRecord.serviceTerm) {
-//     updatedFields.serviceTerm = {
-//       previousValue: previousRecord.serviceTerm,
-//       updatedValue: serviceTerm,
-//     };
-//     console.log("Previous serviceTerm:", previousRecord.serviceTerm);
-//     console.log("Updated serviceTerm:", serviceTerm);
-//     const category = "Basic Information";
-//     const field = "Service Term";
+  // if (serviceTerm !== previousRecord.serviceTerm) {
+  //   updatedFields.serviceTerm = {
+  //     previousValue: previousRecord.serviceTerm,
+  //     updatedValue: serviceTerm,
+  //   };
+  //   console.log("Previous serviceTerm:", previousRecord.serviceTerm);
+  //   console.log("Updated serviceTerm:", serviceTerm);
+  //   const category = "Basic Information";
+  //   const field = "Service Term";
 
-//     const modifier = fullName;
+  //   const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.serviceterm, serviceTerm, modifier],
+  //   db.query(
+  //       "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+  //       [empNumber, dateModified, category, field, previousRecord.serviceTerm, serviceTerm, modifier],
  
-//       );
-//   }
+  //     );
+  // }
   
-//   if (position !== previousRecord.position) {
-//     updatedFields.position = {
-//       previousValue: previousRecord.position,
-//       updatedValue: position,
-//     };
-//     console.log("Previous position:", previousRecord.position);
-//     console.log("Updated position:", position);
-//     const category = "Position / Designation";
-//     const field = "Position";
+  if (position !== previousRecord.position) {
+    updatedFields.position = {
+      previousValue: previousRecord.position,
+      updatedValue: position,
+    };
+    console.log("Previous position:", previousRecord.position);
+    console.log("Updated position:", position);
+    const category = "Position / Designation";
+    const field = "position";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.position, position, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.position, position, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (designation !== previousRecord.designation) {
-//     updatedFields.designation = {
-//       previousValue: previousRecord.designation,
-//       updatedValue: designation,
-//     };
-//     console.log("Previous designation:", previousRecord.designation);
-//     console.log("Updated designation:", designation);
-//     const category = "Position / Designation";
-//     const field = "Designation";
+  if (designation !== previousRecord.designation) {
+    updatedFields.designation = {
+      previousValue: previousRecord.designation,
+      updatedValue: designation,
+    };
+    console.log("Previous designation:", previousRecord.designation);
+    console.log("Updated designation:", designation);
+    const category = "Position / Designation";
+    const field = "designation";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.designation, designation, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.designation, designation, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (empClass !== previousRecord.class) {
-//     updatedFields.class = {
-//       previousValue: previousRecord.class,
-//       updatedValue: empClass,
-//     };
-//     console.log("Previous class:", previousRecord.class);
-//     console.log("Updated class:", empClass);
-//     const category = "Basic Salary";
-//     const field = "Class";
+  if (empClass !== previousRecord.class) {
+    updatedFields.class = {
+      previousValue: previousRecord.class,
+      updatedValue: empClass,
+    };
+    console.log("Previous class:", previousRecord.class);
+    console.log("Updated class:", empClass);
+    const category = "Basic Salary";
+    const field = "class";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.class, empClass, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.class, empClass, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (level !== previousRecord.level) {
-//     updatedFields.level = {
-//       previousValue: previousRecord.level,
-//       updatedValue: level,
-//     };
-//     console.log("Previous level:", previousRecord.level);
-//     console.log("Updated level:", level);
-//     const category = "Basic Salary";
-//     const field = "Level";
+  if (level !== previousRecord.level) {
+    updatedFields.level = {
+      previousValue: previousRecord.level,
+      updatedValue: level,
+    };
+    console.log("Previous level:", previousRecord.level);
+    console.log("Updated level:", level);
+    const category = "Basic Salary";
+    const field = "level";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.level, level, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.level, level, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (salary !== previousRecord.salaryType) {
-//     updatedFields.salaryType = {
-//       previousValue: previousRecord.salaryType,
-//       updatedValue: salary,
-//     };
-//     console.log("Previous salaryType:", previousRecord.salaryType);
-//     console.log("Updated salaryType:", salary);
-//     const category = "Basic Salary";
-//     const field = "Salary Type";
+  if (salary !== previousRecord.salaryType) {
+    updatedFields.salaryType = {
+      previousValue: previousRecord.salaryType,
+      updatedValue: salary,
+    };
+    console.log("Previous salaryType:", previousRecord.salaryType);
+    console.log("Updated salaryType:", salary);
+    const category = "Basic Salary";
+    const field = "salaryType";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.salaryType, salary, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.salaryType, salary, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (basicSalary !== previousRecord.basicSalary) {
-//     updatedFields.basicSalary = {
-//       previousValue: previousRecord.basicSalary,
-//       updatedValue: basicSalary,
-//     };
-//     console.log("Previous basicSalary:", previousRecord.basicSalary);
-//     console.log("Updated basicSalary:", basicSalary);
+  if (basicSalary !== previousRecord.basicSalary) {
+    updatedFields.basicSalary = {
+      previousValue: previousRecord.basicSalary,
+      updatedValue: basicSalary,
+    };
+    console.log("Previous basicSalary:", previousRecord.basicSalary);
+    console.log("Updated basicSalary:", basicSalary);
 
-//     const category = "Basic Salary";
-//     const field = "Basic Salary";
+    const category = "Basic Salary";
+    const field = "basicSalary";
 
-//     const modifier = fullName;
+    const modifier = fullName;
 
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.basicSalary, basicSalary, modifier],
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.basicSalary, basicSalary, modifier],
  
-//       );
-//   }
-//   if (daily !== previousRecord.daily) {
-//     updatedFields.daily = {
-//       previousValue: previousRecord.daily,
-//       updatedValue: daily,
-//     };
-//     console.log("Previous daily:", previousRecord.daily);
-//     console.log("Updated daily:", daily);
-//     const category = "Salary Increase";
-//     const field = "Daily Salary";
+      );
+  }
+  if (daily !== previousRecord.daily) {
+    updatedFields.daily = {
+      previousValue: previousRecord.daily,
+      updatedValue: daily,
+    };
+    console.log("Previous daily:", previousRecord.daily);
+    console.log("Updated daily:", daily);
+    const category = "Salary Increase";
+    const field = "daily";
 
-//     const modifier = "Cedrick James Orozo";
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.daily, daily, modifier],
+    const modifier = "Cedrick James Orozo";
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.daily, daily, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (daily !== previousRecord.daily) {
-//     updatedFields.daily = {
-//       previousValue: previousRecord.daily,
-//       updatedValue: daily,
-//     };
-//     console.log("Previous daily:", previousRecord.daily);
-//     console.log("Updated daily:", daily);
-//     const category = "Salary Increase";
-//     const field = "Daily Salary";
-
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.daily, daily, modifier],
- 
-//       );
-//   }
   
-//   if (monthlySalary !== previousRecord.monthlySalary) {
-//     updatedFields.monthlySalary = {
-//       previousValue: previousRecord.monthlySalary,
-//       updatedValue: monthlySalary,
-//     };
-//     console.log("Previous monthlySalary:", previousRecord.monthlySalary);
-//     console.log("Updated monthlySalary:", monthlySalary); 
-//     const category = "Basic Salary";
-//     const field = "Monthly Salary";
+  if (monthlySalary !== previousRecord.monthlySalary) {
+    updatedFields.monthlySalary = {
+      previousValue: previousRecord.monthlySalary,
+      updatedValue: monthlySalary,
+    };
+    console.log("Previous monthlySalary:", previousRecord.monthlySalary);
+    console.log("Updated monthlySalary:", monthlySalary); 
+    const category = "Basic Salary";
+    const field = "monthlySalary";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.monthlySalary, monthlySalary, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.monthlySalary, monthlySalary, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (posPe !== previousRecord.pPEPoint) {
-//     updatedFields.pPEPoint = {
-//       previousValue: previousRecord.pPEPoint,
-//       updatedValue: posPe,
-//     };
-//     console.log("Previous pPEPoint:", previousRecord.pPEPoint);
-//     console.log("Updated pPEPoint:", posPe);
-//     const category = "Position";
-//     const field = "PE Point";
+  if (posPe !== previousRecord.pPEPoint) {
+    updatedFields.pPEPoint = {
+      previousValue: previousRecord.pPEPoint,
+      updatedValue: posPe,
+    };
+    console.log("Previous pPEPoint:", previousRecord.pPEPoint);
+    console.log("Updated pPEPoint:", posPe);
+    const category = "Position";
+    const field = "pPEPoint";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.pPEPoint, posPe, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.pPEPoint, posPe, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (posAllowance !== previousRecord.pAllowance) {
-//     updatedFields.pAllowance = {
-//       previousValue: previousRecord.pAllowance,
-//       updatedValue: posAllowance,
-//     };
-//     console.log("Previous pAllowance:", previousRecord.pAllowance);
-//     console.log("Updated pAllowance:", posAllowance);
-//     const category = "Position";
-//     const field = "Allowance";
+  if (posAllowance !== previousRecord.pAllowance) {
+    updatedFields.pAllowance = {
+      previousValue: previousRecord.pAllowance,
+      updatedValue: posAllowance,
+    };
+    console.log("Previous pAllowance:", previousRecord.pAllowance);
+    console.log("Updated pAllowance:", posAllowance);
+    const category = "Position";
+    const field = "pAllowance";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.pAllowance, posAllowance, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.pAllowance, posAllowance, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (posRank !== previousRecord.pRank) {
-//     updatedFields.pRank = {
-//       previousValue: previousRecord.pRank,
-//       updatedValue: posRank,
-//     };
-//     console.log("Previous pRank:", previousRecord.pRank);
-//     console.log("Updated pRank:", posRank);
-//     const category = "Position";
-//     const field = "Rank";
+  if (posRank !== previousRecord.pRank) {
+    updatedFields.pRank = {
+      previousValue: previousRecord.pRank,
+      updatedValue: posRank,
+    };
+    console.log("Previous pRank:", previousRecord.pRank);
+    console.log("Updated pRank:", posRank);
+    const category = "Position";
+    const field = "pRank";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.pRank, posRank, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.pRank, posRank, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (tsPEPoint !== previousRecord.tsPEPoint) {
-//     updatedFields.tsPEPoint = {
-//       previousValue: previousRecord.tsPEPoint,
-//       updatedValue: tsPEPoint,
-//     };
-//     console.log("Previous tsPEPoint:", previousRecord.tsPEPoint);
-//     console.log("Updated tsPEPoint:", tsPEPoint);
-//     const category = "Technical Skills / Special Experience";
-//     const field = "PE Point";
+  if (tsPEPoint !== previousRecord.tsPEPoint) {
+    updatedFields.tsPEPoint = {
+      previousValue: previousRecord.tsPEPoint,
+      updatedValue: tsPEPoint,
+    };
+    console.log("Previous tsPEPoint:", previousRecord.tsPEPoint);
+    console.log("Updated tsPEPoint:", tsPEPoint);
+    const category = "Technical Skills / Special Experience";
+    const field = "tsPEPoint";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.tsPEPoint, tsPEPoint, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.tsPEPoint, tsPEPoint, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (tsAllowance !== previousRecord.tsAllowance) {
-//     updatedFields.tsAllowance = {
-//       previousValue: previousRecord.tsAllowance,
-//       updatedValue: tsAllowance,
-//     };
-//     console.log("Previous tsAllowance:", previousRecord.tsAllowance);
-//     console.log("Updated tsAllowance:", tsAllowance);
-//     const category = "Technical Skills / Special Experience";
-//     const field = "Allowance (PF3)";
+  if (tsAllowance !== previousRecord.tsAllowance) {
+    updatedFields.tsAllowance = {
+      previousValue: previousRecord.tsAllowance,
+      updatedValue: tsAllowance,
+    };
+    console.log("Previous tsAllowance:", previousRecord.tsAllowance);
+    console.log("Updated tsAllowance:", tsAllowance);
+    const category = "Technical Skills / Special Experience";
+    const field = "tsAllowance";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.tsAllowance, tsAllowance, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.tsAllowance, tsAllowance, modifier],
  
-//       );
+      );
     
-//   }
+  }
   
-//   if (tsRank !== previousRecord.tsRank) {
-//     updatedFields.tsRank = {
-//       previousValue: previousRecord.tsRank,
-//       updatedValue: tsRank,
-//     };
-//     console.log("Previous tsRank:", previousRecord.tsRank);
-//     console.log("Updated tsRank:", tsRank);
-//     const category = "Technical Skills / Special Experience";
-//     const field = "Rank";
+  if (tsRank !== previousRecord.tsRank) {
+    updatedFields.tsRank = {
+      previousValue: previousRecord.tsRank,
+      updatedValue: tsRank,
+    };
+    console.log("Previous tsRank:", previousRecord.tsRank);
+    console.log("Updated tsRank:", tsRank);
+    const category = "Technical Skills / Special Experience";
+    const field = "tsRank";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.tsRank, tsRank, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.tsRank, tsRank, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (leLicenseFee !== previousRecord.leLicenseFee) {
-//     updatedFields.leLicenseFee = {
-//       previousValue: previousRecord.leLicenseFee,
-//       updatedValue: leLicenseFee,
-//     };
-//     console.log("Previous leLicenseFee:", previousRecord.leLicenseFee);
-//     console.log("Updated leLicenseFee:", leLicenseFee);
-//     const category = "License / Evaluation";
-//     const field = "License Fee";
+  if (leLicenseFee !== previousRecord.leLicenseFee) {
+    updatedFields.leLicenseFee = {
+      previousValue: previousRecord.leLicenseFee,
+      updatedValue: leLicenseFee,
+    };
+    console.log("Previous leLicenseFee:", previousRecord.leLicenseFee);
+    console.log("Updated leLicenseFee:", leLicenseFee);
+    const category = "License / Evaluation";
+    const field = "leLicenseFee";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.leLicenseFee, leLicenseFee, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.leLicenseFee, leLicenseFee, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (lePEPoint !== previousRecord.lePEPoint) {
-//     updatedFields.lePEPoint = {
-//       previousValue: previousRecord.lePEPoint,
-//       updatedValue: lePEPoint,
-//     };
-//     console.log("Previous lePEPoint:", previousRecord.lePEPoint);
-//     console.log("Updated lePEPoint:", lePEPoint);
+  if (lePEPoint !== previousRecord.lePEPoint) {
+    updatedFields.lePEPoint = {
+      previousValue: previousRecord.lePEPoint,
+      updatedValue: lePEPoint,
+    };
+    console.log("Previous lePEPoint:", previousRecord.lePEPoint);
+    console.log("Updated lePEPoint:", lePEPoint);
 
-//     const category = "License / Evaluation";
-//     const field = "PE Point";
+    const category = "License / Evaluation";
+    const field = "lePEPoint";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.lePEPoint, lePEPoint, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.lePEPoint, lePEPoint, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (leAllowance !== previousRecord.leAllowance) {
-//     updatedFields.leAllowance = {
-//       previousValue: previousRecord.leAllowance,
-//       updatedValue: leAllowance,
-//     };
-//     console.log("Previous leAllowance:", previousRecord.leAllowance);
-//     console.log("Updated leAllowance:", leAllowance);
-//     const category = "License / Evaluation";
-//     const field = "Allowance (PF1)";
+  if (leAllowance !== previousRecord.leAllowance) {
+    updatedFields.leAllowance = {
+      previousValue: previousRecord.leAllowance,
+      updatedValue: leAllowance,
+    };
+    console.log("Previous leAllowance:", previousRecord.leAllowance);
+    console.log("Updated leAllowance:", leAllowance);
+    const category = "License / Evaluation";
+    const field = "leAllowance";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.leAllowance, leAllowance, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.leAllowance, leAllowance, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (leRank !== previousRecord.leRank) {
-//     updatedFields.leRank = {
-//       previousValue: previousRecord.leRank,
-//       updatedValue: leRank,
-//     };
-//     console.log("Previous leRank:", previousRecord.leRank);
-//     console.log("Updated leRank:", leRank);
-//     const category = "License / Evaluation";
-//     const field = "Rank";
+  if (leRank !== previousRecord.leRank) {
+    updatedFields.leRank = {
+      previousValue: previousRecord.leRank,
+      updatedValue: leRank,
+    };
+    console.log("Previous leRank:", previousRecord.leRank);
+    console.log("Updated leRank:", leRank);
+    const category = "License / Evaluation";
+    const field = "leRank";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.leRank, leRank, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.leRank, leRank, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (ceCertificateOnFee !== previousRecord.ceCertificateOnFee) {
-//     updatedFields.ceCertificateOnFee = {
-//       previousValue: previousRecord.ceCertificateOnFee,
-//       updatedValue: ceCertificateOnFee,
-//     };
-//     console.log("Previous ceCertificateOnFee:", previousRecord.ceCertificateOnFee);
-//     console.log("Updated ceCertificateOnFee:", ceCertificateOnFee);
-//     const category = "Certification / Evaluation";
-//     const field = "Certification Fee";
+  if (ceCertificateOnFee !== previousRecord.ceCertificateOnFee) {
+    updatedFields.ceCertificateOnFee = {
+      previousValue: previousRecord.ceCertificateOnFee,
+      updatedValue: ceCertificateOnFee,
+    };
+    console.log("Previous ceCertificateOnFee:", previousRecord.ceCertificateOnFee);
+    console.log("Updated ceCertificateOnFee:", ceCertificateOnFee);
+    const category = "Certification / Evaluation";
+    const field = "ceCertificateOnFee";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.ceCertificateOnFee, ceCertificateOnFee, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.ceCertificateOnFee, ceCertificateOnFee, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (cePEPoint !== previousRecord.cePEPoint) {
-//     updatedFields.cePEPoint = {
-//       previousValue: previousRecord.cePEPoint,
-//       updatedValue: cePEPoint,
-//     };
-//     console.log("Previous cePEPoint:", previousRecord.cePEPoint);
-//     console.log("Updated cePEPoint:", cePEPoint);
-//     const category = "Certification / Evaluation";
-//     const field = "PE Point";
+  if (cePEPoint !== previousRecord.cePEPoint) {
+    updatedFields.cePEPoint = {
+      previousValue: previousRecord.cePEPoint,
+      updatedValue: cePEPoint,
+    };
+    console.log("Previous cePEPoint:", previousRecord.cePEPoint);
+    console.log("Updated cePEPoint:", cePEPoint);
+    const category = "Certification / Evaluation";
+    const field = "cePEPoint";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.cePEPoint, cePEPoint, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.cePEPoint, cePEPoint, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (ceAllowance !== previousRecord.ceAllowance) {
-//     updatedFields.ceAllowance = {
-//       previousValue: previousRecord.ceAllowance,
-//       updatedValue: ceAllowance,
-//     };
-//     console.log("Previous ceAllowance:", previousRecord.ceAllowance);
-//     console.log("Updated ceAllowance:", ceAllowance);
-//     const category = "Certification / Evaluation";
-//     const field = "Allowance(PF2)";
+  if (ceAllowance !== previousRecord.ceAllowance) {
+    updatedFields.ceAllowance = {
+      previousValue: previousRecord.ceAllowance,
+      updatedValue: ceAllowance,
+    };
+    console.log("Previous ceAllowance:", previousRecord.ceAllowance);
+    console.log("Updated ceAllowance:", ceAllowance);
+    const category = "Certification / Evaluation";
+    const field = "ceAllowance";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.ceAllowance, ceAllowance, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.ceAllowance, ceAllowance, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (ceRank !== previousRecord.ceRank) {
-//     updatedFields.ceRank = {
-//       previousValue: previousRecord.ceRank,
-//       updatedValue: ceRank,
-//     };
-//     console.log("Previous ceRank:", previousRecord.ceRank);
-//     console.log("Updated ceRank:", ceRank);
-//     const category = "Certification / Evaluation";
-//     const field = "Rank";
+  if (ceRank !== previousRecord.ceRank) {
+    updatedFields.ceRank = {
+      previousValue: previousRecord.ceRank,
+      updatedValue: ceRank,
+    };
+    console.log("Previous ceRank:", previousRecord.ceRank);
+    console.log("Updated ceRank:", ceRank);
+    const category = "Certification / Evaluation";
+    const field = "ceRank";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.ceRank, ceRank, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.ceRank, ceRank, modifier],
  
-//       );
-//   }
+      );
+  }
   
-//   if (Specialization !== previousRecord.Specialization) {
-//     updatedFields.Specialization = {
-//       previousValue: previousRecord.Specialization,
-//       updatedValue: Specialization,
-//     };
-//     console.log("Previous Specialization:", previousRecord.Specialization);
-//     console.log("Updated Specialization:", Specialization);
-//     const category = "Specialization";
-//     const field = "";
+  if (Specialization !== previousRecord.Specialization) {
+    updatedFields.Specialization = {
+      previousValue: previousRecord.Specialization,
+      updatedValue: Specialization,
+    };
+    console.log("Previous Specialization:", previousRecord.Specialization);
+    console.log("Updated Specialization:", Specialization);
+    const category = "Specialization";
+    const field = "";
 
-//     const modifier = fullName;
-//     db.query(
-//         "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-//         [empNumber, dateModified, category, field, previousRecord.Specialization, Specialization, modifier],
+    const modifier = fullName;
+    db.query(
+        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
+        [empNumber, dateModified, category, field, previousRecord.Specialization, Specialization, modifier],
  
-//       );
-//   }
+      );
+  }
             // Add other fields here...
             
             // Perform the update query

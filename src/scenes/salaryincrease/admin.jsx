@@ -227,7 +227,7 @@ function EnhancedTableHead(props) {
     rowCount: PropTypes.number.isRequired,
   };
   
-  function EnhancedTableToolbar(dept, props) {
+  function EnhancedTableToolbar(dept, props, searchQuery,setSearchQuery ) {
     const { numSelected } = props;
     const { department } = dept;
 
@@ -276,6 +276,12 @@ function EnhancedTableHead(props) {
             </IconButton>
           </Tooltip>
         )}
+         <TextField
+            label="Search"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            margin="normal"
+          />
       </Toolbar>
     );
   }
@@ -292,7 +298,7 @@ const SIAdmin = (props ) => {
     setFullName(fullName)
    
   }, []);
-console.log({fullName});
+// console.log({fullName});
   const [employeeId, setEmployeeId] = useState([]);
 
   const theme = useTheme();
@@ -452,61 +458,8 @@ console.log({fullName});
   };
 
 
-//   useEffect(() => {
-//     Axios.get("http://localhost:3001/siadmin")
-//       .then(response =>
-//         { setData(response.data);
-//             console.log(response);
-//           const newRows = response.data.map(row => createData(row.id, row.section, row.employeeName, row.empNo, row.position));
-//           setRows(newRows);
-//         })
-//       .catch(error => console.log(error));
-//   }, []);
   useEffect(() => {
-    // Axios.post("http://192.168.60.53:3001/setsitable", {
-    //     department: department,
-    //   }).then((response) => {
-    //     // console.log(response);
-    //     // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
-    //     const newRows = response.data.map(row => createData(
-    //       row.id, 
-    //       row.section,
-    //       row.employeeName,
-    //       row.empNo, 
-    //       row.position,
-    //       row.designation,
-    //       row.class,
-    //       row.level,
-    //       row.salaryType,
-    //       row.basicSalary,
-    //       row.daily,
-    //       row.monthlySalary,
-    //       row.pPEPoint,
-    //       row.pAllowance,
-    //       row.pRank,
-    //       row.tsPEPoint,
-    //       row.tsAllowance,
-    //       row.tsRank,
-    //       row.leLicenseFee, 
-    //       row.lePEPoint, 
-    //       row.leAllowance, 
-    //       row.leRank, 
-    //       row.ceCertificateOnFee, 
-    //       row.cePEPoint, 
-    //       row.ceAllowance, 
-    //       row.ceRank, 
-    //       row.Specialization, 
-    //       row.total,
-    //       row.birthday,
-    //       row.age,
-    //       row.department,
-    //       row.sex,
-    //       row.dateHired,
-    //       row.serviceTerm,
-    //       ));
-    //     setRows(newRows);
-    //   });
-
+   
     refreshTable();
 
 
@@ -514,25 +467,9 @@ console.log({fullName});
   }, []);
   
   useEffect(() => {
-    // console.log(department);
-    // choosedept();
+ 
   }, [employeeId]);
-// const rows = [
-//     createData(1, 'cedrick', 3.7, 67, 4.3),
-//     createData(2, 'cedrick', 25.0, 51, 4.9),
-//     createData(3, 'cedrick', 16.0, 24, 6.0),
-//     createData(4, 'cedrick', 6.0, 24, 4.0),
-//     createData(5, 'cedrick', 16.0, 49, 3.9),
-//     createData(6, 'cedrick', 3.2, 87, 6.5),
-//     createData(7, 'cedrick', 9.0, 37, 4.3),
-//     createData(8, 'cedrick', 0.0, 94, 0.0),
-//     createData(9, 'cedrick', 26.0, 65, 7.0),
-//     createData(10, 'cedrick', 0.2, 98, 0.0),
-//     createData(11, 'cedrick', 0, 81, 2.0),
-//     createData(12, 'cedrick', 19.0, 9, 37.0),
-//     createData(13, 'cedrick', 18.0, 63, 4.0),
-//   ];
-  
+
   
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -540,7 +477,18 @@ console.log({fullName});
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(100);
+  const [searchQuery, setSearchQuery] = React.useState('');
 
+
+  const filteredRows = rows.filter(row => {
+    return (
+      row.section.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      row.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      row.empNo.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      row.position.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      row.dateModified.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  });
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -634,9 +582,20 @@ console.log({fullName});
       setdepartment2(employee.department)
       setsex(employee.sex)
       setdateHired(employee.dateHired)
-      setserviceTerm(employee.serviceTerm)
+     
 
+      var date = new Date();
+      var day = date.getDate();
+      var month = date.toLocaleString('default', { month: 'short' });
+      var year = date.getFullYear().toString().slice(-2);
+      var formattedDate = day + '-' + month + '-' + year;
       
+      // Assuming employee.dateHired is a valid JavaScript Date object
+      var employeeDateHired = new Date(employee.dateHired);
+      
+      var computedService = (date.getTime() - employeeDateHired.getTime()) / (1000 * 60 * 60 * 24 * 365);
+      var computedServiceDecimal = computedService.toFixed(2);
+      setserviceTerm(computedServiceDecimal)
       if(type==="checkbox"){
         setOpen(false);
 
@@ -654,14 +613,69 @@ console.log({fullName});
  
       <Box sx={{ width: '100%' }}>
         <Paper sx={{ width: '100%', mb: 2 , overflow: 'hidden'}}>
-          <EnhancedTableToolbar department = {department} numSelected={selected.length} />
+          {/* <EnhancedTableToolbar department = {department} numSelected={selected.length} searchQuery={searchQuery} setSearchQuery={setSearchQuery} /> */}
+
+   
+      <Toolbar
+        sx={{
+          pl: { sm: 2 },
+          pr: { xs: 1, sm: 1 },
+          ...(selected.length > 0 && {
+            bgcolor: (theme) =>
+              alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+          }),
+        }}
+      >
+        {selected.length > 0 ? (
+          <Typography
+            sx={{ flex: '1 1 100%' }}
+            color="inherit"
+            variant="subtitle1"
+            component="div"
+          >
+            {selected.length} selected
+          </Typography>
+        ) : (
+          <Typography
+            sx={{ flex: '1 1 100%' }}
+            variant="h6"
+            id="tableTitle"
+            component="div"
+          >
+            {department} Employees
+          </Typography>
+        )}
+  
+        {/* {selected.length > 0 ? (
+          <Tooltip title="Delete">
+            <IconButton>
+              <DeleteIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Filter list">
+            <IconButton>
+              <FilterListIcon />
+            </IconButton>
+          </Tooltip>
+        )} */}
+         <TextField
+            label="Search"
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            margin="normal"
+            size="small"
+          />
+      </Toolbar>
+   
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium' } stickyHeader
               aria-label="sticky table">
               <EnhancedTableHead numSelected={selected.length} order={order} orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick} onRequestSort={handleRequestSort} rowCount={rows.length} />
+                
               <TableBody>
-                {stableSort(rows, getComparator(order, orderBy))
+                {stableSort(filteredRows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
 
