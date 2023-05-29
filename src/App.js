@@ -1,13 +1,8 @@
 
-import NavBar from "./components/NavBar.js";
-import HomePage from "./mainField/homePage.js";
-import SamplePage from "./mainField/samplePage";
-import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
+import {Routes, Route} from 'react-router-dom';
 
 import {ColorModeContext, useMode} from "./theme";
 import Topbar2 from "./scenes/global/TopbarForAuth.jsx";
-import Button from 'react-bootstrap/Button';
-import Offcanvas from 'react-bootstrap/Offcanvas';
 import React, { useState, useEffect  } from 'react';
 import { CssBaseline, ThemeProvider} from "@mui/material";
 import Topbar from "./scenes/global/Topbar"
@@ -20,7 +15,6 @@ import SalaryIncrease from "./scenes/salaryincrease"
 // import Form from "./scenes/form"
 import Line from "./scenes/line"
 import Teams from "./scenes/team"
-import LoginForm from "./scenes/authentication/login.jsx";
 import Login from "./scenes/authentication/login copy";
 
 import Register from "./scenes/authentication/register.js";
@@ -114,7 +108,7 @@ return (
      <div className="app"> 
      <main className="content" style={{overflow: 'auto'}}>
      {/* <Topbar onLogout={handleLogout}/> */}
-     <Topbar2/>
+     <Topbar onLogout={handleLogout}/>
      {/* <Login onLogin={handleLogin}/> */}
      <Routes>
               <Route path="/register" element={<Register/>}/>

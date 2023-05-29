@@ -1,13 +1,10 @@
 import React , { useState }from "react";
-import { Navbar, Nav, NavDropdown, Row, Col,  NavItem, NavLink, ListGroup, ListGroupItem  } from "react-bootstrap";
+import { Navbar, Row, Col, } from "react-bootstrap";
 import { FaBars,FaChartBar, FaUser, FaUsers, FaHome } from "react-icons/fa";
-import {BrowserRouter, Routes, Route, Link} from 'react-router-dom';
-import HomePage from '../mainField/homePage.js';
-import SamplePage from '../mainField/samplePage.js';
+import { Link} from 'react-router-dom';
 
 import '../css/style.scss';
 import '../index.css';
-import Button from 'react-bootstrap/Button';
 import Offcanvas  from 'react-bootstrap/Offcanvas';
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const NavBar = () => {
