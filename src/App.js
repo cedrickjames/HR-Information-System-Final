@@ -111,6 +111,8 @@ return (
      <Topbar onLogout={handleLogout}/>
      {/* <Login onLogin={handleLogin}/> */}
      <Routes>
+          <Route path="/" element={<Login setName={setName} onLogin={handleLogin}/>}/>
+
               <Route path="/register" element={<Register/>}/>
               <Route path="/login" element={<Login setName={setName} onLogin={handleLogin}/>}/>
              

@@ -111,7 +111,7 @@ app.post("/setsitable", (req, res)=>{
  
     // const sqlSelect = ;
     db.query(
-        "SELECT u.*, h.dateModified FROM salaryincrease u JOIN history h ON u.empNo = h.employeeId WHERE h.id = (SELECT MAX(id) FROM history WHERE employeeId = u.empNo) AND u.department = ?",
+        "SELECT u.*, IFNULL(h.dateModified, '') AS dateModified  FROM salaryincrease u  LEFT JOIN history h ON u.empNo = h.employeeId WHERE (h.id = (SELECT MAX(id) FROM history WHERE employeeId = u.empNo) OR h.id IS NULL) AND u.department = ?",
         // "SELECT * FROM `salaryincrease` WHERE department = ?",
         [department],
         (err, result)=>{
@@ -859,9 +859,9 @@ app.get("/siadmin",(req, res)=>{
 });
 app.use('/',express.static(path.join(__dirname, 'public')));
 
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 app.listen(process.env.PORT, () =>{
     console.log('running on port 3001');
