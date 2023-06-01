@@ -17,6 +17,9 @@ export const tokens = (mode) => ({
           800: "#292929",
           900: "#141414",
         },
+        lebelbg: {
+          100:"#1f1d1d",
+        },
         grey2: {
           100: "#141414",
           200: "#292929",
@@ -133,6 +136,9 @@ export const tokens = (mode) => ({
           700: "#a3a3a3",
           800: "#c2c2c2",
           900: "#e0e0e0",
+        },
+        lebelbg: {
+          100:"#ffffff"
         },
         grey2: {
           100: "#e0e0e0",

@@ -39,7 +39,8 @@ import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
-
+import '../../../node_modules/flowbite/dist/flowbite.css';
+import AddEmployee from "./addEmployee";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import EnhancedTable from './history';
 // import  SalaryIncrease  from './index';
@@ -295,6 +296,12 @@ function EnhancedTableHead(props) {
   };
   
 const SIAdmin = (props ) => {
+  const [openAdd, setOpenAdd] = React.useState(false);
+
+  const handleClickOpenAdd = () => {
+    console.log("ASd")
+    setOpenAdd(true);
+  }
 
   const [fullName, setFullName] = useState();
   useEffect(() => {
@@ -306,8 +313,9 @@ const SIAdmin = (props ) => {
   const [employeeId, setEmployeeId] = useState([]);
 
   const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    const { department } = props;
+    const { department, tabNumber, setValue } = props;
     // console.log(props);
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
@@ -352,8 +360,8 @@ const SIAdmin = (props ) => {
   const [section, setSection] = React.useState('');
 
 
-
-  const refreshTable = () => {
+  const refreshTable1 = () => {
+    console.log(department);
     Axios.post("http://192.168.60.53:3001/setsitable", {
       department: department,
     }).then((response) => {
@@ -398,7 +406,68 @@ const SIAdmin = (props ) => {
         
         ));
       setRows(newRows);
+
       // console.log(rows)
+   
+
+    });
+
+  };
+  const refreshTable = () => {
+    console.log(department);
+    Axios.post("http://192.168.60.53:3001/setsitable", {
+      department: department,
+    }).then((response) => {
+      console.log(response);
+      console.log(response.data.message);
+      if(response.data.message){
+        setRows([]);
+
+      }
+      // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
+      const newRows = response.data.map(row => createData(
+        row.id, 
+        row.section,
+        row.employeeName,
+        row.empNo, 
+        row.position,
+        row.designation,
+        row.class,
+        row.level,
+        row.salaryType,
+        row.basicSalary,
+        row.daily,
+        row.monthlySalary,
+        row.pPEPoint,
+        row.pAllowance,
+        row.pRank,
+        row.tsPEPoint,
+        row.tsAllowance,
+        row.tsRank,
+        row.leLicenseFee, 
+        row.lePEPoint, 
+        row.leAllowance, 
+        row.leRank, 
+        row.ceCertificateOnFee, 
+        row.cePEPoint, 
+        row.ceAllowance, 
+        row.ceRank, 
+        row.Specialization, 
+        row.total,
+        row.birthday,
+        row.age,
+        row.department,
+        row.sex,
+        row.dateHired,
+        row.serviceTerm,
+        row.dateModified,
+        
+        ));
+      setRows(newRows);
+  
+      // console.log(rows)
+   
+
     });
 
   };
@@ -453,9 +522,9 @@ const SIAdmin = (props ) => {
       fullName: fullName,
     }).then((response) => {
       console.log(response)
-      // setValue(tabNumber);
-      // console.log("this is it: "+tabNumber);
       refreshTable();
+      setValue(tabNumber);
+      console.log("this is it: "+tabNumber);
       handleClose();
     });
 
@@ -464,7 +533,7 @@ const SIAdmin = (props ) => {
 
   useEffect(() => {
    
-    refreshTable();
+    refreshTable1();
 
 
 
@@ -668,13 +737,28 @@ const SIAdmin = (props ) => {
             </IconButton>
           </Tooltip>
         )} */}
-         <TextField
+        <button
+      onClick={() => {
+        setOpenAdd(true);
+        }}
+      type="button"
+      className=" text-white h-10 w-96 bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center mr-2 "
+    >
+     Add Employee
+    </button>
+    <div className="relative  w-96 mr-2">
+    <input  onChange={(event) => setSearchQuery(event.target.value)} type="text" id="floating_outlined" className=" h-10 block  w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+    <label 
+     style={{ backgroundColor: colors.lebelbg[100] }}
+     className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Search</label>
+</div>
+         {/* <TextField
             label="Search"
             value={searchQuery}
             onChange={(event) => setSearchQuery(event.target.value)}
-            margin="normal"
+            className="focus:outline-none"
             size="small"
-          />
+          /> */}
       </Toolbar>
    
           <TableContainer sx={{ maxHeight: 440 }}>
@@ -896,6 +980,7 @@ const SIAdmin = (props ) => {
           </Box>
           
         </Dialog>
+        <AddEmployee open={openAdd} department = {department} setRows = {setRows} onClose={() => setOpenAdd(false)}/>
       </Box>
 
      

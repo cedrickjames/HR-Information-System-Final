@@ -155,7 +155,58 @@ app.post("/history", (req, res)=>{
     //    console.log(err);
     });
 });
+app.post("/addemployee", (req, res)=>{
+  const department = req.body.department;
+  const daily = req.body.daily;
+  const section = req.body.section;
+  const empName = req.body.empName;
+  const empNumber = req.body.empNumber;
+  const position = req.body.position;
+  const designation = req.body.designation;
+  const empClass = req.body.empClass;
+  const level = req.body.level;
+  const salary = req.body.salary;
+  const basicSalary = req.body.basicSalary;
+  const monthlySalary = req.body.monthlySalary;
+  const posPe = req.body.posPe;
+  const posAllowance = req.body.posAllowance;
+  const posRank = req.body.posRank;
+  const tsPEPoint = req.body.tsPEPoint;
+  const tsAllowance = req.body.tsAllowance;
+  const tsRank = req.body.tsRank;
+  const leLicenseFee = req.body.leLicenseFee;
+  const lePEPoint = req.body.lePEPoint;
+  const leAllowance = req.body.leAllowance;
+  const leRank = req.body.leRank;
+  const ceCertificateOnFee = req.body.ceCertificateOnFee;
+  const cePEPoint = req.body.cePEPoint;
+  const ceAllowance = req.body.ceAllowance;
+  const ceRank = req.body.ceRank;
+  const Specialization = req.body.Specialization;
+  const birthday = req.body.birthday;
+  const age = req.body.age;
+  const sex = req.body.sex;
+  const dateHired = req.body.dateHired;
+  console.log(empName)
 
+      db.query("INSERT INTO salaryincrease( department, section, employeeName, sex, birthday, age, empNo, dateHired, position, designation, class, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank, tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
+    [department, section, empName, sex, birthday,age, empNumber,dateHired, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, posPe, posAllowance, posRank, tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization], 
+        (err, result)=>{
+            if(err){
+                res.send({err: err});
+            }else {
+                if (result.affectedRows > 0) {
+                  res.send({ message: "Data updated successfully" });
+                } else {
+                  res.send({ message: "There is an error in adding employee" });
+                }
+              }
+            
+    //    console.log(err);
+    });
+
+
+});
 app.post("/updatesirecord", (req, res)=>{
     const department = req.body.department;
     const daily = req.body.daily;
