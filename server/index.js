@@ -84,6 +84,29 @@ app.post("/login", (req, res)=>{
     //    console.log(err);
     });
 });
+
+app.post("/deactivate", (req, res)=>{
+  const arrayOfUser = req.body.arrayofuser;
+  db.query(
+    "UPDATE `salaryincrease` SET `deactivated` = 1 WHERE id IN (?)",
+    [ arrayOfUser],
+    (err, result)=>{
+      if(err){
+          res.send({err: err});
+      }else {
+          if (result.affectedRows > 0) {
+            res.send({ message: "Data updated successfully" });
+          } else {
+            res.send({ message: "There is an error in adding employee" });
+          }
+        }
+      
+//    console.log(err);
+});
+
+console.log(arrayOfUser);
+
+});
 // app.post("/setsitable", (req, res)=>{
 //     const department = req.body.department;
 
@@ -111,7 +134,7 @@ app.post("/setsitable", (req, res)=>{
  
     // const sqlSelect = ;
     db.query(
-        "SELECT u.*, IFNULL(h.dateModified, '') AS dateModified  FROM salaryincrease u  LEFT JOIN history h ON u.empNo = h.employeeId WHERE (h.id = (SELECT MAX(id) FROM history WHERE employeeId = u.empNo) OR h.id IS NULL) AND u.department = ?",
+        "SELECT u.*, IFNULL(h.dateModified, '') AS dateModified  FROM salaryincrease u  LEFT JOIN history h ON u.empNo = h.employeeId WHERE (h.id = (SELECT MAX(id) FROM history WHERE employeeId = u.empNo) OR h.id IS NULL) AND u.department = ? AND u.deactivated = 0 order by u.id desc",
         // "SELECT * FROM `salaryincrease` WHERE department = ?",
         [department],
         (err, result)=>{

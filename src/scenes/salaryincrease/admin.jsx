@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import Axios from "axios";
@@ -43,9 +43,11 @@ import '../../../node_modules/flowbite/dist/flowbite.css';
 import AddEmployee from "./addEmployee";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import EnhancedTable from './history';
+import { Button } from 'flowbite-react';
+import { AlertCircleOutline } from 'react-ionicons';
 // import  SalaryIncrease  from './index';
-
-
+import { Modal } from 'flowbite-react';
+// import { G } from 'react-ionicons';
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -296,6 +298,27 @@ function EnhancedTableHead(props) {
   };
   
 const SIAdmin = (props ) => {
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = () => {
+    // Perform delete operation here
+    closeModal();
+  };
+
+  const handleCancel = () => {
+    closeModal();
+  };
+
+
   const [openAdd, setOpenAdd] = React.useState(false);
 
   const handleClickOpenAdd = () => {
@@ -311,6 +334,7 @@ const SIAdmin = (props ) => {
   }, []);
 // console.log({fullName});
   const [employeeId, setEmployeeId] = useState([]);
+  const [deleteButtonState, setdeleteButtonState] = useState(true);
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -529,7 +553,21 @@ const SIAdmin = (props ) => {
     });
 
   };
+  const deactivate = () => {
+ 
 
+    Axios.post("http://192.168.60.53:3001/deactivate", {
+      arrayofuser: selected2,
+      
+    }).then((response) => {
+console.log(response)
+setSelected([]);
+setSelected2([]);
+refreshTable();
+      setValue(tabNumber);
+    });
+
+  };
 
   useEffect(() => {
    
@@ -547,6 +585,8 @@ const SIAdmin = (props ) => {
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
+  const [selected2, setSelected2] = React.useState([]);
+
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(100);
@@ -573,22 +613,46 @@ const SIAdmin = (props ) => {
       const newSelected = rows.map((n, index) => parseInt(index)+1);
       setSelected(newSelected);
       console.log(newSelected);
+      if(newSelected.length > 0){
+        setdeleteButtonState(false)
+      } 
+      else{
+        setdeleteButtonState(true)
+  
+      }
       return;
     }
     setSelected([]);
+    setdeleteButtonState(true)
   };
+ 
 
-  const handleClick = (event, no) => {
+  const handleClick = (event, no, id) => {
     const selectedIndex = selected.indexOf(no);
-    let newSelected = [];
+    const selectedIndex2 = selected2.indexOf(id);
 
+    console.log(selected)
+    console.log(selectedIndex2)
+
+    console.log(selectedIndex)
+
+    let newSelected = [];
+    // selected2.push(id);
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, no);
+      selected2.push(id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
+      selected2.splice(selectedIndex,1);
+
     } else if (selectedIndex === selected.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1));
+      selected2.splice(selectedIndex, 1);
+
+      console.log("true")
     } else if (selectedIndex > 0) {
+      selected2.splice(selectedIndex,1);
+      console.log("yes"+ selectedIndex)
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
         selected.slice(selectedIndex + 1),
@@ -597,6 +661,15 @@ const SIAdmin = (props ) => {
 
     setSelected(newSelected);
     console.log(newSelected);
+    console.log(selected2);
+
+    if(newSelected.length > 0){
+      setdeleteButtonState(false)
+    } 
+    else{
+      setdeleteButtonState(true)
+
+    }
   };
 
   const handleChangePage = (event, newPage) => {
@@ -737,6 +810,19 @@ const SIAdmin = (props ) => {
             </IconButton>
           </Tooltip>
         )} */}
+        {/* <Button gradientMonochrome="info">
+  Info
+</Button> */}
+          <button
+         onClick={openModal}
+          hidden = {deleteButtonState}
+
+      type="button"
+      className="h-10 w-96  text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2"
+    >
+     Deactivate
+    </button>
+ 
         <button
       onClick={() => {
         setOpenAdd(true);
@@ -746,11 +832,61 @@ const SIAdmin = (props ) => {
     >
      Add Employee
     </button>
+
+<Modal
+  onClose={closeModal}
+  popup
+  size="md"
+  show={isModalOpen}
+>
+  <Modal.Header 
+   style={{ padding: '10px !important' }}
+  />
+  <Modal.Body>
+    <div className="text-center">
+    <svg aria-hidden="true" className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+               
+      {/* <AlertCircleOutline className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" /> */}
+      <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+        <p>
+          Are you sure you want to deactivate this employee/s?
+        </p>
+      </h3>
+      <div className="flex justify-center gap-4">
+        <Button
+        gradientDuoTone="pinkToOrange"
+          color="failure"
+          onClick={deactivate}
+        >
+          Yes, I'm sure
+        </Button>
+        
+        <Button
+          color="gray"
+          onClick={closeModal}
+        >
+        
+            No, cancel
+         
+        </Button>
+      </div>
+    </div>
+  </Modal.Body>
+</Modal>
     <div className="relative  w-96 mr-2">
     <input  onChange={(event) => setSearchQuery(event.target.value)} type="text" id="floating_outlined" className=" h-10 block  w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
-    <label 
+    {selected.length > 0 ? (
+         <label 
+         style={{ backgroundColor: colors.grey[900] }}
+         
+         className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Search</label>
+        ) : (
+          <label 
      style={{ backgroundColor: colors.lebelbg[100] }}
+     
      className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Search</label>
+        )}
+    
 </div>
          {/* <TextField
             label="Search"
@@ -797,7 +933,7 @@ const SIAdmin = (props ) => {
                       if (event.target.type !== "checkbox") {
                       handleClickOpen(event.target.type, row);
                       }
-                      handleClick(event, count)
+                      handleClick(event, count, row.no)
                       // console.log(event.target.type)
                       }}
                       color="primary"
