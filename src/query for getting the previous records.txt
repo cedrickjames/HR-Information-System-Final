@@ -44,7 +44,7 @@ LEFT JOIN (
     JOIN (
       SELECT
         employeeId,
-        MAX(dateModified) AS maxDate
+        MIN(dateModified) AS maxDate
       FROM
         history
       GROUP BY

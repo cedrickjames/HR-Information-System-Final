@@ -15,6 +15,8 @@ import SalaryIncrease from "./scenes/salaryincrease"
 // import Form from "./scenes/form"
 import Line from "./scenes/line"
 import Teams from "./scenes/team"
+import PDFDocument from "./scenes/pdffiles"
+
 import Login from "./scenes/authentication/login copy";
 
 import Register from "./scenes/authentication/register.js";
@@ -89,6 +91,8 @@ if (loggedIn) {
               <Route path="/salaryincrease" element={<SalaryIncrease name={name}/>}/>
               <Route path="/line" element={<Line/>}/>
               <Route path="/team" element={<Teams/>}/>
+              <Route path="/pdffiles" element={<PDFDocument/>}/>
+
               </Routes>
           </main>
         </div>
