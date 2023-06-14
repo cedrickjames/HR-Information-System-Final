@@ -273,7 +273,7 @@ return(
     <Page size="A4" style={styles.page}> 
 
       <View style={styles.section}>
-      <>
+      
       {/* Other JSX code */}
       {rows.map((item, index) => {
         if(item.section===""){item.section="-"}
@@ -1040,7 +1040,7 @@ return(
         
       })}
       {/* Other JSX code */}
-    </>
+   
      
            
       </View>

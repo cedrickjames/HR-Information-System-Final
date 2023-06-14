@@ -243,7 +243,7 @@ LEFT JOIN (
     JOIN (
       SELECT
         employeeId,
-        MIN(dateModified) AS maxDate
+        MAX(dateModified) AS maxDate
       FROM
         history
       GROUP BY
@@ -283,10 +283,6 @@ GROUP BY
   si.empNo
 ORDER BY
   si.empNo;
-
-
-
-
   `;
   // const sqlSelect = ;
   db.query(

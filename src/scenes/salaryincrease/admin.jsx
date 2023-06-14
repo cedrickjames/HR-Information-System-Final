@@ -1,9 +1,7 @@
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
-import Header from "../../components/Header";
 import Axios from "axios";
-import React,  { useEffect, useState, useContext } from "react";
-import Sample from "../../components/Sample";
+import React,  { useEffect, useState,  } from "react";
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,8 +11,6 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
 import Checkbox from '@mui/material/Checkbox';
@@ -27,18 +23,16 @@ import { visuallyHidden } from '@mui/utils';
 import { alpha } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
-import Divider from '@mui/material/Divider';
+
 import AppBar from '@mui/material/AppBar';
-import ListItemText from '@mui/material/ListItemText';
-import ListItem from '@mui/material/ListItem';
-import List from '@mui/material/List';
+
 import CloseIcon from '@mui/icons-material/Close';
 import Grid from '@mui/material/Unstable_Grid2';
 import { styled } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import InputLabel from '@mui/material/InputLabel';
+
 import '../../../node_modules/flowbite/dist/flowbite.css';
 import AddEmployee from "./addEmployee";
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -607,21 +601,32 @@ refreshTable();
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
-
+  let newSelected = [];
   const handleSelectAllClick = (event) => {
+
     if (event.target.checked) {
-      const newSelected = rows.map((n, index) => parseInt(index)+1);
-      setSelected(newSelected);
-      console.log(newSelected);
-      if(newSelected.length > 0){
+      const newSelected1 = rows.map((n, index) => parseInt(index)+1);
+      setSelected(newSelected1);
+      console.log(newSelected1);
+      if(newSelected1.length > 0){
         setdeleteButtonState(false)
+      console.log("true")
+
       } 
       else{
-        setdeleteButtonState(true)
   
+        setdeleteButtonState(true)
+      console.log("false")
+
       }
       return;
     }
+    else{
+      setSelected2([]);
+      console.log(event.target.checked)
+
+    }
+ 
     setSelected([]);
     setdeleteButtonState(true)
   };
@@ -636,14 +641,16 @@ refreshTable();
 
     console.log(selectedIndex)
 
-    let newSelected = [];
+    
     // selected2.push(id);
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, no);
       selected2.push(id);
+      
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
       selected2.splice(selectedIndex,1);
+      console.log("false")
 
     } else if (selectedIndex === selected.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1));
