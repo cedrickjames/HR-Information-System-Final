@@ -44,10 +44,10 @@ import AddEmployee from "./addEmployee";
 import useMediaQuery from '@mui/material/useMediaQuery';
 import EnhancedTable from './history';
 import { Button } from 'flowbite-react';
-import { AlertCircleOutline } from 'react-ionicons';
+
 // import  SalaryIncrease  from './index';
 import { Modal } from 'flowbite-react';
-// import { G } from 'react-ionicons';
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });

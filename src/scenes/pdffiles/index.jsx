@@ -1,9 +1,62 @@
-import React from 'react';
+import  React,  { useEffect, useState }  from 'react';
 import { Page, Text, View, Document, StyleSheet, PDFViewer, Font} from '@react-pdf/renderer';
 import '../../../node_modules/flowbite/dist/flowbite.css';
-import CourierBold from '../../assets/fonts/Courier BOLD.ttf'
 import ArialBold from '../../assets/fonts/ARLRDBD.TTF'
+import Axios from "axios";
 
+function createData(empNo, department, section, name, sex, birthday, age, dateHired, serviceTerm, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank,tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total, newEmployeeName,newEmpNo,newDateHired,newSection,newDepartment,newPosition,newDesignation,newClass,newLevel,newSalaryType,newBasicSalary,newPAllowance,newSpecialization,newLEAllowance,newCEAllowance) {
+  return {
+    empNo,
+    department,
+    section,
+    name,
+    sex,
+    birthday,
+    age,
+    dateHired,
+    serviceTerm,
+    position,
+    designation,
+    empClass,
+    level,
+    salaryType,
+    basicSalary,
+    daily,
+    monthlySalary,
+    pPEPoint,
+    pAllowance,
+    pRank,
+    tsPEPoint,
+    tsAllowance, 
+    tsRank,
+    leLicenseFee, 
+    lePEPoint,
+    leAllowance, 
+    leRank,
+    ceCertificateOnFee,
+    cePEPoint, 
+    ceAllowance, 
+    ceRank, 
+    Specialization,
+    total,
+    newEmployeeName,
+    newEmpNo,
+    newDateHired,
+    newSection,
+    newDepartment,
+    newPosition,
+    newDesignation,
+    newClass,
+    newLevel,
+    newSalaryType,
+    newBasicSalary,
+    newPAllowance,
+    newSpecialization,
+    newLEAllowance,
+    newCEAllowance
+
+  };
+}
 
 Font.register({ family: 'Arial-Bold', src: ArialBold });
 const styles = StyleSheet.create({
@@ -147,15 +200,111 @@ const styles = StyleSheet.create({
 });
 const items = ['item1', 'item2', 'item3'];
 
-const PDFDocument = () => (
-  <PDFViewer style={{ width: '100%', height: '100vh',backgroundColor:'white' }}>
-    <Document >
+const PDFDocument = () =>  {
+  const [documentName, setDocumentName] = useState('Salary Increase.pdf');
+  const [rows, setRows] = useState([]);
+  // console.log(employeeid);
+  useEffect(() => {
+
+
+      Axios.post("http://192.168.60.53:3001/beforeData", {
+        }).then((response) => {
+           console.log(response)
+          // console.log(response);(no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
+          const newRows = response.data.map(row => createData(
+            row.employeeId,
+            row.department,
+            row.section,
+            row.employeeName,
+            row.sex,
+            row.birthday,
+            row.age,
+            row.dateHired,
+            row.serviceTerm,
+            row.position,
+            row.designation,
+            row.class,
+            row.level,
+            row.salaryType,
+            row.basicSalary,
+            row.daily,
+            row.monthlySalary,
+            row.pPEPoint,
+            row.pAllowance,
+            row.pRank,
+            row.tsPEPoint,
+            row.tsAllowance,
+            row.tsRank,
+            row.leLicenseFee,
+            row.lePEPoint,
+            row.leAllowance,
+            row.leRank,
+            row.ceCertificateOnFee,
+            row.cePEPoint,
+            row.ceAllowance,
+            row.ceRank,
+            row.Specialization,
+            row.total, 
+            row.newEmployeeName,
+            row.newEmpNo,
+            row.newDateHired,
+            row.newSection,
+            row.newDepartment,
+            row.newPosition,
+            row.newDesignation,
+            row.newClass,
+            row.newLevel,
+            row.newSalaryType,
+            row.newBasicSalary,
+            row.newPAllowance,
+            row.newSpecialization,
+            row.newLEAllowance,
+            row.newCEAllowance
+        
+
+            ));
+          setRows(newRows);
+        });
+    }, []);
+
+return(
+  <PDFViewer  style={{ width: '100%', height: '100vh',backgroundColor:'white' }}>
+    <Document title="Salary Increase" >
     <Page size="A4" style={styles.page}> 
 
       <View style={styles.section}>
       <>
       {/* Other JSX code */}
-      {items.map((item, index) => {
+      {rows.map((item, index) => {
+        if(item.section===""){item.section="-"}
+        if(item.newSection===""){item.newSection="-"}
+
+        if(item.department===""){item.department="-"}
+        if(item.position===""){item.position="-"}
+        if(item.newPosition===""){item.newPosition="-"}
+        if(item.position===""){item.position="-"}
+        if(item.designation===""){item.designation="-"}
+        if(item.designation===""){item.designation="-"}
+        if(item.level===""){item.level="-"}
+        if(item.newLevel===""){item.newLevel="-"}
+        if(item.salaryType===""){item.salaryType="-"}
+        if(item.newSalaryType===""){item.newSalaryType="-"}
+        if(item.empClass===""){item.empClass="-"}
+        if(item.newClass===""){item.newClass="-"}
+        if(item.basicSalary===""){item.basicSalary="-"}
+        if(item.newBasicSalary===""){item.newBasicSalary="-"}
+        if(item.pAllowance===""){item.pAllowance="-"}
+        if(item.newPAllowance===""){item.newPAllowance="-"}
+        if(item.tsAllowance===""){item.tsAllowance="-"}
+        if(item.leAllowance===""){item.leAllowance="-"}
+        if(item.newLEAllowance===""){item.newLEAllowance="-"}
+        if(item.ceAllowance===""){item.ceAllowance="-"}
+        if(item.newCEAllowance===""){item.newCEAllowance="-"}
+        if(item.Specialization===""){item.Specialization="-"}
+        if(item.newSpecialization===""){item.newSpecialization="-"}
+
+        
+
         if (index % 2 === 1) { // Check if index is odd
           return (
             <View>
@@ -188,7 +337,7 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>DELA CRUZ, JUANA</Text> 
+            <Text style={styles.tableCell}>{item.newEmployeeName}</Text> 
           </View> 
           <View style={styles.tableCol}> 
             <Text style={styles.tableCell}></Text> 
@@ -202,7 +351,7 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>GP-22-722</Text> 
+            <Text style={styles.tableCell}>{item.newEmpNo}</Text> 
           </View> 
           <View style={styles.tableCol}> 
             <Text style={styles.tableCell}></Text> 
@@ -216,7 +365,7 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>November 06, 2018</Text> 
+            <Text style={styles.tableCell}>{item.newDateHired}</Text> 
           </View> 
           <View style={styles.tableCol}> 
             <Text style={styles.tableCell}></Text> 
@@ -245,10 +394,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>-</Text> 
+            <Text style={styles.tableCell}>{item.section}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>-</Text> 
+            <Text style={styles.tableCell}>{item.newSection}</Text> 
           </View> 
           
         </View>
@@ -258,10 +407,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Parts Inspection</Text> 
+            <Text style={styles.tableCell}>{item.department}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Parts Inspection</Text> 
+            <Text style={styles.tableCell}>{item.newDepartment}</Text> 
           </View> 
           
         </View>
@@ -271,10 +420,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Staff</Text> 
+            <Text style={styles.tableCell}>{item.position}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Specialist S1</Text> 
+            <Text style={styles.tableCell}>{item.newPosition}</Text> 
           </View> 
           
         </View>
@@ -285,10 +434,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Parts Inspection Staff</Text> 
+            <Text style={styles.tableCell}>{item.designation}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Parts Inspection Specialist</Text> 
+            <Text style={styles.tableCell}>{item.newDesignation}</Text> 
           </View> 
           
         </View>
@@ -298,10 +447,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>D1</Text> 
+            <Text style={styles.tableCell}>{item.empClass}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>DM2</Text> 
+            <Text style={styles.tableCell}>{item.newClass}</Text> 
           </View> 
           
         </View>
@@ -313,10 +462,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>8</Text> 
+            <Text style={styles.tableCell}>{item.level}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>1</Text> 
+            <Text style={styles.tableCell}>{item.newLevel}</Text> 
           </View> 
           
         </View>
@@ -327,10 +476,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Monthly</Text> 
+            <Text style={styles.tableCell}>{item.salaryType}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Monthly</Text> 
+            <Text style={styles.tableCell}>{item.newSalaryType}</Text> 
           </View> 
           
         </View>
@@ -354,10 +503,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>422.00</Text> 
+            <Text style={styles.tableCell}>{item.basicSalary}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>500.00</Text> 
+            <Text style={styles.tableCell}>{item.newBasicSalary}</Text> 
           </View> 
           
         </View>
@@ -367,10 +516,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>-</Text> 
+            <Text style={styles.tableCell}>{item.pAllowance}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>1000</Text> 
+            <Text style={styles.tableCell}>{item.newPAllowance}</Text> 
           </View> 
           
         </View>
@@ -395,10 +544,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>-</Text> 
+            <Text style={styles.tableCell}>{item.Specialization}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>3,000.00</Text> 
+            <Text style={styles.tableCell}>{item.newSpecialization}</Text> 
           </View> 
           
         </View>
@@ -408,10 +557,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>-</Text> 
+            <Text style={styles.tableCell}>{item.leAllowance}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>4,000.00</Text> 
+            <Text style={styles.tableCell}>{item.newLEAllowance}</Text> 
           </View> 
           
         </View> 
@@ -421,10 +570,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>-</Text> 
+            <Text style={styles.tableCell}>{item.ceAllowance}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>1,000.00</Text> 
+            <Text style={styles.tableCell}>{item.newCEAllowance}</Text> 
           </View> 
           
         </View>
@@ -522,6 +671,7 @@ const PDFDocument = () => (
           );
         } 
         else if(index === 0 || index % 2 === 0){
+          
           return (
             <View>
              
@@ -553,7 +703,7 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>DELA CRUZ, JUANA</Text> 
+            <Text style={styles.tableCell}>{item.newEmployeeName}</Text> 
           </View> 
           <View style={styles.tableCol}> 
             <Text style={styles.tableCell}></Text> 
@@ -567,7 +717,7 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>GP-22-722</Text> 
+            <Text style={styles.tableCell}>{item.newEmpNo}</Text> 
           </View> 
           <View style={styles.tableCol}> 
             <Text style={styles.tableCell}></Text> 
@@ -581,7 +731,7 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>November 06, 2018</Text> 
+            <Text style={styles.tableCell}>{item.newDateHired}</Text> 
           </View> 
           <View style={styles.tableCol}> 
             <Text style={styles.tableCell}></Text> 
@@ -610,10 +760,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>-</Text> 
+            <Text style={styles.tableCell}>{item.section}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>-</Text> 
+            <Text style={styles.tableCell}>{item.newSection}</Text> 
           </View> 
           
         </View>
@@ -623,10 +773,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Parts Inspection</Text> 
+            <Text style={styles.tableCell}>{item.department}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Parts Inspection</Text> 
+            <Text style={styles.tableCell}>{item.newDepartment}</Text> 
           </View> 
           
         </View>
@@ -636,10 +786,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Staff</Text> 
+            <Text style={styles.tableCell}>{item.position}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Specialist S1</Text> 
+            <Text style={styles.tableCell}>{item.newPosition}</Text> 
           </View> 
           
         </View>
@@ -650,10 +800,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Parts Inspection Staff</Text> 
+            <Text style={styles.tableCell}>{item.designation}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Parts Inspection Specialist</Text> 
+            <Text style={styles.tableCell}>{item.newDesignation}</Text> 
           </View> 
           
         </View>
@@ -663,10 +813,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>D1</Text> 
+            <Text style={styles.tableCell}>{item.empClass}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>DM2</Text> 
+            <Text style={styles.tableCell}>{item.newClass}</Text> 
           </View> 
           
         </View>
@@ -678,10 +828,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>8</Text> 
+            <Text style={styles.tableCell}>{item.level}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>1</Text> 
+            <Text style={styles.tableCell}>{item.newLevel}</Text> 
           </View> 
           
         </View>
@@ -692,10 +842,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Monthly</Text> 
+            <Text style={styles.tableCell}>{item.salaryType}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>Monthly</Text> 
+            <Text style={styles.tableCell}>{item.newSalaryType}</Text> 
           </View> 
           
         </View>
@@ -719,10 +869,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>422.00</Text> 
+            <Text style={styles.tableCell}>{item.basicSalary}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>500.00</Text> 
+            <Text style={styles.tableCell}>{item.newBasicSalary}</Text> 
           </View> 
           
         </View>
@@ -732,10 +882,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>-</Text> 
+            <Text style={styles.tableCell}>{item.pAllowance}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>1000</Text> 
+            <Text style={styles.tableCell}>{item.newPAllowance}</Text> 
           </View> 
           
         </View>
@@ -760,10 +910,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>-</Text> 
+            <Text style={styles.tableCell}>{item.Specialization}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>3,000.00</Text> 
+            <Text style={styles.tableCell}>{item.newSpecialization}</Text> 
           </View> 
           
         </View>
@@ -773,10 +923,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>-</Text> 
+            <Text style={styles.tableCell}>{item.leAllowance}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>4,000.00</Text> 
+            <Text style={styles.tableCell}>{item.newLEAllowance}</Text> 
           </View> 
           
         </View> 
@@ -786,10 +936,10 @@ const PDFDocument = () => (
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>-</Text> 
+            <Text style={styles.tableCell}>{item.ceAllowance}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>1,000.00</Text> 
+            <Text style={styles.tableCell}>{item.newCEAllowance}</Text> 
           </View> 
           
         </View>
@@ -874,6 +1024,7 @@ const PDFDocument = () => (
             <Text style={styles.tableCell}></Text> 
           </View> 
           
+          
         </View>
         <Text style={styles.header} > {'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}</Text>
         <Text style={styles.header} > {'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}</Text>
@@ -904,7 +1055,7 @@ const PDFDocument = () => (
     
   </Document>
   </PDFViewer>
-  
-);
+)
+    };
 
 export default PDFDocument;

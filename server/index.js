@@ -178,6 +178,134 @@ app.post("/history", (req, res)=>{
     //    console.log(err);
     });
 });
+
+app.post("/beforeData", (req, res)=>{
+  const query = `SELECT
+  si.empNo AS employeeId,
+  COALESCE(MAX(CASE WHEN h.field = 'department' THEN h.hr_from END), si.department) AS department,
+  COALESCE(MAX(CASE WHEN h.field = 'section' THEN h.hr_from END), si.section) AS section,
+  COALESCE(MAX(CASE WHEN h.field = 'employeeName' THEN h.hr_from END), si.employeeName) AS employeeName,
+  COALESCE(MAX(CASE WHEN h.field = 'sex' THEN h.hr_from END), si.sex) AS sex,
+  COALESCE(MAX(CASE WHEN h.field = 'birthday' THEN h.hr_from END), si.birthday) AS birthday,
+  COALESCE(MAX(CASE WHEN h.field = 'age' THEN h.hr_from END), si.age) AS age,
+  COALESCE(MAX(CASE WHEN h.field = 'dateHired' THEN h.hr_from END), si.dateHired) AS dateHired,
+  COALESCE(MAX(CASE WHEN h.field = 'serviceTerm' THEN h.hr_from END), si.serviceTerm) AS serviceTerm,
+  COALESCE(MAX(CASE WHEN h.field = 'position' THEN h.hr_from END), si.position) AS 'position',
+  COALESCE(MAX(CASE WHEN h.field = 'designation' THEN h.hr_from END), si.designation) AS designation,
+  COALESCE(MAX(CASE WHEN h.field = 'class' THEN h.hr_from END), si.class) AS class,
+  COALESCE(MAX(CASE WHEN h.field = 'level' THEN h.hr_from END), si.level) AS level,
+  COALESCE(MAX(CASE WHEN h.field = 'salaryType' THEN h.hr_from END), si.salaryType) AS salaryType,
+  COALESCE(MAX(CASE WHEN h.field = 'basicSalary' THEN h.hr_from END), si.basicSalary) AS basicSalary,
+  COALESCE(MAX(CASE WHEN h.field = 'daily' THEN h.hr_from END), si.daily) AS daily,
+  COALESCE(MAX(CASE WHEN h.field = 'monthlySalary' THEN h.hr_from END), si.monthlySalary) AS monthlySalary,
+  COALESCE(MAX(CASE WHEN h.field = 'pPEPoint' THEN h.hr_from END), si.pPEPoint) AS pPEPoint,
+  COALESCE(MAX(CASE WHEN h.field = 'pAllowance' THEN h.hr_from END), si.pAllowance) AS pAllowance,
+  COALESCE(MAX(CASE WHEN h.field = 'pRank' THEN h.hr_from END), si.pRank) AS pRank,
+  COALESCE(MAX(CASE WHEN h.field = 'tsPEPoint' THEN h.hr_from END), si.tsPEPoint) AS tsPEPoint,
+  COALESCE(MAX(CASE WHEN h.field = 'tsAllowance' THEN h.hr_from END), si.tsAllowance) AS tsAllowance,
+  COALESCE(MAX(CASE WHEN h.field = 'tsRank' THEN h.hr_from END), si.tsRank) AS tsRank,
+  COALESCE(MAX(CASE WHEN h.field = 'leLicenseFee' THEN h.hr_from END), si.leLicenseFee) AS leLicenseFee,
+  COALESCE(MAX(CASE WHEN h.field = 'lePEPoint' THEN h.hr_from END), si.lePEPoint) AS lePEPoint,
+  COALESCE(MAX(CASE WHEN h.field = 'leAllowance' THEN h.hr_from END), si.leAllowance) AS leAllowance,
+  COALESCE(MAX(CASE WHEN h.field = 'leRank' THEN h.hr_from END), si.leRank) AS leRank,
+  COALESCE(MAX(CASE WHEN h.field = 'ceCertificateOnFee' THEN h.hr_from END), si.ceCertificateOnFee) AS ceLicenseFee,
+  COALESCE(MAX(CASE WHEN h.field = 'cePEPoint' THEN h.hr_from END), si.cePEPoint) AS cePEPoint,
+  COALESCE(MAX(CASE WHEN h.field = 'ceAllowance' THEN h.hr_from END), si.ceAllowance) AS ceAllowance,
+  COALESCE(MAX(CASE WHEN h.field = 'ceRank' THEN h.hr_from END), si.ceRank) AS ceRank,
+  COALESCE(MAX(CASE WHEN h.field = 'Specialization' THEN h.hr_from END), si.Specialization) AS Specialization,
+  
+  si.total,
+  si.employeeName as newEmployeeName,
+  si.empNo as newEmpNo,
+  si.dateHired as newDateHired,
+  si.section as newSection,
+  si.department as newDepartment,
+  si.position as newPosition,
+  si.designation as newDesignation,
+  si.class as newClass,
+  si.level as newLevel,
+  si.salaryType as newSalaryType,
+  si.basicSalary as newBasicSalary,
+  si.pAllowance as newPAllowance,
+  si.Specialization as newSpecialization,
+  si.leAllowance as newLEAllowance,
+  si.ceAllowance as newCEAllowance
+ 
+FROM
+  salaryincrease si
+LEFT JOIN (
+  SELECT
+    h1.employeeId,
+    h1.field,
+    h1.hr_from
+  FROM
+    history h1
+    JOIN (
+      SELECT
+        employeeId,
+        MIN(dateModified) AS maxDate
+      FROM
+        history
+      GROUP BY
+        employeeId
+    ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateModified = subquery.maxDate
+  WHERE
+    (h1.employeeId, h1.dateModified, h1.field, h1.id) IN (
+      SELECT
+        employeeId,
+        dateModified,
+        field,
+        MAX(id)
+      FROM
+        history
+      WHERE
+        (employeeId, dateModified, field) IN (
+          SELECT
+            employeeId,
+            dateModified,
+            field
+          FROM
+            history
+          GROUP BY
+            employeeId,
+            dateModified,
+            field
+          HAVING
+            MAX(id) = MAX(CASE WHEN dateModified = subquery.maxDate THEN id END)
+        )
+      GROUP BY
+        employeeId,
+        dateModified,
+        field
+    )
+) h ON si.empNo = h.employeeId
+GROUP BY
+  si.empNo
+ORDER BY
+  si.empNo;
+
+
+
+
+  `;
+  // const sqlSelect = ;
+  db.query(
+    query,
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+          }
+              if(result.length > 0){
+                  res.send(result)
+              }else{
+                  res.send({message: "No Data Found"});
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
 app.post("/addemployee", (req, res)=>{
   const department = req.body.department;
   const daily = req.body.daily;
