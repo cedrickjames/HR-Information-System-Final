@@ -23,7 +23,7 @@ import { visuallyHidden } from '@mui/utils';
 import { alpha } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import Slide from '@mui/material/Slide';
-
+import { useNavigate  } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 
 import CloseIcon from '@mui/icons-material/Close';
@@ -293,6 +293,39 @@ function EnhancedTableHead(props) {
   
 const SIAdmin = (props ) => {
 
+  
+  const [inputValue, setInputValue] = useState('');
+  const [inputValueDate, setInputValueDate] = useState('');
+
+
+  useEffect(() => {
+    const storedValue = localStorage.getItem('inputValue');
+    if (storedValue) {
+      setInputValue(storedValue);
+    }
+    const storedValueDate = localStorage.getItem('inputValueDate');
+    if (storedValueDate) {
+      setInputValueDate(storedValueDate);
+    }
+  }, []);
+
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setInputValue(value);
+    localStorage.setItem('inputValue', value);
+  };
+  const handleInputChangeDate = (event) => {
+    const valueDate = event.target.value;
+    setInputValueDate(valueDate);
+    localStorage.setItem('inputValueDate', valueDate);
+  };
+
+  const [customValue, setCustomValue] = useState('');
+  const navigate = useNavigate();
+  const openPDF = (value) => {
+    setCustomValue(value);
+    navigate('/pdffiles', { state: { customValue: value, customValueDate: inputValueDate, customValueAction: inputValue} });
+  };
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const closeModal = () => {
@@ -329,11 +362,13 @@ const SIAdmin = (props ) => {
 // console.log({fullName});
   const [employeeId, setEmployeeId] = useState([]);
   const [deleteButtonState, setdeleteButtonState] = useState(true);
+  const [dateOfEffectiveness, setDateOfEffectiveness] = React.useState('');
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
-    const { department, tabNumber, setValue } = props;
+    const { department, tabNumber, setValue, date } = props;
+    // setDateOfEffectiveness(date);
     // console.log(props);
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
@@ -357,15 +392,15 @@ const SIAdmin = (props ) => {
   const [posRank, setPosRank] = React.useState('');
 
   const [tsPEPoint, settsPEPoint] = React.useState('');
-  const [tsAllowance, settsAllowance] = React.useState('');
+  const [tsAllowance, settsAllowance] = useState('');
   const [tsRank, settsRank] = React.useState('');
   const [leLicenseFee, setleLicenseFee] = React.useState('');
   const [lePEPoint, setlePEPoint] = React.useState('');
-  const [leAllowance, setleAllowance] = React.useState('');
+  const [leAllowance, setleAllowance] = useState('');
   const [leRank, setleRank] = React.useState('');
   const [ceCertificateOnFee, setceCertificateOnFee] = React.useState('');
   const [cePEPoint, setcePEPoint] = React.useState('');
-  const [ceAllowance, setceAllowance] = React.useState('');
+  const [ceAllowance, setceAllowance] = useState('');
   const [ceRank, setceRank] = React.useState('');
   const [Specialization, setSpecialization] = React.useState('');
   const [total, settotal] = React.useState('');
@@ -376,6 +411,71 @@ const SIAdmin = (props ) => {
   const [dateHired, setdateHired] = React.useState('');
   const [serviceTerm, setserviceTerm] = React.useState('');
   const [section, setSection] = React.useState('');
+  const [overallBefore, setOverAllBefore] = React.useState('');
+
+
+
+  const [value1, setValue1] = useState('');
+  const [value2, setValue2] = useState('');
+  const [value3, setValue3] = useState('');
+
+  const [sum, setSum] = useState(0);
+  const [overallTotal, setOverAllTotal] = useState(0);
+  const [up, setUp] = useState(0);
+  const [percentage, setPercentage] = useState(0);
+
+
+
+  const handleChange1 = (event) => {
+    settsAllowance(event.target.value);
+  };
+
+  const handleChange2 = (event) => {
+    setleAllowance(event.target.value);
+  };
+
+  const handleChange3 = (event) => {
+    setceAllowance(event.target.value);
+  };
+
+
+  // React.useEffect(() => {
+  //   setSpecialization(parseFloat(tsAllowance) + parseFloat(leAllowance) + parseFloat(ceAllowance));
+  // }, [tsAllowance, leAllowance, ceAllowance]);
+
+  React.useEffect(() => {
+    const num1 = parseFloat(tsAllowance);
+    const num2 = parseFloat(leAllowance);
+    const num3 = parseFloat(ceAllowance);
+    const total = isNaN(num1) ? 0 : num1 + (isNaN(num2) ? 0 : num2) + (isNaN(num3) ? 0 : num3);
+    setSum(total);
+  }, [tsAllowance, leAllowance, ceAllowance]);
+
+  
+  React.useEffect(() => {
+    const num1bs = parseFloat(monthlySalary);
+    const num2pa = parseFloat(posAllowance);
+    const num3ts = parseFloat(tsAllowance);
+    const num4ll = parseFloat(leLicenseFee);
+    const num5la= parseFloat(leAllowance);
+    const num6cc = parseFloat(ceCertificateOnFee);
+    const num7ca = parseFloat(ceAllowance);
+
+
+    const totaloverall = isNaN(num1bs) ? 0 : num1bs + (isNaN(num2pa) ? 0 : num2pa) + (isNaN(num3ts) ? 0 : num3ts)+ (isNaN(num4ll) ? 0 : num4ll)+ (isNaN(num5la) ? 0 : num5la)+ (isNaN(num6cc) ? 0 : num6cc)+ (isNaN(num7ca) ? 0 : num7ca);
+    setOverAllTotal(totaloverall);
+
+    const difference = isNaN(totaloverall) ? 0 : totaloverall - (isNaN(overallBefore) ? 0 : overallBefore);
+    setUp(difference)
+
+    const percentages = ((isNaN(difference) ? 0 : difference / (isNaN(overallBefore)? 0 : overallBefore))*100).toFixed(2);
+    setPercentage(percentages+"%")
+  }, [monthlySalary,posAllowance,tsAllowance,leLicenseFee,leAllowance,ceCertificateOnFee,ceAllowance,overallBefore ]);
+
+
+
+  
+
 
 
   const refreshTable1 = () => {
@@ -529,7 +629,7 @@ const SIAdmin = (props ) => {
       cePEPoint :cePEPoint, 
       ceAllowance :ceAllowance, 
       ceRank :ceRank, 
-      Specialization :Specialization, 
+      Specialization :sum, 
       total :total, 
       birthday :birthday, 
       age :age, 
@@ -585,6 +685,8 @@ refreshTable();
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(100);
   const [searchQuery, setSearchQuery] = React.useState('');
+
+
 
 
   const filteredRows = rows.filter(row => {
@@ -678,7 +780,22 @@ refreshTable();
 
     }
   };
+const setDate = (date) =>{
+  localStorage.setItem("dateOfEffectivity", date)
+  setDateOfEffectiveness(date);
+  // console.log(localStorage.getItem("dateOfEffectivity"));
+  // console.log(dateOfEffectiveness);
 
+
+};
+const setAction = (action) =>{
+  localStorage.setItem("action", action)
+  // setDateOfEffectiveness(date);
+  // console.log(localStorage.getItem("dateOfEffectivity"));
+  // console.log(dateOfEffectiveness);
+
+
+};
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -700,6 +817,14 @@ refreshTable();
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = (type, employee) => {
+
+      Axios.post("http://192.168.60.53:3001/totalBefore", {
+        empNo: employee.empNo,
+      }).then((response) => {
+        console.log(response.data[0].total_sum);
+        setOverAllBefore(response.data[0].total_sum)
+
+      });
       setEmpId(employee.no);
       setEmpName(employee.name);
       setEmpNumber(employee.empNo);
@@ -727,7 +852,7 @@ refreshTable();
       setcePEPoint(employee.cePEPoint) ;
       setceAllowance(employee.ceAllowance) ;
       setceRank(employee.ceRank) 
-      setSpecialization(employee.Specialization) ;
+      // setSpecialization(employee.Specialization) ;
       settotal(employee.total);
       setSection(employee.section)
       setbirthday(employee.birthday)
@@ -820,6 +945,38 @@ refreshTable();
         {/* <Button gradientMonochrome="info">
   Info
 </Button> */}
+    <div className="relative  w-96 mr-2">
+    <input    value={inputValue}
+      onChange={handleInputChange} type="text" id="floating_outlined" className=" h-10 block  w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+    {selected.length > 0 ? (
+         <label 
+         style={{ backgroundColor: colors.grey[900] }}
+         
+         className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Nature of Action</label>
+        ) : (
+          <label 
+     style={{ backgroundColor: colors.lebelbg[100] }}
+     
+     className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Nature of Action</label>
+        )}
+    
+</div>
+    <div className="relative  w-96 mr-2">
+    <input    value={inputValueDate}
+      onChange={handleInputChangeDate}  type="date" id="floating_outlined" className=" h-10 block  w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+    {selected.length > 0 ? (
+         <label 
+         style={{ backgroundColor: colors.grey[900] }}
+         
+         className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Date of Effectivity</label>
+        ) : (
+          <label 
+     style={{ backgroundColor: colors.lebelbg[100] }}
+     
+     className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Date of Effectivity</label>
+        )}
+    
+</div>
           <button
          onClick={openModal}
           hidden = {deleteButtonState}
@@ -829,7 +986,18 @@ refreshTable();
     >
      Deactivate
     </button>
- 
+
+
+    <button 
+       
+       onClick={() => openPDF({department})}
+      type="button"
+      data-custom-attribute="some value"
+      className=" text-white h-10 w-96  bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 "
+    >
+     P.A. Form
+   
+    </button>
         <button
       onClick={() => {
         setOpenAdd(true);
@@ -979,6 +1147,7 @@ refreshTable();
         <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
         />
+
         <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
           <AppBar sx={{ position: 'relative', backgroundColor:'#0C366B'}}>
             <Toolbar>
@@ -1013,9 +1182,9 @@ refreshTable();
                     <Grid lg={4} sm={6} xs={12}><TextField  required  label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /></Grid>
                     <Grid lg={4} sm={6} xs={12}><TextField required  label="Level" defaultValue={level} onChange={(e) => setLevel(e.target.value)}   fullWidth /></Grid>
                     <Grid lg={4} sm={6} xs={12}><TextField required  label="Salary" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required  label="Basic Salary" defaultValue={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required  label="Daily" defaultValue={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required  label="Monthly Salary" defaultValue={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required type="number" label="Basic Salary" defaultValue={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required type="number" label="Daily" defaultValue={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required type="number" label="Monthly Salary" defaultValue={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
 
                   </Grid>  
                   
@@ -1024,7 +1193,7 @@ refreshTable();
                   </Typography>
                   <Grid container spacing={1}>
                     <Grid lg={3} sm={6} xs={12}><TextField required  label="PE Point" defaultValue={posPe} onChange={(e) => setPosPe(e.target.value)} fullWidth /></Grid>
-                    <Grid lg={6} sm={6} xs={12}><TextField required  label="Allowance" defaultValue={posAllowance} onChange={(e) => setPosAllowance(e.target.value)} fullWidth /></Grid>
+                    <Grid lg={6} sm={6} xs={12}><TextField required type="number" label="Allowance" defaultValue={posAllowance} onChange={(e) => setPosAllowance(e.target.value)} fullWidth /></Grid>
                     <Grid lg={3} sm={6} xs={12}><TextField required  label="Rank" defaultValue={posRank} onChange={(e) => setPosRank(e.target.value)}  fullWidth/></Grid>
                   </Grid>
                  
@@ -1040,7 +1209,7 @@ refreshTable();
                   </Typography>
                   <Grid container spacing={1}>
                   <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={tsPEPoint} onChange={(e) => settsPEPoint(e.target.value)} fullWidth /></Grid>
-                  <Grid xs={12} sm={6}><TextField required  label="Allowance"defaultValue={tsAllowance} onChange={(e) => settsAllowance(e.target.value)}   fullWidth /></Grid>
+                  <Grid xs={12} sm={6}><TextField required type="number" label="Allowance" value={tsAllowance} onChange={handleChange1}  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="Rank" defaultValue={tsRank} onChange={(e) => settsRank(e.target.value)}   fullWidth /></Grid>
                   </Grid>
 
@@ -1048,25 +1217,25 @@ refreshTable();
                     License Evaluation
                   </Typography>
                   <Grid container spacing={1}>
-                  <Grid xs={12} sm={3}><TextField required  label="License Fee" defaultValue={leLicenseFee} onChange={(e) => setleLicenseFee(e.target.value)}   fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required type="number" label="License Fee" defaultValue={leLicenseFee} onChange={(e) => setleLicenseFee(e.target.value)}   fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={lePEPoint} onChange={(e) => setlePEPoint(e.target.value)}  fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required  label="Allowance (PF1)" defaultValue={leAllowance} onChange={(e) => setleAllowance(e.target.value)}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required type="number" label="Allowance (PF1)" value={leAllowance} onChange={handleChange2}  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="Rank" defaultValue={leRank} onChange={(e) => setleRank(e.target.value)}  fullWidth /></Grid>   
                   </Grid>
                    <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Certification / Evaluation
                   </Typography>
                   <Grid container spacing={1}>
-                  <Grid xs={12} sm={3}><TextField required  label="Certification Fee" defaultValue={ceCertificateOnFee} onChange={(e) => setceCertificateOnFee(e.target.value)}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required type="number" label="Certification Fee" defaultValue={ceCertificateOnFee} onChange={(e) => setceCertificateOnFee(e.target.value)}  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={cePEPoint} onChange={(e) => setcePEPoint(e.target.value)}  fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required  label="Allowance (PF2)" defaultValue={ceAllowance} onChange={(e) => setceAllowance(e.target.value)}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required type="number" label="Allowance (PF2)" value={ceAllowance} onChange={handleChange3} fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="Rank" defaultValue={ceRank} onChange={(e) => setceRank(e.target.value)}  fullWidth /></Grid>   
                   </Grid>
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Specialization
                   </Typography>
                   <Grid container spacing={1}>
-                  <Grid xs={12} sm={12}><TextField required  label="Rank" defaultValue={Specialization} onChange={(e) => setSpecialization(e.target.value)}  fullWidth /></Grid>   
+                  <Grid xs={12} sm={12}><TextField required  value={sum} readOnly   fullWidth /></Grid>   
                   </Grid>
                 </Item>
               </Grid>
@@ -1113,7 +1282,14 @@ refreshTable();
 
 
                   </Grid> 
-                  
+                  <Typography variant="h5" gutterBottom align="center" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Summary
+                  </Typography>    
+                  <Grid container spacing={1}>
+                  <Grid xs={12} sm={4}><TextField required  label="Total"  value={overallTotal} readOnly fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField required  label="ＵＰ額"  value={up} readOnly fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField required  label="Percentage"  value={percentage} readOnly fullWidth /></Grid>
+                    </Grid>         
                 </Item>
                
               </Grid>

@@ -259,7 +259,7 @@
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-        <SIAdmin department={"Administration"} fullName = {name} tabNumber = {0} setValue={setValue}/>
+        <SIAdmin department={"Administration"} fullName = {name} tabNumber = {0} setValue={setValue} date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
         <SIAdmin department={"Accounting"}  fullName = {name} tabNumber = {1} setValue={setValue}/>

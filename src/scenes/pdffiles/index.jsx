@@ -3,8 +3,9 @@ import { Page, Text, View, Document, StyleSheet, PDFViewer, Font} from '@react-p
 import '../../../node_modules/flowbite/dist/flowbite.css';
 import ArialBold from '../../assets/fonts/ARLRDBD.TTF'
 import Axios from "axios";
-
-function createData(empNo, department, section, name, sex, birthday, age, dateHired, serviceTerm, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank,tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total, newEmployeeName,newEmpNo,newDateHired,newSection,newDepartment,newPosition,newDesignation,newClass,newLevel,newSalaryType,newBasicSalary,newPAllowance,newSpecialization,newLEAllowance,newCEAllowance) {
+import { Helmet } from 'react-helmet';
+import { useLocation } from 'react-router-dom';
+function createData(empNo, department, section, name, sex, birthday, age, dateHired, serviceTerm, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank,tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total, newEmployeeName,newEmpNo,newDateHired,newSection,newDepartment,newPosition,newDesignation,newClass,newLevel,newSalaryType,newBasicSalary,newPAllowance,newSpecialization,newLEAllowance,newCEAllowance,newleLicenseFee,newceCertificateOnFee) {
   return {
     empNo,
     department,
@@ -53,7 +54,9 @@ function createData(empNo, department, section, name, sex, birthday, age, dateHi
     newPAllowance,
     newSpecialization,
     newLEAllowance,
-    newCEAllowance
+    newCEAllowance,
+    newleLicenseFee,
+    newceCertificateOnFee
 
   };
 }
@@ -198,16 +201,36 @@ const styles = StyleSheet.create({
 
 
 });
-const items = ['item1', 'item2', 'item3'];
+
 
 const PDFDocument = () =>  {
-  const [documentName, setDocumentName] = useState('Salary Increase.pdf');
+
   const [rows, setRows] = useState([]);
+  const [dateEffect, setDateEffect] = useState();
+  const [natureOfAction, setNatureOfAction] = useState();
+
+
+  const location = useLocation();
   // console.log(employeeid);
   useEffect(() => {
+    const customValue = location?.state?.customValue;
+    const customValueDate = location?.state?.customValueDate;
+    const inputValue = location?.state?.customValueAction;
 
+
+    const formattedDate = new Date(customValueDate).toLocaleDateString('en-US', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric',
+    });
+    setDateEffect(formattedDate);
+    setNatureOfAction(inputValue);
+    console.log(customValue.department);
+    console.log(customValueDate);
 
       Axios.post("http://192.168.60.53:3001/beforeData", {
+        department: customValue.department,
+
         }).then((response) => {
            console.log(response)
           // console.log(response);(no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
@@ -259,16 +282,21 @@ const PDFDocument = () =>  {
             row.newPAllowance,
             row.newSpecialization,
             row.newLEAllowance,
-            row.newCEAllowance
-        
+            row.newCEAllowance,
+            row.newleLicenseFee,
+            row.newceCertificateOnFee
 
             ));
           setRows(newRows);
         });
-    }, []);
+    },  [location]);
 
 return(
+  
   <PDFViewer  style={{ width: '100%', height: '100vh',backgroundColor:'white' }}>
+     <Helmet>
+        <title>Administration</title>
+      </Helmet>
     <Document title="Salary Increase" >
     <Page size="A4" style={styles.page}> 
 
@@ -283,7 +311,6 @@ return(
         if(item.position===""){item.position="-"}
         if(item.newPosition===""){item.newPosition="-"}
         if(item.position===""){item.position="-"}
-        if(item.designation===""){item.designation="-"}
         if(item.designation===""){item.designation="-"}
         if(item.level===""){item.level="-"}
         if(item.newLevel===""){item.newLevel="-"}
@@ -302,6 +329,11 @@ return(
         if(item.newCEAllowance===""){item.newCEAllowance="-"}
         if(item.Specialization===""){item.Specialization="-"}
         if(item.newSpecialization===""){item.newSpecialization="-"}
+        if(item.leLicenseFee===""){item.leLicenseFee="-"}
+        if(item.newleLicenseFee===""){item.newleLicenseFee="-"}
+        if(item.ceCertificateOnFee===""){item.ceCertificateOnFee="-"}
+        if(item.newceCertificateOnFee===""){item.newceCertificateOnFee="-"}
+        
 
         
 
@@ -327,7 +359,7 @@ return(
             <Text style={styles.tableCell}>EFFECTIVITY DATE: </Text> 
           </View> 
           <View style={styles.tableColLine1Effect}> 
-            <Text style={styles.tableCell}>December 30, 2022</Text> 
+            <Text style={styles.tableCell}>{dateEffect}</Text> 
           </View> 
           
         </View>
@@ -557,10 +589,10 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.leAllowance}</Text> 
+            <Text style={styles.tableCell}>{item.leLicenseFee}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newLEAllowance}</Text> 
+            <Text style={styles.tableCell}>{item.newleLicenseFee}</Text> 
           </View> 
           
         </View> 
@@ -570,10 +602,10 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.ceAllowance}</Text> 
+            <Text style={styles.tableCell}>{item.ceCertificateOnFee}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newCEAllowance}</Text> 
+            <Text style={styles.tableCell}>{item.newceCertificateOnFee}</Text> 
           </View> 
           
         </View>
@@ -584,7 +616,7 @@ return(
           </View> 
           
           <View style={styles.tableCol2Wage}> 
-            <Text style={styles.header}>Wage Increase</Text> 
+            <Text style={styles.header}>{natureOfAction}</Text> 
           </View> 
           
           
@@ -693,7 +725,7 @@ return(
             <Text style={styles.tableCell}>EFFECTIVITY DATE: </Text> 
           </View> 
           <View style={styles.tableColLine1Effect}> 
-            <Text style={styles.tableCell}>December 30, 2022</Text> 
+            <Text style={styles.tableCell}>{dateEffect}</Text> 
           </View> 
           
         </View>
@@ -950,7 +982,7 @@ return(
           </View> 
           
           <View style={styles.tableCol2Wage}> 
-            <Text style={styles.header}>Wage Increase</Text> 
+            <Text style={styles.header}>{natureOfAction}</Text> 
           </View> 
           
           

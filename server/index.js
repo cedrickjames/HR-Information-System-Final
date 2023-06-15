@@ -178,8 +178,92 @@ app.post("/history", (req, res)=>{
     //    console.log(err);
     });
 });
+app.post("/totalBefore", (req, res)=>{
+  const empNo = req.body.empNo;
+  const query = `SELECT
+  si.empNo AS employeeId,
+  (COALESCE(MAX(CASE WHEN h.field = 'monthlySalary' THEN h.hr_from END), si.monthlySalary)+
+   COALESCE(MAX(CASE WHEN h.field = 'pAllowance' THEN h.hr_from END), si.pAllowance)+
+   COALESCE(MAX(CASE WHEN h.field = 'tsAllowance' THEN h.hr_from END), si.tsAllowance)+
+   COALESCE(MAX(CASE WHEN h.field = 'leLicenseFee' THEN h.hr_from END), si.leLicenseFee)+
+   COALESCE(MAX(CASE WHEN h.field = 'leAllowance' THEN h.hr_from END), si.leAllowance)+
+   COALESCE(MAX(CASE WHEN h.field = 'ceCertificateOnFee' THEN h.hr_from END), si.ceCertificateOnFee)+
+   COALESCE(MAX(CASE WHEN h.field = 'ceAllowance' THEN h.hr_from END), si.ceAllowance)) AS total_sum
+FROM
+  salaryincrease si
+LEFT JOIN (
+  SELECT
+    h1.employeeId,
+    h1.field,
+    h1.hr_from
+  FROM
+    history h1
+    JOIN (
+      SELECT
+        employeeId,
+        MAX(dateModified) AS maxDate
+      FROM
+        history
+      GROUP BY
+        employeeId
+    ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateModified = subquery.maxDate
+  WHERE
+    (h1.employeeId, h1.dateModified, h1.field, h1.id) IN (
+      SELECT
+        employeeId,
+        dateModified,
+        field,
+        MAX(id)
+      FROM
+        history
+      WHERE
+        (employeeId, dateModified, field) IN (
+          SELECT
+            employeeId,
+            dateModified,
+            field
+          FROM
+            history
+          GROUP BY
+            employeeId,
+            dateModified,
+            field
+          HAVING
+            MAX(id) = MAX(CASE WHEN dateModified = subquery.maxDate THEN id END)
+        )
+      GROUP BY
+        employeeId,
+        dateModified,
+        field
+    )
+) h ON si.empNo = h.employeeId WHERE si.empNo = ?
+GROUP BY
+  si.empNo
+ORDER BY
+  si.empNo;
+  `;
+  // const sqlSelect = ;
+  db.query(
+    query,[empNo],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+          }
+              if(result.length > 0){
+                  res.send(result)
+              }else{
+                  res.send({message: "No Data Found"});
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
+
 
 app.post("/beforeData", (req, res)=>{
+  const department = req.body.department;
   const query = `SELECT
   si.empNo AS employeeId,
   COALESCE(MAX(CASE WHEN h.field = 'department' THEN h.hr_from END), si.department) AS department,
@@ -229,7 +313,9 @@ app.post("/beforeData", (req, res)=>{
   si.pAllowance as newPAllowance,
   si.Specialization as newSpecialization,
   si.leAllowance as newLEAllowance,
-  si.ceAllowance as newCEAllowance
+  si.ceAllowance as newCEAllowance,
+  si.leLicenseFee as newleLicenseFee,
+  si.ceCertificateOnFee as newceCertificateOnFee
  
 FROM
   salaryincrease si
@@ -278,7 +364,7 @@ LEFT JOIN (
         dateModified,
         field
     )
-) h ON si.empNo = h.employeeId
+) h ON si.empNo = h.employeeId WHERE si.department = ?
 GROUP BY
   si.empNo
 ORDER BY
@@ -286,7 +372,7 @@ ORDER BY
   `;
   // const sqlSelect = ;
   db.query(
-    query,
+    query,[department],
       (err, result)=>{
           if(err){
               res.send({err: err});
@@ -1004,7 +1090,7 @@ if (department !== previousRecord.department) {
     console.log("Previous Specialization:", previousRecord.Specialization);
     console.log("Updated Specialization:", Specialization);
     const category = "Specialization";
-    const field = "";
+    const field = "Specialization";
 
     const modifier = fullName;
     db.query(
