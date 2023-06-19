@@ -135,6 +135,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
       const [section, setSection] = React.useState('');
 
 
+      const [sum, setSum] = useState(0);
 
       //validation
       const [department2State, setdepartment2State] = React.useState(false);
@@ -151,6 +152,31 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
       const [salaryState, setSalaryState] = React.useState(false);
       const [basicSalaryState, setBasicSalaryState] = React.useState(false);
       const [monthlySalaryState, setMonthlySalaryState] = React.useState(false);
+
+
+      const handleChange1 = (event) => {
+        settsAllowance(event.target.value);
+      };
+    
+      const handleChange2 = (event) => {
+        setleAllowance(event.target.value);
+      };
+    
+      const handleChange3 = (event) => {
+        setceAllowance(event.target.value);
+      };
+
+
+      React.useEffect(() => {
+        const num1 = parseFloat(tsAllowance);
+        const num2 = parseFloat(leAllowance);
+        const num3 = parseFloat(ceAllowance);
+        const total = (isNaN(num1) ? 0 : num1) + (isNaN(num2) ? 0 : num2) + (isNaN(num3) ? 0 : num3);
+        setSum(total);
+    
+
+      }, [tsAllowance, leAllowance, ceAllowance]);
+    
       const refreshTable = () => {
 
   
@@ -313,7 +339,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
             cePEPoint :cePEPoint, 
             ceAllowance :ceAllowance, 
             ceRank :ceRank, 
-            Specialization :Specialization, 
+            Specialization :sum, 
             total :total, 
             birthday :birthday, 
             age :age, 
@@ -367,9 +393,9 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
             <Grid container spacing={1} >
               <Grid lg={4} sm={6} xs={12}><TextField  required error={empClassState} label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /></Grid>
               <Grid lg={4} sm={6} xs={12}><TextField required error={levelState} label="Level" defaultValue={level} onChange={(e) => setLevel(e.target.value)}   fullWidth /></Grid>
-              <Grid lg={4} sm={6} xs={12}><TextField required error={salaryState} label="Salary" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /></Grid>
+              <Grid lg={4} sm={6} xs={12}><TextField required error={salaryState} label="Salary Type" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /></Grid>
               <Grid lg={4} sm={6} xs={12}><TextField required error={basicSalaryState} label="Basic Salary" defaultValue={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
-              <Grid lg={4} sm={6} xs={12}><TextField required  label="Daily" defaultValue={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
+              <Grid lg={4} sm={6} xs={12}><TextField  label="Daily" defaultValue={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
               <Grid lg={4} sm={6} xs={12}><TextField required error={monthlySalaryState} label="Monthly Salary" defaultValue={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
 
             </Grid>  
@@ -395,7 +421,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
             </Typography>
             <Grid container spacing={1}>
             <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={tsPEPoint} onChange={(e) => settsPEPoint(e.target.value)} fullWidth /></Grid>
-            <Grid xs={12} sm={6}><TextField required  label="Allowance"defaultValue={tsAllowance} onChange={(e) => settsAllowance(e.target.value)}   fullWidth /></Grid>
+            <Grid xs={12} sm={6}><TextField required  label="Allowance"defaultValue={tsAllowance} onChange={handleChange1}   fullWidth /></Grid>
             <Grid xs={12} sm={3}><TextField required  label="Rank" defaultValue={tsRank} onChange={(e) => settsRank(e.target.value)}   fullWidth /></Grid>
             </Grid>
 
@@ -405,7 +431,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
             <Grid container spacing={1}>
             <Grid xs={12} sm={3}><TextField required  label="License Fee" defaultValue={leLicenseFee} onChange={(e) => setleLicenseFee(e.target.value)}   fullWidth /></Grid>
             <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={lePEPoint} onChange={(e) => setlePEPoint(e.target.value)}  fullWidth /></Grid>
-            <Grid xs={12} sm={3}><TextField required  label="Allowance (PF1)" defaultValue={leAllowance} onChange={(e) => setleAllowance(e.target.value)}  fullWidth /></Grid>
+            <Grid xs={12} sm={3}><TextField required  label="Allowance (PF1)" defaultValue={leAllowance} onChange={handleChange2}  fullWidth /></Grid>
             <Grid xs={12} sm={3}><TextField required  label="Rank" defaultValue={leRank} onChange={(e) => setleRank(e.target.value)}  fullWidth /></Grid>   
             </Grid>
              <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
@@ -414,14 +440,14 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
             <Grid container spacing={1}>
             <Grid xs={12} sm={3}><TextField required  label="Certification Fee" defaultValue={ceCertificateOnFee} onChange={(e) => setceCertificateOnFee(e.target.value)}  fullWidth /></Grid>
             <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={cePEPoint} onChange={(e) => setcePEPoint(e.target.value)}  fullWidth /></Grid>
-            <Grid xs={12} sm={3}><TextField required  label="Allowance (PF2)" defaultValue={ceAllowance} onChange={(e) => setceAllowance(e.target.value)}  fullWidth /></Grid>
+            <Grid xs={12} sm={3}><TextField required  label="Allowance (PF2)" defaultValue={ceAllowance} onChange={handleChange3}  fullWidth /></Grid>
             <Grid xs={12} sm={3}><TextField required  label="Rank" defaultValue={ceRank} onChange={(e) => setceRank(e.target.value)}  fullWidth /></Grid>   
             </Grid>
             <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
               Specialization
             </Typography>
             <Grid container spacing={1}>
-            <Grid xs={12} sm={12}><TextField required  label="Rank" defaultValue={Specialization} onChange={(e) => setSpecialization(e.target.value)}  fullWidth /></Grid>   
+            <Grid xs={12} sm={12}><TextField   label="Rank" value={sum} readOnly fullWidth /></Grid>   
             </Grid>
           </Item>
         </Grid>

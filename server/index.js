@@ -143,9 +143,11 @@ app.post("/setsitable", (req, res)=>{
                 return;
             }
                 if(result.length > 0){
-                    res.send(result)
+                  const message = 'Data found';
+                  res.send({ result: result, message: message });
                     return;
                 }else{
+                  
                     res.send({message: "No Data Found"});
                     return;
                     
@@ -155,6 +157,141 @@ app.post("/setsitable", (req, res)=>{
     //    console.log(err);
     });
 });
+
+
+app.post("/setsitablebefore", (req, res)=>{
+  const empNo = req.body.empNo;
+
+  // const sqlSelect = ;
+  db.query(
+      `SELECT
+      si.id AS id,
+     si.empNo AS employeeId,
+   COALESCE(MAX(CASE WHEN h.field = 'department' THEN h.hr_from END), si.department) AS department,
+   COALESCE(MAX(CASE WHEN h.field = 'section' THEN h.hr_from END), si.section) AS section,
+   COALESCE(MAX(CASE WHEN h.field = 'employeeName' THEN h.hr_from END), si.employeeName) AS employeeName,
+   COALESCE(MAX(CASE WHEN h.field = 'sex' THEN h.hr_from END), si.sex) AS sex,
+   COALESCE(MAX(CASE WHEN h.field = 'birthday' THEN h.hr_from END), si.birthday) AS birthday,
+   COALESCE(MAX(CASE WHEN h.field = 'age' THEN h.hr_from END), si.age) AS age,
+   COALESCE(MAX(CASE WHEN h.field = 'dateHired' THEN h.hr_from END), si.dateHired) AS dateHired,
+   COALESCE(MAX(CASE WHEN h.field = 'serviceTerm' THEN h.hr_from END), si.serviceTerm) AS serviceTerm,
+   COALESCE(MAX(CASE WHEN h.field = 'position' THEN h.hr_from END), si.position) AS 'position',
+   COALESCE(MAX(CASE WHEN h.field = 'designation' THEN h.hr_from END), si.designation) AS designation,
+   COALESCE(MAX(CASE WHEN h.field = 'class' THEN h.hr_from END), si.class) AS class,
+   COALESCE(MAX(CASE WHEN h.field = 'level' THEN h.hr_from END), si.level) AS level,
+   COALESCE(MAX(CASE WHEN h.field = 'salaryType' THEN h.hr_from END), si.salaryType) AS salaryType,
+   COALESCE(MAX(CASE WHEN h.field = 'basicSalary' THEN h.hr_from END), si.basicSalary) AS basicSalary,
+   COALESCE(MAX(CASE WHEN h.field = 'daily' THEN h.hr_from END), si.daily) AS daily,
+   COALESCE(MAX(CASE WHEN h.field = 'monthlySalary' THEN h.hr_from END), si.monthlySalary) AS monthlySalary,
+   COALESCE(MAX(CASE WHEN h.field = 'pPEPoint' THEN h.hr_from END), si.pPEPoint) AS pPEPoint,
+   COALESCE(MAX(CASE WHEN h.field = 'pAllowance' THEN h.hr_from END), si.pAllowance) AS pAllowance,
+   COALESCE(MAX(CASE WHEN h.field = 'pRank' THEN h.hr_from END), si.pRank) AS pRank,
+   COALESCE(MAX(CASE WHEN h.field = 'tsPEPoint' THEN h.hr_from END), si.tsPEPoint) AS tsPEPoint,
+   COALESCE(MAX(CASE WHEN h.field = 'tsAllowance' THEN h.hr_from END), si.tsAllowance) AS tsAllowance,
+   COALESCE(MAX(CASE WHEN h.field = 'tsRank' THEN h.hr_from END), si.tsRank) AS tsRank,
+   COALESCE(MAX(CASE WHEN h.field = 'leLicenseFee' THEN h.hr_from END), si.leLicenseFee) AS leLicenseFee,
+   COALESCE(MAX(CASE WHEN h.field = 'lePEPoint' THEN h.hr_from END), si.lePEPoint) AS lePEPoint,
+   COALESCE(MAX(CASE WHEN h.field = 'leAllowance' THEN h.hr_from END), si.leAllowance) AS leAllowance,
+   COALESCE(MAX(CASE WHEN h.field = 'leRank' THEN h.hr_from END), si.leRank) AS leRank,
+   COALESCE(MAX(CASE WHEN h.field = 'ceCertificateOnFee' THEN h.hr_from END), si.ceCertificateOnFee) AS ceLicenseFee,
+   COALESCE(MAX(CASE WHEN h.field = 'cePEPoint' THEN h.hr_from END), si.cePEPoint) AS cePEPoint,
+   COALESCE(MAX(CASE WHEN h.field = 'ceAllowance' THEN h.hr_from END), si.ceAllowance) AS ceAllowance,
+   COALESCE(MAX(CASE WHEN h.field = 'ceRank' THEN h.hr_from END), si.ceRank) AS ceRank,
+   COALESCE(MAX(CASE WHEN h.field = 'Specialization' THEN h.hr_from END), si.Specialization) AS Specialization,
+   
+   si.total,
+   si.employeeName as newEmployeeName,
+   si.empNo as newEmpNo,
+   si.dateHired as newDateHired,
+   si.section as newSection,
+   si.department as newDepartment,
+   si.position as newPosition,
+   si.designation as newDesignation,
+   si.class as newClass,
+   si.level as newLevel,
+   si.salaryType as newSalaryType,
+   si.basicSalary as newBasicSalary,
+   si.pAllowance as newPAllowance,
+   si.Specialization as newSpecialization,
+   si.leAllowance as newLEAllowance,
+   si.ceAllowance as newCEAllowance,
+   si.leLicenseFee as newleLicenseFee,
+   si.ceCertificateOnFee as newceCertificateOnFee
+  
+ FROM
+   salaryincrease si
+ LEFT JOIN (
+   SELECT
+     h1.employeeId,
+     h1.field,
+     h1.hr_from
+   FROM
+     history h1
+     JOIN (
+       SELECT
+         employeeId,
+         MAX(dateOfEffectivity) AS maxDate
+       FROM
+         history
+       GROUP BY
+         employeeId
+     ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateOfEffectivity = subquery.maxDate
+   WHERE
+     (h1.employeeId, h1.dateOfEffectivity, h1.field, h1.id) IN (
+       SELECT
+         employeeId,
+         dateOfEffectivity,
+         field,
+         MAX(id)
+       FROM
+         history
+       WHERE
+         (employeeId, dateOfEffectivity, field) IN (
+           SELECT
+             employeeId,
+             dateOfEffectivity,
+             field
+           FROM
+             history
+           GROUP BY
+             employeeId,
+             dateOfEffectivity,
+             field
+           HAVING
+             MAX(id) = MAX(CASE WHEN dateOfEffectivity = subquery.maxDate THEN id END)
+         )
+       GROUP BY
+         employeeId,
+         dateOfEffectivity,
+         field
+     )
+ ) h ON si.empNo = h.employeeId WHERE si.empNo = ? AND si.deactivated = 0
+ GROUP BY
+   si.empNo
+ ORDER BY
+   si.empNo;
+    `,
+      // "SELECT * FROM `salaryincrease` WHERE department = ?",
+      [empNo],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+              return;
+          }
+              if(result.length > 0){
+                  res.send(result)
+                  return;
+              }else{
+                  res.send({message: "No Data Found"});
+                  return;
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
+
 
 app.post("/history", (req, res)=>{
     const empId = req.body.employeeID;
@@ -188,7 +325,8 @@ app.post("/totalBefore", (req, res)=>{
    COALESCE(MAX(CASE WHEN h.field = 'leLicenseFee' THEN h.hr_from END), si.leLicenseFee)+
    COALESCE(MAX(CASE WHEN h.field = 'leAllowance' THEN h.hr_from END), si.leAllowance)+
    COALESCE(MAX(CASE WHEN h.field = 'ceCertificateOnFee' THEN h.hr_from END), si.ceCertificateOnFee)+
-   COALESCE(MAX(CASE WHEN h.field = 'ceAllowance' THEN h.hr_from END), si.ceAllowance)) AS total_sum
+   COALESCE(MAX(CASE WHEN h.field = 'ceAllowance' THEN h.hr_from END), si.ceAllowance)) AS total_sum,
+   (si.monthlySalary + si.pAllowance + si.tsAllowance + si.leLicenseFee + si.leAllowance + si.ceCertificateOnFee+si.ceAllowance) as total_sum_now
 FROM
   salaryincrease si
 LEFT JOIN (
@@ -201,39 +339,39 @@ LEFT JOIN (
     JOIN (
       SELECT
         employeeId,
-        MAX(dateModified) AS maxDate
+        MAX(dateOfEffectivity) AS maxDate
       FROM
         history
       GROUP BY
         employeeId
-    ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateModified = subquery.maxDate
+    ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateOfEffectivity = subquery.maxDate
   WHERE
-    (h1.employeeId, h1.dateModified, h1.field, h1.id) IN (
+    (h1.employeeId, h1.dateOfEffectivity, h1.field, h1.id) IN (
       SELECT
         employeeId,
-        dateModified,
+        dateOfEffectivity,
         field,
         MAX(id)
       FROM
         history
       WHERE
-        (employeeId, dateModified, field) IN (
+        (employeeId, dateOfEffectivity, field) IN (
           SELECT
             employeeId,
-            dateModified,
+            dateOfEffectivity,
             field
           FROM
             history
           GROUP BY
             employeeId,
-            dateModified,
+            dateOfEffectivity,
             field
           HAVING
-            MAX(id) = MAX(CASE WHEN dateModified = subquery.maxDate THEN id END)
+            MAX(id) = MAX(CASE WHEN dateOfEffectivity = subquery.maxDate THEN id END)
         )
       GROUP BY
         employeeId,
-        dateModified,
+        dateOfEffectivity,
         field
     )
 ) h ON si.empNo = h.employeeId WHERE si.empNo = ?
@@ -264,129 +402,264 @@ ORDER BY
 
 app.post("/beforeData", (req, res)=>{
   const department = req.body.department;
-  const query = `SELECT
-  si.empNo AS employeeId,
-  COALESCE(MAX(CASE WHEN h.field = 'department' THEN h.hr_from END), si.department) AS department,
-  COALESCE(MAX(CASE WHEN h.field = 'section' THEN h.hr_from END), si.section) AS section,
-  COALESCE(MAX(CASE WHEN h.field = 'employeeName' THEN h.hr_from END), si.employeeName) AS employeeName,
-  COALESCE(MAX(CASE WHEN h.field = 'sex' THEN h.hr_from END), si.sex) AS sex,
-  COALESCE(MAX(CASE WHEN h.field = 'birthday' THEN h.hr_from END), si.birthday) AS birthday,
-  COALESCE(MAX(CASE WHEN h.field = 'age' THEN h.hr_from END), si.age) AS age,
-  COALESCE(MAX(CASE WHEN h.field = 'dateHired' THEN h.hr_from END), si.dateHired) AS dateHired,
-  COALESCE(MAX(CASE WHEN h.field = 'serviceTerm' THEN h.hr_from END), si.serviceTerm) AS serviceTerm,
-  COALESCE(MAX(CASE WHEN h.field = 'position' THEN h.hr_from END), si.position) AS 'position',
-  COALESCE(MAX(CASE WHEN h.field = 'designation' THEN h.hr_from END), si.designation) AS designation,
-  COALESCE(MAX(CASE WHEN h.field = 'class' THEN h.hr_from END), si.class) AS class,
-  COALESCE(MAX(CASE WHEN h.field = 'level' THEN h.hr_from END), si.level) AS level,
-  COALESCE(MAX(CASE WHEN h.field = 'salaryType' THEN h.hr_from END), si.salaryType) AS salaryType,
-  COALESCE(MAX(CASE WHEN h.field = 'basicSalary' THEN h.hr_from END), si.basicSalary) AS basicSalary,
-  COALESCE(MAX(CASE WHEN h.field = 'daily' THEN h.hr_from END), si.daily) AS daily,
-  COALESCE(MAX(CASE WHEN h.field = 'monthlySalary' THEN h.hr_from END), si.monthlySalary) AS monthlySalary,
-  COALESCE(MAX(CASE WHEN h.field = 'pPEPoint' THEN h.hr_from END), si.pPEPoint) AS pPEPoint,
-  COALESCE(MAX(CASE WHEN h.field = 'pAllowance' THEN h.hr_from END), si.pAllowance) AS pAllowance,
-  COALESCE(MAX(CASE WHEN h.field = 'pRank' THEN h.hr_from END), si.pRank) AS pRank,
-  COALESCE(MAX(CASE WHEN h.field = 'tsPEPoint' THEN h.hr_from END), si.tsPEPoint) AS tsPEPoint,
-  COALESCE(MAX(CASE WHEN h.field = 'tsAllowance' THEN h.hr_from END), si.tsAllowance) AS tsAllowance,
-  COALESCE(MAX(CASE WHEN h.field = 'tsRank' THEN h.hr_from END), si.tsRank) AS tsRank,
-  COALESCE(MAX(CASE WHEN h.field = 'leLicenseFee' THEN h.hr_from END), si.leLicenseFee) AS leLicenseFee,
-  COALESCE(MAX(CASE WHEN h.field = 'lePEPoint' THEN h.hr_from END), si.lePEPoint) AS lePEPoint,
-  COALESCE(MAX(CASE WHEN h.field = 'leAllowance' THEN h.hr_from END), si.leAllowance) AS leAllowance,
-  COALESCE(MAX(CASE WHEN h.field = 'leRank' THEN h.hr_from END), si.leRank) AS leRank,
-  COALESCE(MAX(CASE WHEN h.field = 'ceCertificateOnFee' THEN h.hr_from END), si.ceCertificateOnFee) AS ceLicenseFee,
-  COALESCE(MAX(CASE WHEN h.field = 'cePEPoint' THEN h.hr_from END), si.cePEPoint) AS cePEPoint,
-  COALESCE(MAX(CASE WHEN h.field = 'ceAllowance' THEN h.hr_from END), si.ceAllowance) AS ceAllowance,
-  COALESCE(MAX(CASE WHEN h.field = 'ceRank' THEN h.hr_from END), si.ceRank) AS ceRank,
-  COALESCE(MAX(CASE WHEN h.field = 'Specialization' THEN h.hr_from END), si.Specialization) AS Specialization,
-  
-  si.total,
-  si.employeeName as newEmployeeName,
-  si.empNo as newEmpNo,
-  si.dateHired as newDateHired,
-  si.section as newSection,
-  si.department as newDepartment,
-  si.position as newPosition,
-  si.designation as newDesignation,
-  si.class as newClass,
-  si.level as newLevel,
-  si.salaryType as newSalaryType,
-  si.basicSalary as newBasicSalary,
-  si.pAllowance as newPAllowance,
-  si.Specialization as newSpecialization,
-  si.leAllowance as newLEAllowance,
-  si.ceAllowance as newCEAllowance,
-  si.leLicenseFee as newleLicenseFee,
-  si.ceCertificateOnFee as newceCertificateOnFee
- 
-FROM
-  salaryincrease si
-LEFT JOIN (
-  SELECT
-    h1.employeeId,
-    h1.field,
-    h1.hr_from
+  const selectedemployees = req.body.selectedemployees;
+  console.log(selectedemployees)
+  if(selectedemployees.length>0){
+    const query = `SELECT
+    si.empNo AS employeeId,
+    COALESCE(MAX(CASE WHEN h.field = 'department' THEN h.hr_from END), si.department) AS department,
+    COALESCE(MAX(CASE WHEN h.field = 'section' THEN h.hr_from END), si.section) AS section,
+    COALESCE(MAX(CASE WHEN h.field = 'employeeName' THEN h.hr_from END), si.employeeName) AS employeeName,
+    COALESCE(MAX(CASE WHEN h.field = 'sex' THEN h.hr_from END), si.sex) AS sex,
+    COALESCE(MAX(CASE WHEN h.field = 'birthday' THEN h.hr_from END), si.birthday) AS birthday,
+    COALESCE(MAX(CASE WHEN h.field = 'age' THEN h.hr_from END), si.age) AS age,
+    COALESCE(MAX(CASE WHEN h.field = 'dateHired' THEN h.hr_from END), si.dateHired) AS dateHired,
+    COALESCE(MAX(CASE WHEN h.field = 'serviceTerm' THEN h.hr_from END), si.serviceTerm) AS serviceTerm,
+    COALESCE(MAX(CASE WHEN h.field = 'position' THEN h.hr_from END), si.position) AS 'position',
+    COALESCE(MAX(CASE WHEN h.field = 'designation' THEN h.hr_from END), si.designation) AS designation,
+    COALESCE(MAX(CASE WHEN h.field = 'class' THEN h.hr_from END), si.class) AS class,
+    COALESCE(MAX(CASE WHEN h.field = 'level' THEN h.hr_from END), si.level) AS level,
+    COALESCE(MAX(CASE WHEN h.field = 'salaryType' THEN h.hr_from END), si.salaryType) AS salaryType,
+    COALESCE(MAX(CASE WHEN h.field = 'basicSalary' THEN h.hr_from END), si.basicSalary) AS basicSalary,
+    COALESCE(MAX(CASE WHEN h.field = 'daily' THEN h.hr_from END), si.daily) AS daily,
+    COALESCE(MAX(CASE WHEN h.field = 'monthlySalary' THEN h.hr_from END), si.monthlySalary) AS monthlySalary,
+    COALESCE(MAX(CASE WHEN h.field = 'pPEPoint' THEN h.hr_from END), si.pPEPoint) AS pPEPoint,
+    COALESCE(MAX(CASE WHEN h.field = 'pAllowance' THEN h.hr_from END), si.pAllowance) AS pAllowance,
+    COALESCE(MAX(CASE WHEN h.field = 'pRank' THEN h.hr_from END), si.pRank) AS pRank,
+    COALESCE(MAX(CASE WHEN h.field = 'tsPEPoint' THEN h.hr_from END), si.tsPEPoint) AS tsPEPoint,
+    COALESCE(MAX(CASE WHEN h.field = 'tsAllowance' THEN h.hr_from END), si.tsAllowance) AS tsAllowance,
+    COALESCE(MAX(CASE WHEN h.field = 'tsRank' THEN h.hr_from END), si.tsRank) AS tsRank,
+    COALESCE(MAX(CASE WHEN h.field = 'leLicenseFee' THEN h.hr_from END), si.leLicenseFee) AS leLicenseFee,
+    COALESCE(MAX(CASE WHEN h.field = 'lePEPoint' THEN h.hr_from END), si.lePEPoint) AS lePEPoint,
+    COALESCE(MAX(CASE WHEN h.field = 'leAllowance' THEN h.hr_from END), si.leAllowance) AS leAllowance,
+    COALESCE(MAX(CASE WHEN h.field = 'leRank' THEN h.hr_from END), si.leRank) AS leRank,
+    COALESCE(MAX(CASE WHEN h.field = 'ceCertificateOnFee' THEN h.hr_from END), si.ceCertificateOnFee) AS ceLicenseFee,
+    COALESCE(MAX(CASE WHEN h.field = 'cePEPoint' THEN h.hr_from END), si.cePEPoint) AS cePEPoint,
+    COALESCE(MAX(CASE WHEN h.field = 'ceAllowance' THEN h.hr_from END), si.ceAllowance) AS ceAllowance,
+    COALESCE(MAX(CASE WHEN h.field = 'ceRank' THEN h.hr_from END), si.ceRank) AS ceRank,
+    COALESCE(MAX(CASE WHEN h.field = 'Specialization' THEN h.hr_from END), si.Specialization) AS Specialization,
+    
+    si.total,
+    si.employeeName as newEmployeeName,
+    si.empNo as newEmpNo,
+    si.dateHired as newDateHired,
+    si.section as newSection,
+    si.department as newDepartment,
+    si.position as newPosition,
+    si.designation as newDesignation,
+    si.class as newClass,
+    si.level as newLevel,
+    si.salaryType as newSalaryType,
+    si.basicSalary as newBasicSalary,
+    si.pAllowance as newPAllowance,
+    si.Specialization as newSpecialization,
+    si.leAllowance as newLEAllowance,
+    si.ceAllowance as newCEAllowance,
+    si.leLicenseFee as newleLicenseFee,
+    si.ceCertificateOnFee as newceCertificateOnFee
+   
   FROM
-    history h1
-    JOIN (
-      SELECT
-        employeeId,
-        MAX(dateModified) AS maxDate
-      FROM
-        history
-      GROUP BY
-        employeeId
-    ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateModified = subquery.maxDate
-  WHERE
-    (h1.employeeId, h1.dateModified, h1.field, h1.id) IN (
-      SELECT
-        employeeId,
-        dateModified,
-        field,
-        MAX(id)
-      FROM
-        history
-      WHERE
-        (employeeId, dateModified, field) IN (
-          SELECT
-            employeeId,
-            dateModified,
-            field
-          FROM
-            history
-          GROUP BY
-            employeeId,
-            dateModified,
-            field
-          HAVING
-            MAX(id) = MAX(CASE WHEN dateModified = subquery.maxDate THEN id END)
-        )
-      GROUP BY
-        employeeId,
-        dateModified,
-        field
-    )
-) h ON si.empNo = h.employeeId WHERE si.department = ?
-GROUP BY
-  si.empNo
-ORDER BY
-  si.empNo;
-  `;
-  // const sqlSelect = ;
-  db.query(
-    query,[department],
-      (err, result)=>{
-          if(err){
-              res.send({err: err});
-          }
-              if(result.length > 0){
-                  res.send(result)
-              }else{
-                  res.send({message: "No Data Found"});
-                  
+    salaryincrease si
+  LEFT JOIN (
+    SELECT
+      h1.employeeId,
+      h1.field,
+      h1.hr_from
+    FROM
+      history h1
+      JOIN (
+        SELECT
+          employeeId,
+          MAX(dateOfEffectivity) AS maxDate
+        FROM
+          history
+        GROUP BY
+          employeeId
+      ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateOfEffectivity = subquery.maxDate
+    WHERE
+      (h1.employeeId, h1.dateOfEffectivity, h1.field, h1.id) IN (
+        SELECT
+          employeeId,
+          dateOfEffectivity,
+          field,
+          MAX(id)
+        FROM
+          history
+        WHERE
+          (employeeId, dateOfEffectivity, field) IN (
+            SELECT
+              employeeId,
+              dateOfEffectivity,
+              field
+            FROM
+              history
+            GROUP BY
+              employeeId,
+              dateOfEffectivity,
+              field
+            HAVING
+              MAX(id) = MAX(CASE WHEN dateOfEffectivity = subquery.maxDate THEN id END)
+          )
+        GROUP BY
+          employeeId,
+          dateOfEffectivity,
+          field
+      )
+  ) h ON si.empNo = h.employeeId WHERE si.department = ? AND si.deactivated = 0 AND id IN  (?)
+  GROUP BY
+    si.empNo
+  ORDER BY
+    si.empNo;
+    `;
+    console.log(selectedemployees);
+  
+    // const sqlSelect = ;
+    db.query(
+      query,[department,selectedemployees],
+        (err, result)=>{
+            if(err){
+                res.send({err: err});
+            }
+                if(result.length > 0){
+                    res.send(result)
+                }else{
+                    res.send({message: "No Data Found"});
+                    
+  
+                }
+            
+    //    console.log(err);
+    });
+  }
+  else if(selectedemployees.length === 0){
+    console.log("walang laman")
+    const query = `SELECT
+    si.empNo AS employeeId,
+    COALESCE(MAX(CASE WHEN h.field = 'department' THEN h.hr_from END), si.department) AS department,
+    COALESCE(MAX(CASE WHEN h.field = 'section' THEN h.hr_from END), si.section) AS section,
+    COALESCE(MAX(CASE WHEN h.field = 'employeeName' THEN h.hr_from END), si.employeeName) AS employeeName,
+    COALESCE(MAX(CASE WHEN h.field = 'sex' THEN h.hr_from END), si.sex) AS sex,
+    COALESCE(MAX(CASE WHEN h.field = 'birthday' THEN h.hr_from END), si.birthday) AS birthday,
+    COALESCE(MAX(CASE WHEN h.field = 'age' THEN h.hr_from END), si.age) AS age,
+    COALESCE(MAX(CASE WHEN h.field = 'dateHired' THEN h.hr_from END), si.dateHired) AS dateHired,
+    COALESCE(MAX(CASE WHEN h.field = 'serviceTerm' THEN h.hr_from END), si.serviceTerm) AS serviceTerm,
+    COALESCE(MAX(CASE WHEN h.field = 'position' THEN h.hr_from END), si.position) AS 'position',
+    COALESCE(MAX(CASE WHEN h.field = 'designation' THEN h.hr_from END), si.designation) AS designation,
+    COALESCE(MAX(CASE WHEN h.field = 'class' THEN h.hr_from END), si.class) AS class,
+    COALESCE(MAX(CASE WHEN h.field = 'level' THEN h.hr_from END), si.level) AS level,
+    COALESCE(MAX(CASE WHEN h.field = 'salaryType' THEN h.hr_from END), si.salaryType) AS salaryType,
+    COALESCE(MAX(CASE WHEN h.field = 'basicSalary' THEN h.hr_from END), si.basicSalary) AS basicSalary,
+    COALESCE(MAX(CASE WHEN h.field = 'daily' THEN h.hr_from END), si.daily) AS daily,
+    COALESCE(MAX(CASE WHEN h.field = 'monthlySalary' THEN h.hr_from END), si.monthlySalary) AS monthlySalary,
+    COALESCE(MAX(CASE WHEN h.field = 'pPEPoint' THEN h.hr_from END), si.pPEPoint) AS pPEPoint,
+    COALESCE(MAX(CASE WHEN h.field = 'pAllowance' THEN h.hr_from END), si.pAllowance) AS pAllowance,
+    COALESCE(MAX(CASE WHEN h.field = 'pRank' THEN h.hr_from END), si.pRank) AS pRank,
+    COALESCE(MAX(CASE WHEN h.field = 'tsPEPoint' THEN h.hr_from END), si.tsPEPoint) AS tsPEPoint,
+    COALESCE(MAX(CASE WHEN h.field = 'tsAllowance' THEN h.hr_from END), si.tsAllowance) AS tsAllowance,
+    COALESCE(MAX(CASE WHEN h.field = 'tsRank' THEN h.hr_from END), si.tsRank) AS tsRank,
+    COALESCE(MAX(CASE WHEN h.field = 'leLicenseFee' THEN h.hr_from END), si.leLicenseFee) AS leLicenseFee,
+    COALESCE(MAX(CASE WHEN h.field = 'lePEPoint' THEN h.hr_from END), si.lePEPoint) AS lePEPoint,
+    COALESCE(MAX(CASE WHEN h.field = 'leAllowance' THEN h.hr_from END), si.leAllowance) AS leAllowance,
+    COALESCE(MAX(CASE WHEN h.field = 'leRank' THEN h.hr_from END), si.leRank) AS leRank,
+    COALESCE(MAX(CASE WHEN h.field = 'ceCertificateOnFee' THEN h.hr_from END), si.ceCertificateOnFee) AS ceLicenseFee,
+    COALESCE(MAX(CASE WHEN h.field = 'cePEPoint' THEN h.hr_from END), si.cePEPoint) AS cePEPoint,
+    COALESCE(MAX(CASE WHEN h.field = 'ceAllowance' THEN h.hr_from END), si.ceAllowance) AS ceAllowance,
+    COALESCE(MAX(CASE WHEN h.field = 'ceRank' THEN h.hr_from END), si.ceRank) AS ceRank,
+    COALESCE(MAX(CASE WHEN h.field = 'Specialization' THEN h.hr_from END), si.Specialization) AS Specialization,
+    
+    si.total,
+    si.employeeName as newEmployeeName,
+    si.empNo as newEmpNo,
+    si.dateHired as newDateHired,
+    si.section as newSection,
+    si.department as newDepartment,
+    si.position as newPosition,
+    si.designation as newDesignation,
+    si.class as newClass,
+    si.level as newLevel,
+    si.salaryType as newSalaryType,
+    si.basicSalary as newBasicSalary,
+    si.pAllowance as newPAllowance,
+    si.Specialization as newSpecialization,
+    si.leAllowance as newLEAllowance,
+    si.ceAllowance as newCEAllowance,
+    si.leLicenseFee as newleLicenseFee,
+    si.ceCertificateOnFee as newceCertificateOnFee
+   
+  FROM
+    salaryincrease si
+  LEFT JOIN (
+    SELECT
+      h1.employeeId,
+      h1.field,
+      h1.hr_from
+    FROM
+      history h1
+      JOIN (
+        SELECT
+          employeeId,
+          MAX(dateOfEffectivity) AS maxDate
+        FROM
+          history
+        GROUP BY
+          employeeId
+      ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateOfEffectivity = subquery.maxDate
+    WHERE
+      (h1.employeeId, h1.dateOfEffectivity, h1.field, h1.id) IN (
+        SELECT
+          employeeId,
+          dateOfEffectivity,
+          field,
+          MAX(id)
+        FROM
+          history
+        WHERE
+          (employeeId, dateOfEffectivity, field) IN (
+            SELECT
+              employeeId,
+              dateOfEffectivity,
+              field
+            FROM
+              history
+            GROUP BY
+              employeeId,
+              dateOfEffectivity,
+              field
+            HAVING
+              MAX(id) = MAX(CASE WHEN dateOfEffectivity = subquery.maxDate THEN id END)
+          )
+        GROUP BY
+          employeeId,
+          dateOfEffectivity,
+          field
+      )
+  ) h ON si.empNo = h.employeeId WHERE si.department = ? AND si.deactivated = 0
+  GROUP BY
+    si.empNo
+  ORDER BY
+    si.empNo;
+    `;
 
-              }
-          
-  //    console.log(err);
-  });
+  
+    // const sqlSelect = ;
+    db.query(
+      query,[department],
+        (err, result)=>{
+            if(err){
+                res.send({err: err});
+            }
+                if(result.length > 0){
+                    res.send(result)
+                }else{
+                    res.send({message: "No Data Found"});
+                    
+  
+                }
+            
+    //    console.log(err);
+    });
+  }
+
 });
 app.post("/addemployee", (req, res)=>{
   const department = req.body.department;
@@ -441,6 +714,7 @@ app.post("/addemployee", (req, res)=>{
 
 });
 app.post("/updatesirecord", (req, res)=>{
+  const dateOfEffectivity = req.body.dateOfEffectivity;
     const department = req.body.department;
     const daily = req.body.daily;
     const section = req.body.section;
@@ -516,12 +790,28 @@ if (department !== previousRecord.department) {
     const field = "department";
 
     const modifier = fullName;
-
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.department, department, modifier],
- 
-      );
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [department, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.department, department, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+   
   }
   
   if (section !== previousRecord.section) {
@@ -536,12 +826,28 @@ if (department !== previousRecord.department) {
     const field = "section";
 
     const modifier = fullName;
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [section, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.section, section, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
 
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.section, section, modifier],
- 
-      );
   }
   
   if (empName !== previousRecord.employeeName) {
@@ -555,12 +861,32 @@ if (department !== previousRecord.department) {
     const field = "employeeName";
 
     const modifier = fullName;
-
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.employeeName, empName, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [empName, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.employeeName, empName, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.employeeName, empName, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (sex !== previousRecord.sex) {
@@ -574,12 +900,32 @@ if (department !== previousRecord.department) {
     const field = "sex";
 
     const modifier = fullName;
-
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.sex, sex, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [sex, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.sex, sex, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.sex, sex, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (birthday !== previousRecord.birthday) {
@@ -593,12 +939,32 @@ if (department !== previousRecord.department) {
     const field = "birthday";
 
     const modifier = fullName;
-
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.birthday, birthday, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [birthday, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.birthday, birthday, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.birthday, birthday, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (age !== previousRecord.age) {
@@ -612,12 +978,32 @@ if (department !== previousRecord.department) {
     const field = "age";
 
     const modifier = fullName;
-
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.age, age, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [age, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.age, age, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.age, age, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (empNumber !== previousRecord.empNo) {
@@ -631,12 +1017,32 @@ if (department !== previousRecord.department) {
     const field = "empNo";
 
     const modifier = fullName;
-
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.empNo, empNumber, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [empNumber, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.empNo, empNumber, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.empNo, empNumber, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (dateHired !== previousRecord.dateHired) {
@@ -650,12 +1056,32 @@ if (department !== previousRecord.department) {
     const field = "dateHired";
 
     const modifier = fullName;
-
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.dateHired, dateHired, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateHired, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.dateHired, dateHired, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.dateHired, dateHired, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   // if (serviceTerm !== previousRecord.serviceTerm) {
@@ -671,8 +1097,8 @@ if (department !== previousRecord.department) {
   //   const modifier = fullName;
 
   //   db.query(
-  //       "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-  //       [empNumber, dateModified, category, field, previousRecord.serviceTerm, serviceTerm, modifier],
+  //       "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+  //       [empNumber, dateModified, category, field, previousRecord.serviceTerm, serviceTerm, modifier, dateOfEffectivity],
  
   //     );
   // }
@@ -689,11 +1115,33 @@ if (department !== previousRecord.department) {
 
     const modifier = fullName;
 
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.position, position, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [position, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.position, position, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.position, position, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (designation !== previousRecord.designation) {
@@ -707,12 +1155,32 @@ if (department !== previousRecord.department) {
     const field = "designation";
 
     const modifier = fullName;
-
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.designation, designation, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [designation, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.designation, designation, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.designation, designation, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (empClass !== previousRecord.class) {
@@ -726,12 +1194,32 @@ if (department !== previousRecord.department) {
     const field = "class";
 
     const modifier = fullName;
-
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.class, empClass, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [empClass, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.class, empClass, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.class, empClass, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (level !== previousRecord.level) {
@@ -745,12 +1233,32 @@ if (department !== previousRecord.department) {
     const field = "level";
 
     const modifier = fullName;
-
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.level, level, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [level, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.level, level, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.level, level, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (salary !== previousRecord.salaryType) {
@@ -764,12 +1272,32 @@ if (department !== previousRecord.department) {
     const field = "salaryType";
 
     const modifier = fullName;
-
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.salaryType, salary, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [salary, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.salaryType, salary, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.salaryType, salary, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (basicSalary !== previousRecord.basicSalary) {
@@ -784,12 +1312,32 @@ if (department !== previousRecord.department) {
     const field = "basicSalary";
 
     const modifier = fullName;
-
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.basicSalary, basicSalary, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [basicSalary, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.basicSalary, basicSalary, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.basicSalary, basicSalary, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   if (daily !== previousRecord.daily) {
     updatedFields.daily = {
@@ -802,11 +1350,33 @@ if (department !== previousRecord.department) {
     const field = "daily";
 
     const modifier = "Cedrick James Orozo";
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.daily, daily, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [daily, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.daily, daily, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.daily, daily, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   
@@ -821,11 +1391,33 @@ if (department !== previousRecord.department) {
     const field = "monthlySalary";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.monthlySalary, monthlySalary, modifier],
+    
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [monthlySalary, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.monthlySalary, monthlySalary, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.monthlySalary, monthlySalary, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (posPe !== previousRecord.pPEPoint) {
@@ -839,11 +1431,32 @@ if (department !== previousRecord.department) {
     const field = "pPEPoint";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.pPEPoint, posPe, modifier],
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [posPe, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.pPEPoint, posPe, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.pPEPoint, posPe, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (posAllowance !== previousRecord.pAllowance) {
@@ -857,11 +1470,33 @@ if (department !== previousRecord.department) {
     const field = "pAllowance";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.pAllowance, posAllowance, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [posAllowance, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.pAllowance, posAllowance, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.pAllowance, posAllowance, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (posRank !== previousRecord.pRank) {
@@ -875,11 +1510,34 @@ if (department !== previousRecord.department) {
     const field = "pRank";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.pRank, posRank, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [posRank, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.pRank, posRank, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.pRank, posRank, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (tsPEPoint !== previousRecord.tsPEPoint) {
@@ -893,11 +1551,35 @@ if (department !== previousRecord.department) {
     const field = "tsPEPoint";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.tsPEPoint, tsPEPoint, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [tsPEPoint, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.tsPEPoint, tsPEPoint, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+
+
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.tsPEPoint, tsPEPoint, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (tsAllowance !== previousRecord.tsAllowance) {
@@ -911,11 +1593,30 @@ if (department !== previousRecord.department) {
     const field = "tsAllowance";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.tsAllowance, tsAllowance, modifier],
- 
-      );
+
+    
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [tsAllowance, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.tsAllowance, tsAllowance, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+
     
   }
   
@@ -930,11 +1631,35 @@ if (department !== previousRecord.department) {
     const field = "tsRank";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.tsRank, tsRank, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [tsRank, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.tsRank, tsRank, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+
+
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.tsRank, tsRank, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (leLicenseFee !== previousRecord.leLicenseFee) {
@@ -948,11 +1673,35 @@ if (department !== previousRecord.department) {
     const field = "leLicenseFee";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.leLicenseFee, leLicenseFee, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [leLicenseFee, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.leLicenseFee, leLicenseFee, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+
+
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.leLicenseFee, leLicenseFee, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (lePEPoint !== previousRecord.lePEPoint) {
@@ -967,11 +1716,33 @@ if (department !== previousRecord.department) {
     const field = "lePEPoint";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.lePEPoint, lePEPoint, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [lePEPoint, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.lePEPoint, lePEPoint, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.lePEPoint, lePEPoint, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (leAllowance !== previousRecord.leAllowance) {
@@ -985,11 +1756,35 @@ if (department !== previousRecord.department) {
     const field = "leAllowance";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.leAllowance, leAllowance, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [leAllowance, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.leAllowance, leAllowance, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+
+
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.leAllowance, leAllowance, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (leRank !== previousRecord.leRank) {
@@ -1003,11 +1798,34 @@ if (department !== previousRecord.department) {
     const field = "leRank";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.leRank, leRank, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [leRank, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.leRank, leRank, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.leRank, leRank, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (ceCertificateOnFee !== previousRecord.ceCertificateOnFee) {
@@ -1021,11 +1839,35 @@ if (department !== previousRecord.department) {
     const field = "ceCertificateOnFee";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.ceCertificateOnFee, ceCertificateOnFee, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [ceCertificateOnFee, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.ceCertificateOnFee, ceCertificateOnFee, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+
+
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.ceCertificateOnFee, ceCertificateOnFee, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (cePEPoint !== previousRecord.cePEPoint) {
@@ -1039,11 +1881,35 @@ if (department !== previousRecord.department) {
     const field = "cePEPoint";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.cePEPoint, cePEPoint, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [cePEPoint, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.cePEPoint, cePEPoint, modifier, dateOfEffectivity],
  
-      );
+     
+          );
+        }
+      }
+    })
+
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.cePEPoint, cePEPoint, modifier, dateOfEffectivity],
+ 
+    //   );
   }
   
   if (ceAllowance !== previousRecord.ceAllowance) {
@@ -1057,11 +1923,33 @@ if (department !== previousRecord.department) {
     const field = "ceAllowance";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.ceAllowance, ceAllowance, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [ceAllowance, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.ceAllowance, ceAllowance, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.ceAllowance, ceAllowance, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (ceRank !== previousRecord.ceRank) {
@@ -1075,11 +1963,35 @@ if (department !== previousRecord.department) {
     const field = "ceRank";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.ceRank, ceRank, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [ceRank, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.ceRank, ceRank, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+
+
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.ceRank, ceRank, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
   
   if (Specialization !== previousRecord.Specialization) {
@@ -1093,11 +2005,33 @@ if (department !== previousRecord.department) {
     const field = "Specialization";
 
     const modifier = fullName;
-    db.query(
-        "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`) VALUES (?,?,?,?,?,?,?)",
-        [empNumber, dateModified, category, field, previousRecord.Specialization, Specialization, modifier],
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [Specialization, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.Specialization, Specialization, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.Specialization, Specialization, modifier, dateOfEffectivity],
  
-      );
+    //   );
   }
             // Add other fields here...
             

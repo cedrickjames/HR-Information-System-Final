@@ -5,7 +5,7 @@ import ArialBold from '../../assets/fonts/ARLRDBD.TTF'
 import Axios from "axios";
 import { Helmet } from 'react-helmet';
 import { useLocation } from 'react-router-dom';
-function createData(empNo, department, section, name, sex, birthday, age, dateHired, serviceTerm, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank,tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total, newEmployeeName,newEmpNo,newDateHired,newSection,newDepartment,newPosition,newDesignation,newClass,newLevel,newSalaryType,newBasicSalary,newPAllowance,newSpecialization,newLEAllowance,newCEAllowance,newleLicenseFee,newceCertificateOnFee) {
+function createData(empNo, department, section, name, sex, birthday, age, dateHired, serviceTerm, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank,tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceLicenseFee, cePEPoint, ceAllowance, ceRank, Specialization, total, newEmployeeName,newEmpNo,newDateHired,newSection,newDepartment,newPosition,newDesignation,newClass,newLevel,newSalaryType,newBasicSalary,newPAllowance,newSpecialization,newLEAllowance,newCEAllowance,newleLicenseFee,newceCertificateOnFee) {
   return {
     empNo,
     department,
@@ -34,7 +34,7 @@ function createData(empNo, department, section, name, sex, birthday, age, dateHi
     lePEPoint,
     leAllowance, 
     leRank,
-    ceCertificateOnFee,
+    ceLicenseFee,
     cePEPoint, 
     ceAllowance, 
     ceRank, 
@@ -216,8 +216,12 @@ const PDFDocument = () =>  {
     const customValue = location?.state?.customValue;
     const customValueDate = location?.state?.customValueDate;
     const inputValue = location?.state?.customValueAction;
+    const customSelectedEmployees = location?.state?.customSelectedEmployees || [];
 
-
+console.log(customSelectedEmployees);
+if(customSelectedEmployees.length === 0){
+console.log("walang laman")
+}
     const formattedDate = new Date(customValueDate).toLocaleDateString('en-US', {
       month: 'long',
       day: 'numeric',
@@ -230,6 +234,7 @@ const PDFDocument = () =>  {
 
       Axios.post("http://192.168.60.53:3001/beforeData", {
         department: customValue.department,
+        selectedemployees: customSelectedEmployees,
 
         }).then((response) => {
            console.log(response)
@@ -262,7 +267,7 @@ const PDFDocument = () =>  {
             row.lePEPoint,
             row.leAllowance,
             row.leRank,
-            row.ceCertificateOnFee,
+            row.ceLicenseFee,
             row.cePEPoint,
             row.ceAllowance,
             row.ceRank,
@@ -331,7 +336,7 @@ return(
         if(item.newSpecialization===""){item.newSpecialization="-"}
         if(item.leLicenseFee===""){item.leLicenseFee="-"}
         if(item.newleLicenseFee===""){item.newleLicenseFee="-"}
-        if(item.ceCertificateOnFee===""){item.ceCertificateOnFee="-"}
+        if(item.ceLicenseFee===""){item.ceLicenseFee="-"}
         if(item.newceCertificateOnFee===""){item.newceCertificateOnFee="-"}
         
 
@@ -602,7 +607,7 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.ceCertificateOnFee}</Text> 
+            <Text style={styles.tableCell}>{item.ceLicenseFee}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
             <Text style={styles.tableCell}>{item.newceCertificateOnFee}</Text> 
@@ -955,10 +960,10 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.leAllowance}</Text> 
+            <Text style={styles.tableCell}>{item.leLicenseFee}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newLEAllowance}</Text> 
+            <Text style={styles.tableCell}>{item.newleLicenseFee}</Text> 
           </View> 
           
         </View> 
@@ -968,11 +973,11 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.ceAllowance}</Text> 
+            <Text style={styles.tableCell}>{item.ceLicenseFee}</Text> 
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newCEAllowance}</Text> 
-          </View> 
+            <Text style={styles.tableCell}>{item.newceCertificateOnFee}</Text> 
+          </View>  
           
         </View>
 

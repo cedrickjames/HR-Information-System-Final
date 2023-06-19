@@ -62,39 +62,39 @@ LEFT JOIN (
     JOIN (
       SELECT
         employeeId,
-        MAX(dateModified) AS maxDate
+        MAX(dateOfEffectivity) AS maxDate
       FROM
         history
       GROUP BY
         employeeId
-    ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateModified = subquery.maxDate
+    ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateOfEffectivity = subquery.maxDate
   WHERE
-    (h1.employeeId, h1.dateModified, h1.field, h1.id) IN (
+    (h1.employeeId, h1.dateOfEffectivity, h1.field, h1.id) IN (
       SELECT
         employeeId,
-        dateModified,
+        dateOfEffectivity,
         field,
         MAX(id)
       FROM
         history
       WHERE
-        (employeeId, dateModified, field) IN (
+        (employeeId, dateOfEffectivity, field) IN (
           SELECT
             employeeId,
-            dateModified,
+            dateOfEffectivity,
             field
           FROM
             history
           GROUP BY
             employeeId,
-            dateModified,
+            dateOfEffectivity,
             field
           HAVING
-            MAX(id) = MAX(CASE WHEN dateModified = subquery.maxDate THEN id END)
+            MAX(id) = MAX(CASE WHEN dateOfEffectivity = subquery.maxDate THEN id END)
         )
       GROUP BY
         employeeId,
-        dateModified,
+        dateOfEffectivity,
         field
     )
 ) h ON si.empNo = h.employeeId

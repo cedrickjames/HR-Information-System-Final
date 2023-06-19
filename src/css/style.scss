@@ -84,7 +84,16 @@
   
  }
 
+ .grid-container {
+  overflow-x: auto;
+  // width: 100%;
+  white-space: nowrap;
+}
 
+.grid-item {
+  flex-shrink: 0;
+  width: 50%; /* Adjust this value according to your needs */
+}
  .line{
   width: 100%; 
   text-align: center; 

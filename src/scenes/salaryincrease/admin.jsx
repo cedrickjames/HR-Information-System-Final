@@ -17,6 +17,10 @@ import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+
+import CompareIcon from '@mui/icons-material/Compare';
+
+import '../../css/style.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
@@ -86,6 +90,45 @@ function createData(no,section, name, empNo, position, designation, empClass, le
     dateModified,
   };
 }
+
+function createDatBefore(no,section, name, empNo, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank,tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, birthday, age, department, sex, dateHired, serviceTerm) {
+  return {
+    no,
+    section,
+    name,
+    empNo,
+    position,
+    designation,
+    empClass,
+    level,
+    salaryType,
+    basicSalary,
+    daily,
+    monthlySalary,
+    pPEPoint,
+    pAllowance,
+    pRank,
+    tsPEPoint,
+    tsAllowance, 
+    tsRank,
+    leLicenseFee, 
+    lePEPoint,
+    leAllowance, 
+    leRank,
+    ceCertificateOnFee,
+    cePEPoint, 
+    ceAllowance, 
+    ceRank, 
+    Specialization,
+    birthday,
+    age,
+    department,
+    sex,
+    dateHired,
+    serviceTerm,
+  };
+}
+
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
   ...theme.typography.body2,
@@ -293,12 +336,23 @@ function EnhancedTableHead(props) {
   
 const SIAdmin = (props ) => {
 
+  const [hideGrid, setHideGrid] = useState(true);
   
   const [inputValue, setInputValue] = useState('');
   const [inputValueDate, setInputValueDate] = useState('');
+  const showBefore = () => {
+    if(hideGrid === true){
+      setHideGrid(false);
 
+    }
+    else{
+    setHideGrid(true);
+
+    }
+  };
 
   useEffect(() => {
+ 
     const storedValue = localStorage.getItem('inputValue');
     if (storedValue) {
       setInputValue(storedValue);
@@ -324,7 +378,8 @@ const SIAdmin = (props ) => {
   const navigate = useNavigate();
   const openPDF = (value) => {
     setCustomValue(value);
-    navigate('/pdffiles', { state: { customValue: value, customValueDate: inputValueDate, customValueAction: inputValue} });
+    console.log(selected2);
+    navigate('/pdffiles', { state: { customValue: value, customValueDate: inputValueDate, customValueAction: inputValue, customSelectedEmployees: selected2} });
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -372,11 +427,57 @@ const SIAdmin = (props ) => {
     // console.log(props);
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
+  const [rowsBefore, setRowsBefore] = useState([]);
+
   const [empId, setEmpId] = React.useState('');
   const [empName, setEmpName] = React.useState('');
   const [empNumber, setEmpNumber] = React.useState('');
 
+//data of employee before
+const [empName1, setEmpName1] = React.useState('');
+const [empNumber1, setEmpNumber1] = React.useState('');
+const [position1, setPosition1] = React.useState('');
+  const [designation1, setDesignation1] = React.useState('');
+  const [empClass1, setEmpClass1] = React.useState('');
+  const [level1, setLevel1] = React.useState('');
+  const [salary1, setSalary1] = React.useState('');
+  const [basicSalary1, setBasicSalary1] = React.useState('');
+  const [daily1, setDaily1] = React.useState('');
+  const [monthlySalary1, setMonthlySalary1] = React.useState('');
+  const [posPe1, setPosPe1] = React.useState('');
+  const [posAllowance1, setPosAllowance1] = React.useState('');
+  const [posRank1, setPosRank1] = React.useState('');
 
+  const [tsPEPoint1, settsPEPoint1] = React.useState('');
+  const [tsAllowance1, settsAllowance1] = useState('');
+  const [tsRank1, settsRank1] = React.useState('');
+  const [leLicenseFee1, setleLicenseFee1] = React.useState('');
+  const [lePEPoint1, setlePEPoint1] = React.useState('');
+  const [leAllowance1, setleAllowance1] = useState('');
+  const [leRank1, setleRank1] = React.useState('');
+  const [ceCertificateOnFee1, setceCertificateOnFee1] = React.useState('');
+  const [cePEPoint1, setcePEPoint1] = React.useState('');
+  const [ceAllowance1, setceAllowance1] = useState('');
+  const [ceRank1, setceRank1] = React.useState('');
+  const [Specialization1, setSpecialization1] = React.useState('');
+  const [total1, settotal1] = React.useState('');
+  const [birthday1, setbirthday1] = React.useState('');
+  const [age1, setage1] = React.useState('');
+  const [department21, setdepartment21] = React.useState('');
+  const [sex1, setsex1] = React.useState('');
+  const [dateHired1, setdateHired1] = React.useState('');
+  const [serviceTerm1, setserviceTerm1] = React.useState('');
+  const [section1, setSection1] = React.useState('');
+  const [overallBefore1, setOverAllBefore1] = React.useState('');
+  const [overallNow1, setOverAllNow1] = React.useState('');
+
+
+  const [sum1, setSum1] = useState(0);
+  const [overallTotal1, setOverAllTotal1] = useState(0);
+  const [up1, setUp1] = useState(0);
+  const [percentage1, setPercentage1] = useState(0);
+
+  
 
   //Data of the employee
   const [position, setPosition] = React.useState('');
@@ -412,12 +513,8 @@ const SIAdmin = (props ) => {
   const [serviceTerm, setserviceTerm] = React.useState('');
   const [section, setSection] = React.useState('');
   const [overallBefore, setOverAllBefore] = React.useState('');
+  const [overallNow, setOverAllNow] = React.useState('');
 
-
-
-  const [value1, setValue1] = useState('');
-  const [value2, setValue2] = useState('');
-  const [value3, setValue3] = useState('');
 
   const [sum, setSum] = useState(0);
   const [overallTotal, setOverAllTotal] = useState(0);
@@ -447,9 +544,15 @@ const SIAdmin = (props ) => {
     const num1 = parseFloat(tsAllowance);
     const num2 = parseFloat(leAllowance);
     const num3 = parseFloat(ceAllowance);
-    const total = isNaN(num1) ? 0 : num1 + (isNaN(num2) ? 0 : num2) + (isNaN(num3) ? 0 : num3);
+    const total = (isNaN(num1) ? 0 : num1) + (isNaN(num2) ? 0 : num2) + (isNaN(num3) ? 0 : num3);
     setSum(total);
-  }, [tsAllowance, leAllowance, ceAllowance]);
+
+    const num11 = parseFloat(tsAllowance1);
+    const num21 = parseFloat(leAllowance1);
+    const num31 = parseFloat(ceAllowance1);
+    const total1 = (isNaN(num11) ? 0 : num11) + (isNaN(num21) ? 0 : num21) + (isNaN(num31) ? 0 : num31);
+    setSum1(total1);
+  }, [tsAllowance, leAllowance, ceAllowance, tsAllowance1, leAllowance1, ceAllowance1]);
 
   
   React.useEffect(() => {
@@ -465,12 +568,12 @@ const SIAdmin = (props ) => {
     const totaloverall = isNaN(num1bs) ? 0 : num1bs + (isNaN(num2pa) ? 0 : num2pa) + (isNaN(num3ts) ? 0 : num3ts)+ (isNaN(num4ll) ? 0 : num4ll)+ (isNaN(num5la) ? 0 : num5la)+ (isNaN(num6cc) ? 0 : num6cc)+ (isNaN(num7ca) ? 0 : num7ca);
     setOverAllTotal(totaloverall);
 
-    const difference = isNaN(totaloverall) ? 0 : totaloverall - (isNaN(overallBefore) ? 0 : overallBefore);
+    const difference = isNaN(overallNow) ? 0 : overallNow - (isNaN(overallBefore) ? 0 : overallBefore);
     setUp(difference)
 
     const percentages = ((isNaN(difference) ? 0 : difference / (isNaN(overallBefore)? 0 : overallBefore))*100).toFixed(2);
     setPercentage(percentages+"%")
-  }, [monthlySalary,posAllowance,tsAllowance,leLicenseFee,leAllowance,ceCertificateOnFee,ceAllowance,overallBefore ]);
+  }, [monthlySalary,posAllowance,tsAllowance,leLicenseFee,leAllowance,ceCertificateOnFee,ceAllowance,overallBefore,overallNow ]);
 
 
 
@@ -484,8 +587,8 @@ const SIAdmin = (props ) => {
       department: department,
     }).then((response) => {
       console.log(response);
-      // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
-      const newRows = response.data.map(row => createData(
+    if(response.data.message === 'Data found'){
+      const newRows = response.data.result.map(row => createData(
         row.id, 
         row.section,
         row.employeeName,
@@ -524,12 +627,63 @@ const SIAdmin = (props ) => {
         
         ));
       setRows(newRows);
-
+    }
+        
+  
+      
+      // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
+      
       // console.log(rows)
    
 
     });
+//  Axios.post("http://192.168.60.53:3001/setsitablebefore", {
+//       department: department,
+//     }).then((response) => {
+//       console.log(response);
+//       // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
+//       const newRows1 = response.data.map(row => createDatBefore(
+//         row.id, 
+//         row.section,
+//         row.employeeName,
+//         row.employeeId, 
+//         row.position,
+//         row.designation,
+//         row.class,
+//         row.level,
+//         row.salaryType,
+//         row.basicSalary,
+//         row.daily,
+//         row.monthlySalary,
+//         row.pPEPoint,
+//         row.pAllowance,
+//         row.pRank,
+//         row.tsPEPoint,
+//         row.tsAllowance,
+//         row.tsRank,
+//         row.leLicenseFee, 
+//         row.lePEPoint, 
+//         row.leAllowance, 
+//         row.leRank, 
+//         row.ceCertificateOnFee, 
+//         row.cePEPoint, 
+//         row.ceAllowance, 
+//         row.ceRank, 
+//         row.Specialization, 
+//         row.birthday,
+//         row.age,
+//         row.department,
+//         row.sex,
+//         row.dateHired,
+//         row.serviceTerm,
+        
+//         ));
+//         setRowsBefore(newRows1);
 
+//       // console.log(rows)
+   
+
+//     });
   };
   const refreshTable = () => {
     console.log(department);
@@ -537,13 +691,13 @@ const SIAdmin = (props ) => {
       department: department,
     }).then((response) => {
       console.log(response);
-      console.log(response.data.message);
+      console.log(response.data.result.message);
       if(response.data.message){
         setRows([]);
 
       }
       // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
-      const newRows = response.data.map(row => createData(
+      const newRows = response.data.result.map(row => createData(
         row.id, 
         row.section,
         row.employeeName,
@@ -638,6 +792,7 @@ const SIAdmin = (props ) => {
       dateHired :dateHired, 
       serviceTerm :serviceTerm, 
       fullName: fullName,
+      dateOfEffectivity: inputValueDate,
     }).then((response) => {
       console.log(response)
       refreshTable();
@@ -707,8 +862,11 @@ refreshTable();
   const handleSelectAllClick = (event) => {
 
     if (event.target.checked) {
+      console.log(event.target.checked)
       const newSelected1 = rows.map((n, index) => parseInt(index)+1);
       setSelected(newSelected1);
+      console.log(selected2);
+
       console.log(newSelected1);
       if(newSelected1.length > 0){
         setdeleteButtonState(false)
@@ -725,6 +883,7 @@ refreshTable();
     }
     else{
       setSelected2([]);
+      
       console.log(event.target.checked)
 
     }
@@ -817,12 +976,56 @@ const setAction = (action) =>{
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = (type, employee) => {
+      setHideGrid(true);
 
       Axios.post("http://192.168.60.53:3001/totalBefore", {
         empNo: employee.empNo,
       }).then((response) => {
         console.log(response.data[0].total_sum);
         setOverAllBefore(response.data[0].total_sum)
+        setOverAllNow(response.data[0].total_sum_now)
+
+        
+
+      });
+      Axios.post("http://192.168.60.53:3001/setsitablebefore", {
+        empNo: employee.empNo,
+      }).then((response) => {
+        setEmpName1(response.data[0].employeeName);
+        setEmpNumber1(response.data[0].employeeId);
+        
+        setPosition1(response.data[0].position);
+        setDesignation1(response.data[0].designation);
+        setEmpClass1(response.data[0].class);
+        setLevel1(response.data[0].level);
+        setSalary1(response.data[0].salaryType);
+        setBasicSalary1(response.data[0].basicSalary);
+        setDaily1(response.data[0].daily);
+        setMonthlySalary1(response.data[0].monthlySalary);
+        setPosPe1(response.data[0].pPEPoint);
+        setPosAllowance1(response.data[0].pAllowance);
+        setPosRank1(response.data[0].pRank);
+        settsPEPoint1(response.data[0].tsPEPoint);
+        settsAllowance1(response.data[0].tsAllowance);
+        settsRank1(response.data[0].tsRank);
+        setleLicenseFee1(response.data[0].leLicenseFee);
+        setlePEPoint1(response.data[0].lePEPoint);
+        setleAllowance1(response.data[0].leAllowance);
+        setleRank1(response.data[0].leRank);
+        setceCertificateOnFee1(response.data[0].ceLicenseFee);
+        setcePEPoint1(response.data[0].cePEPoint);
+        setceAllowance1(response.data[0].ceAllowance);
+        setceRank1(response.data[0].ceRank);
+        setSpecialization1(response.data[0].Specialization);
+        setbirthday1(response.data[0].birthday);
+        setage1(response.data[0].age);
+        setdepartment21(response.data[0].department);
+        setsex1(response.data[0].sex);
+        setdateHired1(response.data[0].dateHired);
+        setserviceTerm1(response.data[0].serviceTerm);
+        setSection1(response.data[0].section);
+
+        
 
       });
       setEmpId(employee.no);
@@ -1157,18 +1360,156 @@ const setAction = (action) =>{
               <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
                 {empName}
               </Typography>
+              <Tooltip title="Click to see the old data">
+          <IconButton  sx={{color:'white'}} onClick={showBefore}>
+            <CompareIcon fontSize="large"  />
+          </IconButton>
+        </Tooltip>
               <Button autoFocus color="inherit"  onClick={() => updateSI(empId)}>
-                save
+                SAVE
               </Button>
             </Toolbar>
           </AppBar>
-          <Box sx={{ mt: 2 ,flexGrow:1, padding: 1}}>
-            <Grid container spacing={2} sx={{mb: 2, '& .MuiInputLabel-root': {fontSize: '20px'},'& .MuiOutlinedInput-root': {
+          <Box sx={{ mt: 2 , padding: 1}} className="grid-container" >
+          
+          <Grid  container hidden={hideGrid} spacing={2} sx={{mb: 2, backgroundColor:'gray' ,'& .MuiInputLabel-root': {fontSize: '20px'},'& .MuiOutlinedInput-root': {
                   '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                     borderColor: 'green',
                   }, fontSize:'20px'
                 }, ...(isSmallScreen && { height: 'auto' })}}>
-              <Grid  noValidate autoComplete="off"  lg={4} sm={6} xs={12}
+                  
+              <Grid  noValidate autoComplete="off"    lg={4} sm={6} xs={12}
+                sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
+                <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
+                <Grid container spacing={1}>
+                <Grid xs={12} sm={6}><TextField    label="Position" value={position1} readOnly  fullWidth /></Grid>
+                  <Grid xs={12} sm={6}> <TextField    label="Designation" value={designation1}  readOnly   fullWidth /> </Grid>
+                  </Grid>  
+                  <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Basic Salary
+                  </Typography>
+                  <Grid container spacing={1} >
+                    <Grid lg={4} sm={6} xs={12}><TextField     label="Class" value={empClass1} readOnly   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField    label="Level" value={level1} readOnly   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField    label="Salary Type" value={salary1} readOnly    fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField   type="number" label="Basic Salary" value={basicSalary1} readOnly   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField   type="number" label="Daily" value={daily1} readOnly fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField   type="number" label="Monthly Salary" value={monthlySalary1} readOnly   fullWidth /></Grid>
+
+                  </Grid>  
+                  
+                  <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Position
+                  </Typography>
+                  <Grid container spacing={1}>
+                    <Grid lg={3} sm={6} xs={12}><TextField    label="PE Point" value={posPe1} readOnly fullWidth /></Grid>
+                    <Grid lg={6} sm={6} xs={12}><TextField   type="number" label="Allowance" value={posAllowance1} readOnly fullWidth /></Grid>
+                    <Grid lg={3} sm={6} xs={12}><TextField    label="Rank" value={posRank1} readOnly  fullWidth/></Grid>
+                  </Grid>
+                 
+
+                </Item>
+
+              </Grid>
+              <Grid component="form"    noValidate autoComplete="off"  lg={4} sm={6} xs={12}
+                sx={{ '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
+                <Item sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
+                  <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Technical Skills / Special Experience
+                  </Typography>
+                  <Grid container spacing={1}>
+                  <Grid xs={12} sm={3}><TextField   label="PE Point" value={tsPEPoint1} readOnly fullWidth /></Grid>
+                  <Grid xs={12} sm={6}><TextField   type="number" label="Allowance" value={tsAllowance1} readOnly fullWidth/></Grid>
+                  <Grid xs={12} sm={3}><TextField   label="Rank" value={tsRank1} readOnly   fullWidth /></Grid>
+                  </Grid>
+
+                  <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    License Evaluation
+                  </Typography>
+                  <Grid container spacing={1}>
+                  <Grid xs={12} sm={3}><TextField   type="number" label="License Fee" value={leLicenseFee1} readOnly   fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField   label="PE Point" value={lePEPoint1} readOnly  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField   type="number" label="Allowance (PF1)" value={leAllowance1} readOnly sm={3}/><TextField   label="Rank" value={leRank1} readOnly  fullWidth /></Grid>   
+                  </Grid>
+                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Certification / Evaluation
+                  </Typography>
+                  <Grid container spacing={1}>
+                  <Grid xs={12} sm={3}><TextField   type="number" label="Certification Fee"  value={ceCertificateOnFee1} readOnly  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField                 label="PE Point"           value={cePEPoint1} readOnly  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField   type="number" label="Allowance (PF2)"    value={ceAllowance1} readOnly fullWidth/></Grid>   
+                  <Grid xs={12} sm={3}><TextField                  label="Rank"              value={ceRank1} readOnly  fullWidth /></Grid>
+                  </Grid>
+                  <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Specialization
+                  </Typography>
+                  <Grid container spacing={1}>
+                  <Grid xs={12} sm={12}><TextField   value={sum1}    fullWidth /></Grid>   
+                  </Grid>
+                </Item>
+              </Grid>
+              <Grid  component="form" noValidate autoComplete="off"  lg={4} sm={6} xs={12}
+                sx={{  '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
+                <Item sx={{ height: '100%'}} >
+                <Typography variant="h5" gutterBottom align="center" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Basic Information
+                  </Typography>             
+                  <Grid container spacing={1}>
+                  <Grid xs={12} sm={12}><TextField   label="Employee Number" value={empNumber1} readOnly  fullWidth /></Grid>
+                     <Grid xs={12} sm={12}><TextField   label="Full Name" value={empName1} readOnly  fullWidth /></Grid>
+                     {/* <Grid xs={12} sm={6}><TextField   value={department21} readOnly   fullWidth /></Grid> */}
+                     <Grid xs={12} sm={6}>
+                     {/* <InputLabel id="demo-simple-select-label">Department</InputLabel> */}
+                     <Select  labelId="demo-simple-select-label"  fullWidth  readOnly id="demo-simple-select" value={department21} style={{ marginTop: '8px', marginLeft: '8px', padding:'0px', textAlign:'left' }}   >
+    <MenuItem  value={"Administration"}>Administration</MenuItem>
+    <MenuItem  value={"Accounting"}>Accounting</MenuItem>
+    <MenuItem  value={"Japanese"}>Japanese</MenuItem>
+    <MenuItem  value={"Parts Inspection"}>Parts Inspection</MenuItem>
+    <MenuItem  value={"Parts Production"}>Parts Production</MenuItem>
+    <MenuItem  value={"Production 1"}>Production 1</MenuItem>
+    <MenuItem  value={"Production 2"}>Production 2</MenuItem>
+    <MenuItem  value={"Production Management"}>Production Management</MenuItem>
+    <MenuItem  value={"Production Technology"}>Production Technology</MenuItem>
+    <MenuItem  value={"PPIC"}>PPIC</MenuItem>
+    <MenuItem  value={"Purchasing"}>Purchasing</MenuItem>
+    <MenuItem  value={"Quality Assurance"}>Quality Assurance</MenuItem>
+    <MenuItem  value={"Quality Control"}>Quality Control</MenuItem>
+    <MenuItem  value={"System Kaizen"}>System Kaizen</MenuItem>
+    <MenuItem  value={"Warehouse"}>Warehouse</MenuItem>
+    <MenuItem  value={"DOK"}>DOK</MenuItem>
+
+
+    </Select>
+                      </Grid>
+                     <Grid xs={12} sm={6}><TextField   label="Section" value={section1} readOnly   fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField   label="Birthday" value={birthday1} readOnly  fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField   label="Age" value={age1} readOnly   fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField   label="Sex" value={sex1} readOnly  fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField   label="Date Hired" value={dateHired1} readOnly  fullWidth /></Grid>
+                     <Grid xs={12} sm={6}><TextField   label="Service Term" value={serviceTerm1} readOnly  fullWidth /></Grid>
+
+
+
+                  </Grid> 
+                  <Typography variant="h5" gutterBottom align="center" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
+                    Summary
+                  </Typography>    
+                  <Grid container spacing={1}>
+                  <Grid xs={12} sm={4}><TextField   label="Total"  value={overallBefore} readOnly fullWidth /></Grid>
+                     {/* <Grid xs={12} sm={4}><TextField   label="ＵＰ額"  value={up} readOnly fullWidth /></Grid>
+                     <Grid xs={12} sm={4}><TextField   label="Percentage"  value={percentage} readOnly fullWidth /></Grid> */}
+                    </Grid>         
+                </Item>
+               
+              </Grid>
+            </Grid>
+            <Grid  container hidden={!hideGrid} spacing={2} sx={{mb: 2, '& .MuiInputLabel-root': {fontSize: '20px'},'& .MuiOutlinedInput-root': {
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'green',
+                  }, fontSize:'20px'
+                }, ...(isSmallScreen && { height: 'auto' })}}>
+                  
+              <Grid  noValidate autoComplete="off"    lg={4} sm={6} xs={12}
                 sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
                 <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
                 <Grid container spacing={1}>
@@ -1181,9 +1522,9 @@ const setAction = (action) =>{
                   <Grid container spacing={1} >
                     <Grid lg={4} sm={6} xs={12}><TextField  required  label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /></Grid>
                     <Grid lg={4} sm={6} xs={12}><TextField required  label="Level" defaultValue={level} onChange={(e) => setLevel(e.target.value)}   fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required  label="Salary" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required  label="Salary Type" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /></Grid>
                     <Grid lg={4} sm={6} xs={12}><TextField required type="number" label="Basic Salary" defaultValue={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required type="number" label="Daily" defaultValue={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField  type="number" label="Daily" defaultValue={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
                     <Grid lg={4} sm={6} xs={12}><TextField required type="number" label="Monthly Salary" defaultValue={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
 
                   </Grid>  
@@ -1201,7 +1542,7 @@ const setAction = (action) =>{
                 </Item>
 
               </Grid>
-              <Grid component="form" noValidate autoComplete="off"  lg={4} sm={6} xs={12}
+              <Grid component="form"    noValidate autoComplete="off"  lg={4} sm={6} xs={12}
                 sx={{ '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1}}}>
                 <Item sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
@@ -1209,7 +1550,7 @@ const setAction = (action) =>{
                   </Typography>
                   <Grid container spacing={1}>
                   <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={tsPEPoint} onChange={(e) => settsPEPoint(e.target.value)} fullWidth /></Grid>
-                  <Grid xs={12} sm={6}><TextField required type="number" label="Allowance" value={tsAllowance} onChange={handleChange1}  fullWidth /></Grid>
+                  <Grid xs={12} sm={6}><TextField required type="number" label="Allowance" value={tsAllowance} onChange={(e) => settsAllowance(e.target.value)}  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="Rank" defaultValue={tsRank} onChange={(e) => settsRank(e.target.value)}   fullWidth /></Grid>
                   </Grid>
 
@@ -1219,7 +1560,7 @@ const setAction = (action) =>{
                   <Grid container spacing={1}>
                   <Grid xs={12} sm={3}><TextField required type="number" label="License Fee" defaultValue={leLicenseFee} onChange={(e) => setleLicenseFee(e.target.value)}   fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={lePEPoint} onChange={(e) => setlePEPoint(e.target.value)}  fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required type="number" label="Allowance (PF1)" value={leAllowance} onChange={handleChange2}  fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required type="number" label="Allowance (PF1)" value={leAllowance} onChange={(e) => setleAllowance(e.target.value)}  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="Rank" defaultValue={leRank} onChange={(e) => setleRank(e.target.value)}  fullWidth /></Grid>   
                   </Grid>
                    <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
@@ -1228,7 +1569,7 @@ const setAction = (action) =>{
                   <Grid container spacing={1}>
                   <Grid xs={12} sm={3}><TextField required type="number" label="Certification Fee" defaultValue={ceCertificateOnFee} onChange={(e) => setceCertificateOnFee(e.target.value)}  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={cePEPoint} onChange={(e) => setcePEPoint(e.target.value)}  fullWidth /></Grid>
-                  <Grid xs={12} sm={3}><TextField required type="number" label="Allowance (PF2)" value={ceAllowance} onChange={handleChange3} fullWidth /></Grid>
+                  <Grid xs={12} sm={3}><TextField required type="number" label="Allowance (PF2)" value={ceAllowance} onChange={(e) => setceAllowance(e.target.value)} fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="Rank" defaultValue={ceRank} onChange={(e) => setceRank(e.target.value)}  fullWidth /></Grid>   
                   </Grid>
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
@@ -1293,7 +1634,9 @@ const setAction = (action) =>{
                 </Item>
                
               </Grid>
+          
             </Grid>
+                
                 <EnhancedTable employeeid={empNumber} />
                 
           </Box>
