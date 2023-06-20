@@ -17,7 +17,7 @@ import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-
+import dayjs from 'dayjs';
 import CompareIcon from '@mui/icons-material/Compare';
 
 import '../../css/style.css';
@@ -40,6 +40,11 @@ import Select from '@mui/material/Select';
 import '../../../node_modules/flowbite/dist/flowbite.css';
 import AddEmployee from "./addEmployee";
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 import EnhancedTable from './history';
 import { Button } from 'flowbite-react';
 
@@ -815,7 +820,7 @@ setSelected2([]);
 refreshTable();
       setValue(tabNumber);
     });
-
+    closeModal();
   };
 
   useEffect(() => {
@@ -1381,14 +1386,14 @@ const setAction = (action) =>{
               <Grid  noValidate autoComplete="off"    lg={4} sm={6} xs={12}
                 sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
                 <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
-                <Grid container spacing={1}>
+                <Grid container spacing={2}>
                 <Grid xs={12} sm={6}><TextField    label="Position" value={position1} readOnly  fullWidth /></Grid>
                   <Grid xs={12} sm={6}> <TextField    label="Designation" value={designation1}  readOnly   fullWidth /> </Grid>
                   </Grid>  
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Basic Salary
                   </Typography>
-                  <Grid container spacing={1} >
+                  <Grid container spacing={2} >
                     <Grid lg={4} sm={6} xs={12}><TextField     label="Class" value={empClass1} readOnly   fullWidth /></Grid>
                     <Grid lg={4} sm={6} xs={12}><TextField    label="Level" value={level1} readOnly   fullWidth /></Grid>
                     <Grid lg={4} sm={6} xs={12}><TextField    label="Salary Type" value={salary1} readOnly    fullWidth /></Grid>
@@ -1401,7 +1406,7 @@ const setAction = (action) =>{
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Position
                   </Typography>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                     <Grid lg={3} sm={6} xs={12}><TextField    label="PE Point" value={posPe1} readOnly fullWidth /></Grid>
                     <Grid lg={6} sm={6} xs={12}><TextField   type="number" label="Allowance" value={posAllowance1} readOnly fullWidth /></Grid>
                     <Grid lg={3} sm={6} xs={12}><TextField    label="Rank" value={posRank1} readOnly  fullWidth/></Grid>
@@ -1417,7 +1422,7 @@ const setAction = (action) =>{
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Technical Skills / Special Experience
                   </Typography>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                   <Grid xs={12} sm={3}><TextField   label="PE Point" value={tsPEPoint1} readOnly fullWidth /></Grid>
                   <Grid xs={12} sm={6}><TextField   type="number" label="Allowance" value={tsAllowance1} readOnly fullWidth/></Grid>
                   <Grid xs={12} sm={3}><TextField   label="Rank" value={tsRank1} readOnly   fullWidth /></Grid>
@@ -1426,7 +1431,7 @@ const setAction = (action) =>{
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     License Evaluation
                   </Typography>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                   <Grid xs={12} sm={3}><TextField   type="number" label="License Fee" value={leLicenseFee1} readOnly   fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField   label="PE Point" value={lePEPoint1} readOnly  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField   type="number" label="Allowance (PF1)" value={leAllowance1} readOnly sm={3}/><TextField   label="Rank" value={leRank1} readOnly  fullWidth /></Grid>   
@@ -1434,7 +1439,7 @@ const setAction = (action) =>{
                    <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Certification / Evaluation
                   </Typography>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                   <Grid xs={12} sm={3}><TextField   type="number" label="Certification Fee"  value={ceCertificateOnFee1} readOnly  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField                 label="PE Point"           value={cePEPoint1} readOnly  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField   type="number" label="Allowance (PF2)"    value={ceAllowance1} readOnly fullWidth/></Grid>   
@@ -1443,7 +1448,7 @@ const setAction = (action) =>{
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Specialization
                   </Typography>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                   <Grid xs={12} sm={12}><TextField   value={sum1}    fullWidth /></Grid>   
                   </Grid>
                 </Item>
@@ -1454,13 +1459,13 @@ const setAction = (action) =>{
                 <Typography variant="h5" gutterBottom align="center" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Basic Information
                   </Typography>             
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                   <Grid xs={12} sm={12}><TextField   label="Employee Number" value={empNumber1} readOnly  fullWidth /></Grid>
                      <Grid xs={12} sm={12}><TextField   label="Full Name" value={empName1} readOnly  fullWidth /></Grid>
                      {/* <Grid xs={12} sm={6}><TextField   value={department21} readOnly   fullWidth /></Grid> */}
                      <Grid xs={12} sm={6}>
                      {/* <InputLabel id="demo-simple-select-label">Department</InputLabel> */}
-                     <Select  labelId="demo-simple-select-label"  fullWidth  readOnly id="demo-simple-select" value={department21} style={{ marginTop: '8px', marginLeft: '8px', padding:'0px', textAlign:'left' }}   >
+                     <Select  labelId="demo-simple-select-label"  fullWidth  readOnly id="demo-simple-select" value={department21} style={{ marginLeft: '8px', padding:'0px', textAlign:'left' }}   >
     <MenuItem  value={"Administration"}>Administration</MenuItem>
     <MenuItem  value={"Accounting"}>Accounting</MenuItem>
     <MenuItem  value={"Japanese"}>Japanese</MenuItem>
@@ -1482,10 +1487,38 @@ const setAction = (action) =>{
     </Select>
                       </Grid>
                      <Grid xs={12} sm={6}><TextField   label="Section" value={section1} readOnly   fullWidth /></Grid>
-                     <Grid xs={12} sm={4}><TextField   label="Birthday" value={birthday1} readOnly  fullWidth /></Grid>
+                     <Grid lg={4} sm={6} xs={12}>
+               <LocalizationProvider   dateAdapter={AdapterDayjs}>
+      <DemoContainer fullWidth components={['DatePicker', 'DatePicker', 'DatePicker']}>
+               <DatePicker fullWidth readOnly
+              value={dayjs(birthday1)}
+    label="Birthday"
+    views={['month', 'day', 'year']}
+  
+    renderInput={(params) => <TextField readOnly {...params} />}
+  />
+                {/* <TextField required error={birthdayState} label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /> */}
+                </DemoContainer>
+    </LocalizationProvider>
+                </Grid>
+                     {/* <Grid xs={12} sm={4}><TextField   label="Birthday" value={birthday1} readOnly  fullWidth /></Grid> */}
                      <Grid xs={12} sm={4}><TextField   label="Age" value={age1} readOnly   fullWidth /></Grid>
                      <Grid xs={12} sm={4}><TextField   label="Sex" value={sex1} readOnly  fullWidth /></Grid>
-                     <Grid xs={12} sm={6}><TextField   label="Date Hired" value={dateHired1} readOnly  fullWidth /></Grid>
+                     {/* <Grid xs={12} sm={6}><TextField   label="Date Hired" value={dateHired1} readOnly  fullWidth /></Grid> */}
+                     <Grid lg={6} sm={6} xs={12}>
+               <LocalizationProvider   dateAdapter={AdapterDayjs}>
+      <DemoContainer fullWidth components={['DatePicker', 'DatePicker', 'DatePicker']}>
+               <DatePicker fullWidth readOnly
+              value={dayjs(dateHired1)}
+    label="Date Hired"
+    views={['month', 'day', 'year']}
+  
+    renderInput={(params) => <TextField readOnly {...params} />}
+  />
+                {/* <TextField required error={birthdayState} label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /> */}
+                </DemoContainer>
+    </LocalizationProvider>
+                </Grid>
                      <Grid xs={12} sm={6}><TextField   label="Service Term" value={serviceTerm1} readOnly  fullWidth /></Grid>
 
 
@@ -1494,7 +1527,7 @@ const setAction = (action) =>{
                   <Typography variant="h5" gutterBottom align="center" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Summary
                   </Typography>    
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                   <Grid xs={12} sm={4}><TextField   label="Total"  value={overallBefore} readOnly fullWidth /></Grid>
                      {/* <Grid xs={12} sm={4}><TextField   label="ＵＰ額"  value={up} readOnly fullWidth /></Grid>
                      <Grid xs={12} sm={4}><TextField   label="Percentage"  value={percentage} readOnly fullWidth /></Grid> */}
@@ -1512,14 +1545,14 @@ const setAction = (action) =>{
               <Grid  noValidate autoComplete="off"    lg={4} sm={6} xs={12}
                 sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
                 <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
-                <Grid container spacing={1}>
+                <Grid container spacing={2}>
                 <Grid xs={12} sm={6}><TextField required  label="Position" defaultValue={position} onChange={(e) => setPosition(e.target.value)}  fullWidth /></Grid>
                   <Grid xs={12} sm={6}> <TextField required  label="Designation" defaultValue={designation}  onChange={(e) => setDesignation(e.target.value)}   fullWidth /> </Grid>
                   </Grid>  
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Basic Salary
                   </Typography>
-                  <Grid container spacing={1} >
+                  <Grid container spacing={2} >
                     <Grid lg={4} sm={6} xs={12}><TextField  required  label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /></Grid>
                     <Grid lg={4} sm={6} xs={12}><TextField required  label="Level" defaultValue={level} onChange={(e) => setLevel(e.target.value)}   fullWidth /></Grid>
                     <Grid lg={4} sm={6} xs={12}><TextField required  label="Salary Type" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /></Grid>
@@ -1532,7 +1565,7 @@ const setAction = (action) =>{
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Position
                   </Typography>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                     <Grid lg={3} sm={6} xs={12}><TextField required  label="PE Point" defaultValue={posPe} onChange={(e) => setPosPe(e.target.value)} fullWidth /></Grid>
                     <Grid lg={6} sm={6} xs={12}><TextField required type="number" label="Allowance" defaultValue={posAllowance} onChange={(e) => setPosAllowance(e.target.value)} fullWidth /></Grid>
                     <Grid lg={3} sm={6} xs={12}><TextField required  label="Rank" defaultValue={posRank} onChange={(e) => setPosRank(e.target.value)}  fullWidth/></Grid>
@@ -1548,7 +1581,7 @@ const setAction = (action) =>{
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Technical Skills / Special Experience
                   </Typography>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                   <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={tsPEPoint} onChange={(e) => settsPEPoint(e.target.value)} fullWidth /></Grid>
                   <Grid xs={12} sm={6}><TextField required type="number" label="Allowance" value={tsAllowance} onChange={(e) => settsAllowance(e.target.value)}  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="Rank" defaultValue={tsRank} onChange={(e) => settsRank(e.target.value)}   fullWidth /></Grid>
@@ -1557,7 +1590,7 @@ const setAction = (action) =>{
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     License Evaluation
                   </Typography>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                   <Grid xs={12} sm={3}><TextField required type="number" label="License Fee" defaultValue={leLicenseFee} onChange={(e) => setleLicenseFee(e.target.value)}   fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={lePEPoint} onChange={(e) => setlePEPoint(e.target.value)}  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required type="number" label="Allowance (PF1)" value={leAllowance} onChange={(e) => setleAllowance(e.target.value)}  fullWidth /></Grid>
@@ -1566,7 +1599,7 @@ const setAction = (action) =>{
                    <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Certification / Evaluation
                   </Typography>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                   <Grid xs={12} sm={3}><TextField required type="number" label="Certification Fee" defaultValue={ceCertificateOnFee} onChange={(e) => setceCertificateOnFee(e.target.value)}  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={cePEPoint} onChange={(e) => setcePEPoint(e.target.value)}  fullWidth /></Grid>
                   <Grid xs={12} sm={3}><TextField required type="number" label="Allowance (PF2)" value={ceAllowance} onChange={(e) => setceAllowance(e.target.value)} fullWidth /></Grid>
@@ -1575,7 +1608,7 @@ const setAction = (action) =>{
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Specialization
                   </Typography>
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                   <Grid xs={12} sm={12}><TextField required  value={sum} readOnly   fullWidth /></Grid>   
                   </Grid>
                 </Item>
@@ -1586,13 +1619,13 @@ const setAction = (action) =>{
                 <Typography variant="h5" gutterBottom align="center" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Basic Information
                   </Typography>             
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                   <Grid xs={12} sm={12}><TextField required  label="Employee Number" defaultValue={empNumber} onChange={(e) => setEmpNumber(e.target.value)}  fullWidth /></Grid>
                      <Grid xs={12} sm={12}><TextField required  label="Full Name" defaultValue={empName} onChange={(e) => setEmpName(e.target.value)}  fullWidth /></Grid>
                      {/* <Grid xs={12} sm={6}><TextField required  defaultValue={department2} onChange={(e) => setdepartment2(e.target.value)}   fullWidth /></Grid> */}
                      <Grid xs={12} sm={6}>
                      {/* <InputLabel id="demo-simple-select-label">Department</InputLabel> */}
-                     <Select  labelId="demo-simple-select-label"  fullWidth required  id="demo-simple-select" value={department2} style={{ marginTop: '8px', marginLeft: '8px', padding:'0px', textAlign:'left' }} onChange={(e) => setdepartment2(e.target.value)}  >
+                     <Select  labelId="demo-simple-select-label"  fullWidth required  id="demo-simple-select" value={department2} style={{ marginTop: '0px', marginLeft: '8px', padding:'0px', textAlign:'left' }} onChange={(e) => setdepartment2(e.target.value)}  >
     <MenuItem  value={"Administration"}>Administration</MenuItem>
     <MenuItem  value={"Accounting"}>Accounting</MenuItem>
     <MenuItem  value={"Japanese"}>Japanese</MenuItem>
@@ -1614,11 +1647,43 @@ const setAction = (action) =>{
     </Select>
                       </Grid>
                      <Grid xs={12} sm={6}><TextField required  label="Section" defaultValue={section} onChange={(e) => setSection(e.target.value)}   fullWidth /></Grid>
-                     <Grid xs={12} sm={4}><TextField required  label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /></Grid>
+                     {/* <Grid xs={12} sm={4}><TextField required  label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /></Grid> */}
+                     <Grid lg={4} sm={6} xs={12}>
+               <LocalizationProvider   dateAdapter={AdapterDayjs}>
+      <DemoContainer fullWidth components={['DatePicker', 'DatePicker', 'DatePicker']}>
+               <DatePicker fullWidth
+              value={dayjs(birthday)}
+    label="Birthday"
+    views={['month', 'day', 'year']}
+  
+    onChange={(newValue) => setbirthday(newValue)}
+    renderInput={(params) => <TextField {...params} />}
+  />
+                {/* <TextField required error={birthdayState} label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /> */}
+                </DemoContainer>
+    </LocalizationProvider>
+                </Grid>
                      <Grid xs={12} sm={4}><TextField required  label="Age" defaultValue={age} onChange={(e) => setage(e.target.value)}   fullWidth /></Grid>
                      <Grid xs={12} sm={4}><TextField required  label="Sex" defaultValue={sex} onChange={(e) => setsex(e.target.value)}  fullWidth /></Grid>
-                     <Grid xs={12} sm={6}><TextField required  label="Date Hired" defaultValue={dateHired} onChange={(e) => setdateHired(e.target.value)}  fullWidth /></Grid>
-                     <Grid xs={12} sm={6}><TextField required  label="Service Term" defaultValue={serviceTerm} onChange={(e) => setserviceTerm(e.target.value)}  fullWidth /></Grid>
+                     {/* <Grid xs={12} sm={6}><TextField required  label="Date Hired" defaultValue={dateHired} onChange={(e) => setdateHired(e.target.value)}  fullWidth /></Grid>
+                      */}
+                           <Grid lg={6} sm={6} xs={12}>
+               <LocalizationProvider   dateAdapter={AdapterDayjs}>
+      <DemoContainer fullWidth components={['DatePicker', 'DatePicker', 'DatePicker']}>
+               <DatePicker fullWidth
+                                 value={dayjs(dateHired)}
+
+    label="Date Hired"
+    views={['month', 'day', 'year']}
+  
+    onChange={(newValue) => setdateHired(newValue)}
+    renderInput={(params) => <TextField {...params} />}
+  />
+                {/* <TextField required error={birthdayState} label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /> */}
+                </DemoContainer>
+    </LocalizationProvider>
+                </Grid>
+                     <Grid lg={6} sm={6} xs={12}><TextField required  label="Service Term" defaultValue={serviceTerm} onChange={(e) => setserviceTerm(e.target.value)}  fullWidth /></Grid>
 
 
 
@@ -1626,7 +1691,7 @@ const setAction = (action) =>{
                   <Typography variant="h5" gutterBottom align="center" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Summary
                   </Typography>    
-                  <Grid container spacing={1}>
+                  <Grid container spacing={2}>
                   <Grid xs={12} sm={4}><TextField required  label="Total"  value={overallTotal} readOnly fullWidth /></Grid>
                      <Grid xs={12} sm={4}><TextField required  label="ＵＰ額"  value={up} readOnly fullWidth /></Grid>
                      <Grid xs={12} sm={4}><TextField required  label="Percentage"  value={percentage} readOnly fullWidth /></Grid>

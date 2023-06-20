@@ -305,7 +305,8 @@ app.post("/history", (req, res)=>{
                 res.send({err: err});
             }
                 if(result.length > 0){
-                    res.send(result)
+                  const message = 'Data found';
+                  res.send({ result: result, message: message });
                 }else{
                     res.send({message: "No Data Found"});
                     

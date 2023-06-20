@@ -21,7 +21,12 @@ import InputLabel from '@mui/material/InputLabel';
 import '../../../node_modules/flowbite/dist/flowbite.css';
 import Paper from '@mui/material/Paper';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import '../../css/style.css';
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -191,7 +196,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
             setRows([]);
     
           }
-          const newRows = response.data.map(row => createData(
+          const newRows = response.data.result.map(row => createData(
             row.id, 
             row.section,
             row.employeeName,
@@ -313,6 +318,17 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
           setMonthlySalaryState(false);
         }
         if(empName!=='' && department2!=='' && birthday!=='' && age!=='' && sex!=='' && empNumber!=='' && dateHired!=='' && position!=='' && designation!=='' && empClass!=='' && level!=='' && salary!=='' && basicSalary!=='' && monthlySalary){
+        const formattedDate = new Date(birthday).toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+        const formattedDateHired = new Date(dateHired).toLocaleDateString('en-US', { 
+          year: 'numeric', 
+          month: 'long', 
+          day: 'numeric' 
+        });
+
         Axios.post("http://192.168.60.53:3001/addemployee", {
             section: section,
             daily: daily,
@@ -341,11 +357,11 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
             ceRank :ceRank, 
             Specialization :sum, 
             total :total, 
-            birthday :birthday, 
+            birthday :formattedDate, 
             age :age, 
             department :department2, 
             sex :sex, 
-            dateHired :dateHired, 
+            dateHired :formattedDateHired, 
             serviceTerm :serviceTerm, 
     
           }).then((response) => {
@@ -383,14 +399,14 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
         <Grid  noValidate autoComplete="off"  lg={4} sm={6} xs={12}
           sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
           <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
-          <Grid container spacing={1}>
+          <Grid container spacing={2}>
           <Grid xs={12} sm={6}><TextField error={positionState} required  label="Position" defaultValue={position} onChange={(e) => setPosition(e.target.value)}  fullWidth /></Grid>
             <Grid xs={12} sm={6}> <TextField required error={designationState}  label="Designation" defaultValue={designation}  onChange={(e) => setDesignation(e.target.value)}   fullWidth /> </Grid>
             </Grid>  
             <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
               Basic Salary
             </Typography>
-            <Grid container spacing={1} >
+            <Grid container  spacing={2} >
               <Grid lg={4} sm={6} xs={12}><TextField  required error={empClassState} label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /></Grid>
               <Grid lg={4} sm={6} xs={12}><TextField required error={levelState} label="Level" defaultValue={level} onChange={(e) => setLevel(e.target.value)}   fullWidth /></Grid>
               <Grid lg={4} sm={6} xs={12}><TextField required error={salaryState} label="Salary Type" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /></Grid>
@@ -403,7 +419,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
             <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
               Position
             </Typography>
-            <Grid container spacing={1}>
+            <Grid container  spacing={2}>
               <Grid lg={3} sm={6} xs={12}><TextField required  label="PE Point" defaultValue={posPe} onChange={(e) => setPosPe(e.target.value)} fullWidth /></Grid>
               <Grid lg={6} sm={6} xs={12}><TextField required  label="Allowance" defaultValue={posAllowance} onChange={(e) => setPosAllowance(e.target.value)} fullWidth /></Grid>
               <Grid lg={3} sm={6} xs={12}><TextField required  label="Rank" defaultValue={posRank} onChange={(e) => setPosRank(e.target.value)}  fullWidth/></Grid>
@@ -419,7 +435,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
             <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
               Technical Skills / Special Experience
             </Typography>
-            <Grid container spacing={1}>
+            <Grid container  spacing={2}>
             <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={tsPEPoint} onChange={(e) => settsPEPoint(e.target.value)} fullWidth /></Grid>
             <Grid xs={12} sm={6}><TextField required  label="Allowance"defaultValue={tsAllowance} onChange={handleChange1}   fullWidth /></Grid>
             <Grid xs={12} sm={3}><TextField required  label="Rank" defaultValue={tsRank} onChange={(e) => settsRank(e.target.value)}   fullWidth /></Grid>
@@ -428,7 +444,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
             <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
               License Evaluation
             </Typography>
-            <Grid container spacing={1}>
+            <Grid container  spacing={2}>
             <Grid xs={12} sm={3}><TextField required  label="License Fee" defaultValue={leLicenseFee} onChange={(e) => setleLicenseFee(e.target.value)}   fullWidth /></Grid>
             <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={lePEPoint} onChange={(e) => setlePEPoint(e.target.value)}  fullWidth /></Grid>
             <Grid xs={12} sm={3}><TextField required  label="Allowance (PF1)" defaultValue={leAllowance} onChange={handleChange2}  fullWidth /></Grid>
@@ -437,7 +453,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
              <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
               Certification / Evaluation
             </Typography>
-            <Grid container spacing={1}>
+            <Grid container  spacing={2}>
             <Grid xs={12} sm={3}><TextField required  label="Certification Fee" defaultValue={ceCertificateOnFee} onChange={(e) => setceCertificateOnFee(e.target.value)}  fullWidth /></Grid>
             <Grid xs={12} sm={3}><TextField required  label="PE Point" defaultValue={cePEPoint} onChange={(e) => setcePEPoint(e.target.value)}  fullWidth /></Grid>
             <Grid xs={12} sm={3}><TextField required  label="Allowance (PF2)" defaultValue={ceAllowance} onChange={handleChange3}  fullWidth /></Grid>
@@ -446,8 +462,8 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
             <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
               Specialization
             </Typography>
-            <Grid container spacing={1}>
-            <Grid xs={12} sm={12}><TextField   label="Rank" value={sum} readOnly fullWidth /></Grid>   
+            <Grid container  spacing={2}>
+            <Grid xs={12} sm={12}><TextField   label="" value={sum} readOnly fullWidth /></Grid>   
             </Grid>
           </Item>
         </Grid>
@@ -457,13 +473,13 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
           <Typography variant="h5" gutterBottom align="center" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
               Basic Information
             </Typography>             
-            <Grid container spacing={1}>
+            <Grid container  spacing={2}>
             <Grid xs={12} sm={12}><TextField required error={empNumberState} label="Employee Number" defaultValue={empNumber} onChange={(e) => setEmpNumber(e.target.value)}  fullWidth /></Grid>
                <Grid xs={12} sm={12}><TextField required error={empNameState} label="Full Name" defaultValue={empName} onChange={(e) => setEmpName(e.target.value)}  fullWidth /></Grid>
                {/* <Grid xs={12} sm={6}><TextField required  defaultValue={department2} onChange={(e) => setdepartment2(e.target.value)}   fullWidth /></Grid> */}
                <Grid xs={12} sm={6}>
                {/* <InputLabel id="demo-simple-select-label">Department</InputLabel> */}
-               <Select  labelId="demo-simple-select-label" error={department2State}  fullWidth required  id="demo-simple-select" value={department2} style={{ marginTop: '8px', marginLeft: '8px', padding:'0px', textAlign:'left' }} onChange={(e) => setdepartment2(e.target.value)}  >
+               <Select  labelId="demo-simple-select-label" error={department2State}  fullWidth required  id="demo-simple-select" value={department2} style={{  padding:'0px', textAlign:'left' }} onChange={(e) => setdepartment2(e.target.value)}  >
 <MenuItem  value={"Administration"}>Administration</MenuItem>
 <MenuItem  value={"Accounting"}>Accounting</MenuItem>
 <MenuItem  value={"Japanese"}>Japanese</MenuItem>
@@ -484,14 +500,48 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
 
 </Select>
                 </Grid>
+  
+       
+
                <Grid xs={12} sm={6}><TextField required  label="Section" defaultValue={section} onChange={(e) => setSection(e.target.value)}   fullWidth /></Grid>
-               <Grid xs={12} sm={4}><TextField required error={birthdayState} label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /></Grid>
-               <Grid xs={12} sm={4}><TextField required error={ageState} label="Age" defaultValue={age} onChange={(e) => setage(e.target.value)}   fullWidth /></Grid>
-               <Grid xs={12} sm={4}><TextField required error={sexState} label="Sex" defaultValue={sex} onChange={(e) => setsex(e.target.value)}  fullWidth /></Grid>
-               <Grid xs={12} sm={6}><TextField required error={dateHiredState} label="Date Hired" defaultValue={dateHired} onChange={(e) => setdateHired(e.target.value)}  fullWidth /></Grid>
-               <Grid xs={12} sm={6}><TextField required  label="Service Term" defaultValue={serviceTerm} onChange={(e) => setserviceTerm(e.target.value)}  fullWidth /></Grid>
+               <Grid lg={4} sm={6} xs={12}>
+               <LocalizationProvider   dateAdapter={AdapterDayjs}>
+      <DemoContainer fullWidth components={['DatePicker', 'DatePicker', 'DatePicker']}>
+               <DatePicker fullWidth
+              value={birthday}
+    label="Birthday"
+    views={['month', 'day', 'year']}
+  
+    onChange={(newValue) => setbirthday(newValue)}
+    renderInput={(params) => <TextField {...params} />}
+  />
+                {/* <TextField required error={birthdayState} label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /> */}
+                </DemoContainer>
+    </LocalizationProvider>
+                </Grid>
+               <Grid lg={4} sm={6} xs={12}><TextField required error={ageState} label="Age" defaultValue={age} onChange={(e) => setage(e.target.value)}   fullWidth /></Grid>
+               <Grid lg={4} sm={6} xs={12}><TextField required error={sexState} label="Sex" defaultValue={sex} onChange={(e) => setsex(e.target.value)}  fullWidth /></Grid>
+               <Grid lg={4} sm={6} xs={12}>
+               <LocalizationProvider   dateAdapter={AdapterDayjs}>
+      <DemoContainer fullWidth components={['DatePicker', 'DatePicker', 'DatePicker']}>
+               <DatePicker fullWidth
+                             value={dateHired}
+
+    label="Date Hired"
+    views={['month', 'day', 'year']}
+  
+    onChange={(newValue) => setdateHired(newValue)}
+    renderInput={(params) => <TextField {...params} />}
+  />
+                {/* <TextField required error={birthdayState} label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /> */}
+                </DemoContainer>
+    </LocalizationProvider>
+                </Grid>
+               {/* <Grid xs={12} sm={6}><TextField required error={dateHiredState} label="Date Hired" defaultValue={dateHired} onChange={(e) => setdateHired(e.target.value)}  fullWidth /></Grid> */}
+               {/* <Grid xs={12} sm={6}><TextField required  label="Service Term" defaultValue={serviceTerm} onChange={(e) => setserviceTerm(e.target.value)}  fullWidth /></Grid> */}
 
 
+              
 
             </Grid> 
             
