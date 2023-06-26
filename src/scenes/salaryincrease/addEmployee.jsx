@@ -25,7 +25,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
+import FormControl from '@mui/material/FormControl';
 import '../../css/style.css';
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -108,9 +108,9 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
     
       const [position, setPosition] = React.useState('');
       const [designation, setDesignation] = React.useState('');
-      const [empClass, setEmpClass] = React.useState('');
+      const [empClass, setEmpClass] = React.useState('Choose');
       const [level, setLevel] = React.useState('');
-      const [salary, setSalary] = React.useState('');
+      const [salary, setSalary] = React.useState('Choose');
       const [basicSalary, setBasicSalary] = React.useState('');
       const [daily, setDaily] = React.useState('');
       const [monthlySalary, setMonthlySalary] = React.useState('');
@@ -134,7 +134,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
       const [birthday, setbirthday] = React.useState('');
       const [age, setage] = React.useState('');
       const [department2, setdepartment2] = React.useState(department);
-      const [sex, setsex] = React.useState('');
+      const [sex, setsex] = React.useState('Choose');
       const [dateHired, setdateHired] = React.useState('');
       const [serviceTerm, setserviceTerm] = React.useState('');
       const [section, setSection] = React.useState('');
@@ -170,17 +170,42 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
       const handleChange3 = (event) => {
         setceAllowance(event.target.value);
       };
+      
 
 
+  
+    
       React.useEffect(() => {
         const num1 = parseFloat(tsAllowance);
         const num2 = parseFloat(leAllowance);
         const num3 = parseFloat(ceAllowance);
         const total = (isNaN(num1) ? 0 : num1) + (isNaN(num2) ? 0 : num2) + (isNaN(num3) ? 0 : num3);
         setSum(total);
-    
 
-      }, [tsAllowance, leAllowance, ceAllowance]);
+        const currentDate = new Date();
+        let birthDate = new Date();
+        if(birthday !== ""){
+
+         birthDate = new Date(birthday);
+      }
+      else{
+         birthDate = new Date();
+
+      }
+        // Calculate the difference in years
+        let calculatedAge = currentDate.getFullYear() - birthDate.getFullYear();
+      
+        // Check if the current date is before the birthdate in the same year
+        if (
+          currentDate.getMonth() < birthDate.getMonth() ||
+          (currentDate.getMonth() === birthDate.getMonth() &&
+            currentDate.getDate() < birthDate.getDate())
+        ) {
+          calculatedAge--;
+        }
+
+        setage(calculatedAge)
+      }, [tsAllowance, leAllowance, ceAllowance, birthday]);
     
       const refreshTable = () => {
 
@@ -267,7 +292,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
         }else{
           setageState(false);
         }
-         if(sex===''){
+         if(sex==='Choose'){
           setsexState(true);
         }else{
           setsexState(false);
@@ -292,7 +317,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
         }else{
           setDesignationState(false);
         }
-         if(empClass===''){
+         if(empClass==='Choose'){
           setEmpClassState(true);
         }else{
           setEmpClassState(false);
@@ -302,7 +327,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
         }else{
           setLevelState(false);
         }
-         if(salary===''){
+         if(salary==='Choose'){
           setSalaryState(true);
         }else{
           setSalaryState(false);
@@ -407,9 +432,31 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
               Basic Salary
             </Typography>
             <Grid container  spacing={2} >
-              <Grid lg={4} sm={6} xs={12}><TextField  required error={empClassState} label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /></Grid>
+              <Grid lg={4} sm={6} xs={12}>
+              <Select   required error={empClassState}  fullWidth  value={empClass} style={{  padding:'0px', textAlign:'left' }}  onChange={(e) => setEmpClass(e.target.value)}  >
+              
+              <MenuItem  value={"Choose"} disabled>Class</MenuItem>
+
+             <MenuItem  value={"D1"}>D1</MenuItem>
+             <MenuItem  value={"DM1"}>DM1</MenuItem>
+             <MenuItem  value={"D2"}>D2</MenuItem>
+             <MenuItem  value={"DM2"}>DM2</MenuItem>
+             <MenuItem  value={"D3"}>D3</MenuItem>
+             <MenuItem  value={"DM3"}>DM3</MenuItem>
+           </Select>
+           {/* <TextField  required error={empClassState} label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /> */}
+           </Grid>
               <Grid lg={4} sm={6} xs={12}><TextField required error={levelState} label="Level" defaultValue={level} onChange={(e) => setLevel(e.target.value)}   fullWidth /></Grid>
-              <Grid lg={4} sm={6} xs={12}><TextField required error={salaryState} label="Salary Type" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /></Grid>
+              <Grid lg={4} sm={6} xs={12}>
+              <Select   required error={salaryState}  fullWidth  value={salary} style={{  padding:'0px', textAlign:'left' }}  onChange={(e) => setSalary(e.target.value)}  >
+              
+              <MenuItem  value={"Choose"} disabled>Salary Type</MenuItem>
+
+             <MenuItem  value={"Monthly"}>Monthly</MenuItem>
+             <MenuItem  value={"Daily"}>Daily</MenuItem>
+           </Select>
+                {/* <TextField required error={salaryState} label="Salary Type" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /> */}
+                </Grid>
               <Grid lg={4} sm={6} xs={12}><TextField required error={basicSalaryState} label="Basic Salary" defaultValue={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
               <Grid lg={4} sm={6} xs={12}><TextField  label="Daily" defaultValue={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
               <Grid lg={4} sm={6} xs={12}><TextField required error={monthlySalaryState} label="Monthly Salary" defaultValue={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
@@ -507,7 +554,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
                <Grid lg={4} sm={6} xs={12}>
                <LocalizationProvider   dateAdapter={AdapterDayjs}>
       <DemoContainer fullWidth components={['DatePicker', 'DatePicker', 'DatePicker']}>
-               <DatePicker fullWidth
+               <DatePicker fullWidth 
               value={birthday}
     label="Birthday"
     views={['month', 'day', 'year']}
@@ -519,8 +566,18 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
                 </DemoContainer>
     </LocalizationProvider>
                 </Grid>
-               <Grid lg={4} sm={6} xs={12}><TextField required error={ageState} label="Age" defaultValue={age} onChange={(e) => setage(e.target.value)}   fullWidth /></Grid>
-               <Grid lg={4} sm={6} xs={12}><TextField required error={sexState} label="Sex" defaultValue={sex} onChange={(e) => setsex(e.target.value)}  fullWidth /></Grid>
+               <Grid lg={4} sm={6} xs={12}><TextField required error={ageState} label="Age" value={age} readOnly   fullWidth /></Grid>
+               <Grid lg={4} sm={6} xs={12}>
+               {/* <InputLabel>Text</InputLabel> */}
+               <Select   error={sexState}  fullWidth required  value={sex} style={{  padding:'0px', textAlign:'left' }}  onChange={(e) => setsex(e.target.value)}  >
+              
+               <MenuItem  value={"Choose"} disabled>Sex</MenuItem>
+ 
+              <MenuItem  value={"Male"}>Male</MenuItem>
+              <MenuItem  value={"Female"}>Female</MenuItem>
+            </Select>
+                {/* <TextField required error={sexState} label="Sex" defaultValue={sex} onChange={(e) => setsex(e.target.value)}  fullWidth /> */}
+                </Grid>
                <Grid lg={4} sm={6} xs={12}>
                <LocalizationProvider   dateAdapter={AdapterDayjs}>
       <DemoContainer fullWidth components={['DatePicker', 'DatePicker', 'DatePicker']}>

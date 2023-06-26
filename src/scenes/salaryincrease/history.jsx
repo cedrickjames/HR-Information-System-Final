@@ -373,7 +373,9 @@ const EnhancedTable = (emp) => {
                       displayField = "Date Hired";
                     
                     break;
-                  
+                    case "position":
+                      displayField = "Position";
+                    break;
                     case "designation":
                       displayField = "Designation";
                     

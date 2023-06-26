@@ -40,7 +40,7 @@ const SidebarMain = (props) => {
   
     const fullName = localStorage.getItem('fullName');
 
-    console.log(fullName)
+    //console.log(fullName)
     setName(fullName)
    
   }, []);

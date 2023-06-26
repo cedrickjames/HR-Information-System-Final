@@ -127,7 +127,7 @@
 
   const SalaryIncrease = (props) => {
     const {name} = props;
-    console.log({name});
+    //console.log({name});
     const [department, setDepartment] = useState([]);
     const [tabNumber, setTabNumber] = useState([]);
 
@@ -141,7 +141,7 @@
         Axios.post("http://192.168.60.53:3001/setsitable", {
           department: dept,
         }).then((response) => {
-          // console.log(response);
+          // //console.log(response);
 
         });
       };
@@ -151,18 +151,18 @@
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
-      // console.log(newValue);
+      // //console.log(newValue);
       setValue(newValue);
     };
   // function clickTab(dept){
   //   setDepartment(dept);
   //   //  setTable();
 
-  //   // console.log(department)
+  //   // //console.log(department)
   // }
 
   useEffect(() => {
-    // console.log(department);
+    // //console.log(department);
     // choosedept();
   }, [department, tabNumber]);
 
@@ -262,50 +262,50 @@
         <SIAdmin department={"Administration"} fullName = {name} tabNumber = {0} setValue={setValue} date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
-        <SIAdmin department={"Accounting"}  fullName = {name} tabNumber = {1} setValue={setValue}/>
+        <SIAdmin department={"Accounting"}  fullName = {name} tabNumber = {1} setValue={setValue}   date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={2}>
-        <SIAdmin department={"Japanese"} fullName = {name} tabNumber = {2} setValue={setValue}/>
+        <SIAdmin department={"Japanese"} fullName = {name} tabNumber = {2} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
 
         </TabPanel>
         <TabPanel value={value} index={3}>
-        <SIAdmin department={"Parts Inspection"} fullName = {name} tabNumber = {3} setValue={setValue}/>
+        <SIAdmin department={"Parts Inspection"} fullName = {name} tabNumber = {3} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={4}>
-        <SIAdmin department={"Parts Production"} fullName = {name} tabNumber = {4} setValue={setValue}/>
+        <SIAdmin department={"Parts Production"} fullName = {name} tabNumber = {4} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={5}>
-        <SIAdmin department={"Production 1"} fullName = {name} tabNumber = {5} setValue={setValue}/>
+        <SIAdmin department={"Production 1"} fullName = {name} tabNumber = {5} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={6}>
-        <SIAdmin department={"Production 2"} fullName = {name} tabNumber = {6} setValue={setValue}/>
+        <SIAdmin department={"Production 2"} fullName = {name} tabNumber = {6} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={7}>
-        <SIAdmin department={"Production Management"} fullName = {name} tabNumber = {7} setValue={setValue}/>
+        <SIAdmin department={"Production Management"} fullName = {name} tabNumber = {7} setValue={setValue}   date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={8}>
-        <SIAdmin department={"Production Technology"} fullName = {name} tabNumber = {8} setValue={setValue}/>
+        <SIAdmin department={"Production Technology"} fullName = {name} tabNumber = {8} setValue={setValue}   date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={9}>
-        <SIAdmin department={"PPIC"} fullName = {name} tabNumber = {9} setValue={setValue}/>
+        <SIAdmin department={"PPIC"} fullName = {name} tabNumber = {9} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={10}>
-        <SIAdmin department={"Purchasing"} fullName = {name} tabNumber = {10} setValue={setValue}/>
+        <SIAdmin department={"Purchasing"} fullName = {name} tabNumber = {10} setValue={setValue}   date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={11}>
-        <SIAdmin department={"Quality Assurance"} fullName = {name} tabNumber = {11} setValue={setValue}/>
+        <SIAdmin department={"Quality Assurance"} fullName = {name} tabNumber = {11} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={12}>
-        <SIAdmin department={"Quality Control"} fullName = {name} tabNumber = {12} setValue={setValue}/>
+        <SIAdmin department={"Quality Control"} fullName = {name} tabNumber = {12} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={13}>
-        <SIAdmin department={"System Kaizen"} fullName = {name} tabNumber = {13} setValue={setValue}/>
+        <SIAdmin department={"System Kaizen"} fullName = {name} tabNumber = {13} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={14}>
-        <SIAdmin department={"Warehouse"} fullName = {name} tabNumber = {14} setValue={setValue}/>
+        <SIAdmin department={"Warehouse"} fullName = {name} tabNumber = {14} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={15}>
-        <SIAdmin department={"DOK"} fullName = {name} tabNumber = {15} setValue={setValue}/>
+        <SIAdmin department={"DOK"} fullName = {name} tabNumber = {15} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
 
       </Box>

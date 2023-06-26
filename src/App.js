@@ -38,7 +38,7 @@ function App() {
     const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
     const fullName = localStorage.getItem('fullName');
 
-    console.log(fullName)
+    //console.log(fullName)
     setName(fullName);
     if (isLoggedIn) {
       setLoggedIn(true);
@@ -48,13 +48,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(name);
+    //console.log(name);
   }, [name]);
 
   function handleLogin() {
     setLoggedIn(true);
     localStorage.setItem('loggedIn', 'true');
-    // console.log(name)
+    // //console.log(name)
     navigate('/dashboard');
     
   }

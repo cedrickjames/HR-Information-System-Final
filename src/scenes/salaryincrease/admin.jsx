@@ -383,7 +383,7 @@ const SIAdmin = (props ) => {
   const navigate = useNavigate();
   const openPDF = (value) => {
     setCustomValue(value);
-    console.log(selected2);
+    //console.log(selected2);
     navigate('/pdffiles', { state: { customValue: value, customValueDate: inputValueDate, customValueAction: inputValue, customSelectedEmployees: selected2} });
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -409,7 +409,7 @@ const SIAdmin = (props ) => {
   const [openAdd, setOpenAdd] = React.useState(false);
 
   const handleClickOpenAdd = () => {
-    console.log("ASd")
+    //console.log("ASd")
     setOpenAdd(true);
   }
 
@@ -419,7 +419,7 @@ const SIAdmin = (props ) => {
     setFullName(fullName)
    
   }, []);
-// console.log({fullName});
+// //console.log({fullName});
   const [employeeId, setEmployeeId] = useState([]);
   const [deleteButtonState, setdeleteButtonState] = useState(true);
   const [dateOfEffectiveness, setDateOfEffectiveness] = React.useState('');
@@ -429,7 +429,7 @@ const SIAdmin = (props ) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const { department, tabNumber, setValue, date } = props;
     // setDateOfEffectiveness(date);
-    // console.log(props);
+    // //console.log(props);
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
   const [rowsBefore, setRowsBefore] = useState([]);
@@ -482,6 +482,96 @@ const [position1, setPosition1] = React.useState('');
   const [up1, setUp1] = useState(0);
   const [percentage1, setPercentage1] = useState(0);
 
+  const [firstHalf, setfirstHalf] = React.useState('');
+  const [firstResult, setFirstResult] = React.useState('');
+  const [secondHalf, setSecondHalf] = React.useState('');
+  const [secondResult, setSecondResult] = React.useState('');
+  const [finalPoint, setFinalPoint] = React.useState(0);
+  const [finalResult, setFinalResult] = React.useState('');
+  const [levelUpPoints, setLevelUpPoints] = React.useState('');
+  
+  const [d1, setD1] = React.useState(5.0);
+  const [d2, setD2] = React.useState(6.0);
+  const [d3, setD3] = React.useState(7.0);
+
+  const [d1L1, setD1L1] = React.useState(500);
+  const [d2L1, setD2L1] = React.useState(560);
+  const [d3L1, setD3L1] = React.useState(600);
+
+  const [workingDays, setWorkingDays] = React.useState(26.17);
+
+const [SeniorManager, setSeniorManager] = React.useState(['Senior Manager', 21000, 22000, 23000, 24000, 25000])
+const [Manager, setManager] = React.useState(['Manager', 16000, 17000, 18000, 19000, 20000])
+const [SeniorSupervisor, setSeniorSupervisor] = React.useState(['Senior Supervisor', 11000, 12000, 13000, 14000, 15000])
+const [Supervisor, setSupervisor] =  React.useState(['Supervisor ', 6000, 7000, 8000, 9000, 10000])
+const [AssistantSupervisor, setAssistantSupervisor] = React.useState(['Assistant Supervisor', 5000, 5400, 5800, 6200, 5800])
+const [Leader, setLeader] = React.useState(['Leader', 4000, 4200, 4400, 4600, 4800])
+const [SubLeader, setSubLeader] = React.useState(['Sub Leader', 3000, 3200, 3400, 3600, 3800])
+
+const [ProfessionalP5, setProfessionalP5]=React.useState(['Professional, P5', 21000, 22000, 23000, 24000, 25000])
+const [ProfessionalP4, setProfessionalP4]=React.useState(['Professional, P4', 16000, 17000, 18000, 19000, 20000])
+const [ProfessionalP3, setProfessionalP3]=React.useState(['Professional, P3', 11000, 12000, 13000, 14000, 15000])
+const [ProfessionalP2, setProfessionalP2]=React.useState(['Professional, P2', 6000, 7000, 8000, 9000, 10000])
+const [ProfessionalP1, setProfessionalP1]=React.useState(['Professional, P1', 5000, 5400, 5800, 6200, 5800])
+const [SpecialistS2, setSpecialistS2]=React.useState(['Specialist, S2', 4000, 4200, 4400, 4600, 4800])
+const [SpecialistS1, setSpecialistS1]=React.useState(['Specialist, S1', 3000, 3200, 3400, 3600, 3800])
+
+const [Lawyer, setLawyer]=React.useState(['Lawyer', 4000, 8000, 12000, 15000, 20000])
+const [CPA, setCPA]=React.useState(['CPA', 4000, 8000, 12000, 15000, 20000])
+const [RegisteredEngineer, setRegisteredEngineer]=React.useState(['Registered Engineer (Engr.)', 4000, 5000, 6000, 7000, 8000])
+const [RegisteredNurse, setRegisteredNurse]=React.useState(['Registered Nurse (RN)', 3000, 4000, 5000, 6000, 10000])
+const [LicensedCustomBroker, setLicensedCustomBroker]=React.useState(['Licensed Custom Broker', 2000, 3000, 4000, 5000, 10000])
+const [RegisteredMasterElectrician, setRegisteredMasterElectrician]=React.useState(['Registered Master Electrician', 1000, 1500, 2000, 2500, 5000])
+
+
+const [JapaneseInterpreterJLPLevelN1, setJapaneseInterpreterJLPLevelN1]=React.useState(['Japanese Interpreter (JLP Level N1)', 1000, 2000, 3000, 4000, 5000])
+const [JapaneseInterpreterJLPLevelN2, setJapaneseInterpreterJLPLevelN2]=React.useState(['Japanese Interpreter (JLP Level N2)', 1000, 2000, 3000, 4000, 5000])
+const [JapaneseInterpreterJLPLevelN3, setJapaneseInterpreterJLPLevelN3]=React.useState(['Japanese Interpreter (JLP Level N3)', 1000, 2000, 3000, 4000, 5000])
+const [SafetyOfficer3OHSPractitioner, setSafetyOfficer3OHSPractitioner]=React.useState(['Safety Officer 3 / OHS Practitioner (Certified)', 1000, 2000, 3000, 4000, 5000])
+const [SafetyOfficer2, setSafetyOfficer2]=React.useState(['Safety Officer 2 (Certified)', 1000, 2000, 3000, 4000, 5000])
+const [SafetyOfficer1, setSafetyOfficer1]=React.useState(['Safety Officer 1 (Certified)', 1000, 2000, 3000, 4000, 5000])
+const [EnergyConservationOfficer, setEnergyConservationOfficer]=React.useState(['Energy Conservation Officer (Certified)', 1000, 2000, 3000, 4000, 5000])
+const [PollutionControlOfficer, setPollutionControlOfficer]=React.useState(['Pollution Control Officer (Accredited)', 1000, 2000, 3000, 4000, 5000])
+const [RadiationSafetyOfficer, setRadiationSafetyOfficer]=React.useState(['Radiation Safety Officer (Certified)', 1000, 2000, 3000, 4000, 5000])
+
+const [TechnicalStaff, setTechnicalStaff]=React.useState(['Technical Staff (Certified by TESDA or GLORY LTD.)', 1000, 2000, 3000, 4000, 5000])
+const [CompanyDriverForkliftOperator, setCompanyDriverForkliftOperator]=React.useState(['Company Driver/Forklift Operator', 1000, 2000, 3000, 4000, 5000])	
+
+const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	=React.useState(['Employee with special experience', 1000, 2000, 3000, 4000, 5000])
+
+
+  const[arrayOfProfAllowances, setarrayOfProfAllowances] = React.useState([SeniorManager,Manager,SeniorSupervisor,Supervisor,AssistantSupervisor,Leader,SubLeader,ProfessionalP5,ProfessionalP4,ProfessionalP3,ProfessionalP2,ProfessionalP1,SpecialistS2,SpecialistS1,Lawyer,CPA,RegisteredEngineer,RegisteredNurse,LicensedCustomBroker,RegisteredMasterElectrician,JapaneseInterpreterJLPLevelN1,JapaneseInterpreterJLPLevelN2,JapaneseInterpreterJLPLevelN3,SafetyOfficer3OHSPractitioner,SafetyOfficer2,SafetyOfficer1,EnergyConservationOfficer,PollutionControlOfficer,RadiationSafetyOfficer,TechnicalStaff,CompanyDriverForkliftOperator,Employeewithspecialexperience]);
+
+
+
+  React.useEffect(() => {
+
+  
+   console.log(arrayOfProfAllowances)
+
+   let samplePosition = "Specialist, S2";
+   let sampleRank = '2';
+
+  const allowancesArray = arrayOfProfAllowances.find(
+    allowances => allowances[0] === samplePosition
+  );
+console.log(allowancesArray)
+  
+if (allowancesArray) {
+  // If samplePosition is found in arrayOfProfAllowances
+  const allowance = allowancesArray[parseInt(sampleRank, 10)];
+
+  console.log('Allowance:', allowance);
+} else {
+  console.log('samplePosition not found in arrayOfProfAllowances');
+}
+
+  }, [arrayOfProfAllowances]);
+  
+
+  
+
+
   
 
   //Data of the employee
@@ -489,13 +579,22 @@ const [position1, setPosition1] = React.useState('');
   const [designation, setDesignation] = React.useState('');
   const [empClass, setEmpClass] = React.useState('');
   const [level, setLevel] = React.useState('');
+  const [levelbg, setLevelbg] = React.useState('');
+
   const [salary, setSalary] = React.useState('');
   const [basicSalary, setBasicSalary] = React.useState('');
+  const [basicSalarybg, setBasicSalarybg] = React.useState('');
   const [daily, setDaily] = React.useState('');
   const [monthlySalary, setMonthlySalary] = React.useState('');
+  const [dailybg, setDailybg] = React.useState('');
+  const [monthlySalarybg, setMonthlySalarybg] = React.useState('');
+  
   const [posPe, setPosPe] = React.useState('');
+  const [posPebg, setPosPebg] = React.useState('');
+
   const [posAllowance, setPosAllowance] = React.useState('');
   const [posRank, setPosRank] = React.useState('');
+  const [posRankbg, setPosRankbg] = React.useState('');
 
   const [tsPEPoint, settsPEPoint] = React.useState('');
   const [tsAllowance, settsAllowance] = useState('');
@@ -527,6 +626,271 @@ const [position1, setPosition1] = React.useState('');
   const [percentage, setPercentage] = useState(0);
 
 
+  function levelUp2(secondPoint, firstPoint){
+    setSecondHalf(secondPoint);
+
+    //console.log(secondPoint)
+    //console.log(firstPoint)
+
+    const point2 = secondPoint
+
+    const totalPoint = Math.round(((  (isNaN(parseFloat(firstPoint)) ? 0 : parseFloat(firstPoint)) +   (isNaN(parseFloat(secondPoint)) ? 0 : parseFloat(secondPoint))) / 2) * 100) / 100;
+  setFinalPoint(totalPoint)
+  // setPosPe(totalPoint)
+    switch (true) {
+      case (point2 > 0 && point2 <= 1.99):
+        setSecondResult('P');
+        break;
+      case (point2 > 1.99 && point2 <= 2.99):
+        setSecondResult('F');
+        break;
+      case  (point2 > 2.99 && point2 <= 3.33):
+        setSecondResult('S-');
+        break;
+      case  (point2 > 3.33 && point2 <= 3.66):
+        setSecondResult('S');
+        break;
+      case  (point2 > 3.66 && point2 <= 3.99):
+        setSecondResult('S+');
+        break;
+        case  (point2 > 3.99 && point2 <= 4.79):
+          setSecondResult('G');
+          break;
+          case  (point2 > 4.79 && point2 <= 5.00):
+            setSecondResult('E');
+            break;
+            case  (point2 > 5):
+              setSecondResult('N/A');
+              break;
+      default:
+        setSecondResult('');
+    }
+  setPosPe(totalPoint)
+  finalresult(totalPoint);
+
+
+    if(totalPoint>=4 && (position !=="Staff" && position !=="Senior Staff" && position !=="Operator" && position !=="Senior Operator")){
+    setPosRank((isNaN(parseInt(posRankbg)) ? 0 : parseInt(posRankbg)) +1);
+
+    let samplePosition = position;
+   let sampleRank = (isNaN(parseInt(posRankbg)) ? 0 : parseInt(posRankbg)) +1;
+
+  const allowancesArray = arrayOfProfAllowances.find(
+    allowances => allowances[0] === samplePosition
+  );
+console.log(allowancesArray)
+  
+if (allowancesArray) {
+  // If samplePosition is found in arrayOfProfAllowances
+  const allowance = allowancesArray[parseInt(sampleRank, 10)];
+
+  console.log('Allowance:', allowance);
+  setPosAllowance(allowance)
+} else {
+  console.log('samplePosition not found in arrayOfProfAllowances');
+}
+
+    }
+    else{
+    setPosRank(posRankbg);
+    setPosPe(posPebg);
+
+
+    }
+  }
+  function levelUp(firstPoint, secondPoint) {
+    setfirstHalf(firstPoint);
+    const point1 = firstPoint;
+  const totalPoint = Math.round(((  (isNaN(parseFloat(firstPoint)) ? 0 : parseFloat(firstPoint)) +   (isNaN(parseFloat(secondPoint)) ? 0 : parseFloat(secondPoint))) / 2) * 100) / 100;
+  setFinalPoint(totalPoint)
+  // setPosPe(totalPoint)
+
+  // (isNaN(parseFloat(secondHalf)) ? 0 : parseFloat(secondHalf))
+
+  switch (true) {
+    case (point1 > 0 && point1 <= 1.99):
+      setFirstResult('P');
+      break;
+    case (point1 > 1.99 && point1 <= 2.99):
+      setFirstResult('F');
+      break;
+    case  (point1 > 2.99 && point1 <= 3.33):
+      setFirstResult('S-');
+      break;
+    case  (point1 > 3.33 && point1 <= 3.66):
+      setFirstResult('S');
+      break;
+    case  (point1 > 3.66 && point1 <= 3.99):
+      setFirstResult('S+');
+      break;
+      case  (point1 > 3.99 && point1 <= 4.79):
+        setFirstResult('G');
+        break;
+        case  (point1 > 4.79 && point1 <= 5.00):
+          setFirstResult('E');
+          break;
+          case  (point1 > 5 ):
+          setFirstResult('N/A');
+          break;
+    default:
+      setFirstResult('');
+  }
+
+  finalresult(totalPoint);
+  setPosPe(totalPoint)
+  
+  if(totalPoint>=4 && (position !=="Staff" && position !=="Senior Staff" && position !=="Operator" && position !=="Senior Operator")){
+    setPosRank((isNaN(parseInt(posRankbg)) ? 0 : parseInt(posRankbg)) +1);
+
+    let samplePosition = position;
+   let sampleRank = (isNaN(parseInt(posRankbg)) ? 0 : parseInt(posRankbg)) +1;
+
+  const allowancesArray = arrayOfProfAllowances.find(
+    allowances => allowances[0] === samplePosition
+  );
+console.log(allowancesArray)
+  
+if (allowancesArray) {
+  // If samplePosition is found in arrayOfProfAllowances
+  const allowance = allowancesArray[parseInt(sampleRank, 10)];
+
+  console.log('Allowance:', allowance);
+  setPosAllowance(allowance)
+} else {
+  console.log('samplePosition not found in arrayOfProfAllowances');
+}
+
+    }
+    else{
+    setPosRank(posRankbg);
+    setPosPe(posPebg);
+
+
+    }
+
+
+  
+    // setLevel(e.target.value);
+  }
+function finalresult(totalPoint){
+  let levelset;
+  switch (true) {
+    case (totalPoint > 0 && totalPoint <= 1.99):
+      setFinalResult('P');
+      setLevelUpPoints('1');
+  setLevel(parseInt(levelbg)+1);
+  levelset = parseInt(levelbg)+1
+     
+      break;
+    case (totalPoint > 1.99 && totalPoint <= 2.99):
+      setFinalResult('F');
+      setLevelUpPoints('2');
+      setLevel(parseInt(levelbg)+2);
+      levelset = parseInt(levelbg)+2;
+
+      break;
+    case  (totalPoint > 2.99 && totalPoint <= 3.33):
+      setFinalResult('S-');
+      setLevelUpPoints('3');
+      setLevel(parseInt(levelbg)+3);
+      levelset = parseInt(levelbg)+3;
+
+      break;
+    case  (totalPoint > 3.33 && totalPoint <= 3.66):
+      setFinalResult('S');
+      setLevelUpPoints('3');
+      setLevel(parseInt(levelbg)+3);
+      levelset = parseInt(levelbg)+3;
+
+      break;
+    case  (totalPoint > 3.66 && totalPoint <= 3.99):
+      setFinalResult('S+');
+      setLevelUpPoints('3');
+      setLevel(parseInt(levelbg)+3);
+      levelset = parseInt(levelbg)+3;
+
+      break;
+      case  (totalPoint > 3.99 && totalPoint <= 4.79):
+        setFinalResult('G');
+        setLevelUpPoints('4');
+        setLevel(parseInt(levelbg)+4);
+        levelset = parseInt(levelbg)+4;
+
+        break;
+        case  (totalPoint > 4.79 && totalPoint <= 5.00):
+          setFinalResult('E');
+          setLevelUpPoints('5');
+          setLevel(parseInt(levelbg)+5);
+          levelset = parseInt(levelbg)+5;
+
+          break;
+    default:
+      setFinalResult('');
+      setLevelUpPoints('');
+      setLevel(parseInt(levelbg));
+
+  }
+  //console.log(levelset);
+
+//console.log((parseInt(levelset)-1)*d1+d1L1);
+
+  switch (empClass) {
+    case "D1":
+setDaily((parseInt(levelset)-1)*d1+d1L1);
+setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d1 + d1L1) * workingDays));
+
+
+
+      break;
+    case "DM1":
+setDaily((parseInt(levelset)-1)*d1+d1L1);
+setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d1 + d1L1) * workingDays));
+
+      break;
+    case "D2":
+      setDaily((parseInt(levelset)-1)*d2+d2L1);
+
+      break;
+    case "DM2":
+      setDaily((parseInt(levelset)-1)*d2+d2L1);
+      setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d2 + d2L1) * workingDays));
+
+      break;
+    case "D3":
+      setDaily((parseInt(levelset)-1)*d3+d3L1);
+      setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d3 + d3L1) * workingDays));
+
+      break;
+      case "DM3":
+        setDaily((parseInt(levelset)-1)*d3+d3L1);
+        setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d3 + d3L1) * workingDays));
+
+      break;
+    default:
+
+  }
+  
+}
+React.useEffect(() => {
+  
+  if(levelUpPoints===''){
+    setDaily(dailybg);
+    setMonthlySalary(monthlySalarybg);
+    setBasicSalary(basicSalarybg)
+  }
+
+  if(salary==="Monthly"){
+    setBasicSalary(monthlySalary);
+    
+  }
+  else if(salary === "Daily"){
+    setBasicSalary(daily);
+  }
+// setLevel(parseInt(levelUpPoints) + level)
+// setLevel(parseInt(levelUpPoints) + parseInt(level))
+
+}, [salary, dailybg, monthlySalarybg, levelUpPoints, basicSalarybg,monthlySalary,daily]);
+
 
   const handleChange1 = (event) => {
     settsAllowance(event.target.value);
@@ -557,7 +921,11 @@ const [position1, setPosition1] = React.useState('');
     const num31 = parseFloat(ceAllowance1);
     const total1 = (isNaN(num11) ? 0 : num11) + (isNaN(num21) ? 0 : num21) + (isNaN(num31) ? 0 : num31);
     setSum1(total1);
-  }, [tsAllowance, leAllowance, ceAllowance, tsAllowance1, leAllowance1, ceAllowance1]);
+
+  // setLevel(parseInt(levelUpPoints) + level)
+  // setLevel(parseInt(levelUpPoints) + parseInt(level))
+
+  }, [tsAllowance, leAllowance, ceAllowance, tsAllowance1, leAllowance1, ceAllowance1, level, levelUpPoints]);
 
   
   React.useEffect(() => {
@@ -587,11 +955,11 @@ const [position1, setPosition1] = React.useState('');
 
 
   const refreshTable1 = () => {
-    console.log(department);
+    //console.log(department);
     Axios.post("http://192.168.60.53:3001/setsitable", {
       department: department,
     }).then((response) => {
-      console.log(response);
+      //console.log(response);
     if(response.data.message === 'Data found'){
       const newRows = response.data.result.map(row => createData(
         row.id, 
@@ -638,14 +1006,14 @@ const [position1, setPosition1] = React.useState('');
       
       // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
       
-      // console.log(rows)
+      // //console.log(rows)
    
 
     });
 //  Axios.post("http://192.168.60.53:3001/setsitablebefore", {
 //       department: department,
 //     }).then((response) => {
-//       console.log(response);
+//       //console.log(response);
 //       // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
 //       const newRows1 = response.data.map(row => createDatBefore(
 //         row.id, 
@@ -685,18 +1053,18 @@ const [position1, setPosition1] = React.useState('');
 //         ));
 //         setRowsBefore(newRows1);
 
-//       // console.log(rows)
+//       // //console.log(rows)
    
 
 //     });
   };
   const refreshTable = () => {
-    console.log(department);
+    //console.log(department);
     Axios.post("http://192.168.60.53:3001/setsitable", {
       department: department,
     }).then((response) => {
-      console.log(response);
-      console.log(response.data.result.message);
+      //console.log(response);
+      //console.log(response.data.result.message);
       if(response.data.message){
         setRows([]);
 
@@ -742,7 +1110,7 @@ const [position1, setPosition1] = React.useState('');
         ));
       setRows(newRows);
   
-      // console.log(rows)
+      // //console.log(rows)
    
 
     });
@@ -750,13 +1118,13 @@ const [position1, setPosition1] = React.useState('');
   };
   const updateSI = (id) => {
     
-    console.log(daily);
-    console.log(id);
+    //console.log(daily);
+    //console.log(id);
     const choosedept = (dept) => {
       Axios.post("http://192.168.60.53:3001/setsitable", {
         department: dept,
       }).then((response) => {
-        // console.log(response);
+        // //console.log(response);
 
       });
     };
@@ -799,10 +1167,10 @@ const [position1, setPosition1] = React.useState('');
       fullName: fullName,
       dateOfEffectivity: inputValueDate,
     }).then((response) => {
-      console.log(response)
+      //console.log(response)
       refreshTable();
       setValue(tabNumber);
-      console.log("this is it: "+tabNumber);
+      //console.log("this is it: "+tabNumber);
       handleClose();
     });
 
@@ -814,7 +1182,7 @@ const [position1, setPosition1] = React.useState('');
       arrayofuser: selected2,
       
     }).then((response) => {
-console.log(response)
+//console.log(response)
 setSelected([]);
 setSelected2([]);
 refreshTable();
@@ -867,21 +1235,21 @@ refreshTable();
   const handleSelectAllClick = (event) => {
 
     if (event.target.checked) {
-      console.log(event.target.checked)
+      ////console.log(event.target.checked)
       const newSelected1 = rows.map((n, index) => parseInt(index)+1);
       setSelected(newSelected1);
-      console.log(selected2);
+      //console.log(selected2);
 
-      console.log(newSelected1);
+      //console.log(newSelected1);
       if(newSelected1.length > 0){
         setdeleteButtonState(false)
-      console.log("true")
+      //console.log("true")
 
       } 
       else{
   
         setdeleteButtonState(true)
-      console.log("false")
+      //console.log("false")
 
       }
       return;
@@ -889,7 +1257,7 @@ refreshTable();
     else{
       setSelected2([]);
       
-      console.log(event.target.checked)
+      //console.log(event.target.checked)
 
     }
  
@@ -902,10 +1270,10 @@ refreshTable();
     const selectedIndex = selected.indexOf(no);
     const selectedIndex2 = selected2.indexOf(id);
 
-    console.log(selected)
-    console.log(selectedIndex2)
+    //console.log(selected)
+    //console.log(selectedIndex2)
 
-    console.log(selectedIndex)
+    //console.log(selectedIndex)
 
     
     // selected2.push(id);
@@ -916,16 +1284,16 @@ refreshTable();
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
       selected2.splice(selectedIndex,1);
-      console.log("false")
+      //console.log("false")
 
     } else if (selectedIndex === selected.length - 1) {
       newSelected = newSelected.concat(selected.slice(0, -1));
       selected2.splice(selectedIndex, 1);
 
-      console.log("true")
+      //console.log("true")
     } else if (selectedIndex > 0) {
       selected2.splice(selectedIndex,1);
-      console.log("yes"+ selectedIndex)
+      //console.log("yes"+ selectedIndex)
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
         selected.slice(selectedIndex + 1),
@@ -933,8 +1301,8 @@ refreshTable();
     }
 
     setSelected(newSelected);
-    console.log(newSelected);
-    console.log(selected2);
+    //console.log(newSelected);
+    //console.log(selected2);
 
     if(newSelected.length > 0){
       setdeleteButtonState(false)
@@ -947,16 +1315,16 @@ refreshTable();
 const setDate = (date) =>{
   localStorage.setItem("dateOfEffectivity", date)
   setDateOfEffectiveness(date);
-  // console.log(localStorage.getItem("dateOfEffectivity"));
-  // console.log(dateOfEffectiveness);
+  // //console.log(localStorage.getItem("dateOfEffectivity"));
+  // //console.log(dateOfEffectiveness);
 
 
 };
 const setAction = (action) =>{
   localStorage.setItem("action", action)
   // setDateOfEffectiveness(date);
-  // console.log(localStorage.getItem("dateOfEffectivity"));
-  // console.log(dateOfEffectiveness);
+  // //console.log(localStorage.getItem("dateOfEffectivity"));
+  // //console.log(dateOfEffectiveness);
 
 
 };
@@ -986,7 +1354,7 @@ const setAction = (action) =>{
       Axios.post("http://192.168.60.53:3001/totalBefore", {
         empNo: employee.empNo,
       }).then((response) => {
-        console.log(response.data[0].total_sum);
+        //console.log(response.data[0].total_sum);
         setOverAllBefore(response.data[0].total_sum)
         setOverAllNow(response.data[0].total_sum_now)
 
@@ -1041,13 +1409,22 @@ const setAction = (action) =>{
       setDesignation(employee.designation);
       setEmpClass(employee.empClass);
       setLevel(employee.level);
+      setLevelbg(employee.level);
       setSalary(employee.salaryType);
       setBasicSalary(employee.basicSalary);
+      setBasicSalarybg(employee.basicSalary);
+
+      
       setDaily(employee.daily);
       setMonthlySalary(employee.monthlySalary);
+      setDailybg(employee.daily);
+      setMonthlySalarybg(employee.monthlySalary);
       setPosPe(employee.pPEPoint);
+      setPosPebg(employee.pPEPoint);
+
       setPosAllowance(employee.pAllowance);
       setPosRank(employee.pRank);
+      setPosRankbg(employee.pRank);
 
       settsPEPoint(employee.tsPEPoint);
       settsAllowance(employee.tsAllowance);
@@ -1291,7 +1668,7 @@ const setAction = (action) =>{
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
 
-                // console.log(isSelected(1))
+                // //console.log(isSelected(1))
                 const count = parseInt(index)+1;
                 const isItemSelected = isSelected(count);
 
@@ -1317,7 +1694,7 @@ const setAction = (action) =>{
                       handleClickOpen(event.target.type, row);
                       }
                       handleClick(event, count, row.no)
-                      // console.log(event.target.type)
+                      // //console.log(event.target.type)
                       }}
                       color="primary"
                       checked={isItemSelected}
@@ -1386,6 +1763,7 @@ const setAction = (action) =>{
               <Grid  noValidate autoComplete="off"    lg={4} sm={6} xs={12}
                 sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
                 <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
+              
                 <Grid container spacing={2}>
                 <Grid xs={12} sm={6}><TextField    label="Position" value={position1} readOnly  fullWidth /></Grid>
                   <Grid xs={12} sm={6}> <TextField    label="Designation" value={designation1}  readOnly   fullWidth /> </Grid>
@@ -1541,10 +1919,47 @@ const setAction = (action) =>{
                     borderColor: 'green',
                   }, fontSize:'20px'
                 }, ...(isSmallScreen && { height: 'auto' })}}>
-                  
+                  <Grid  noValidate autoComplete="off"    lg={4} sm={6} xs={12}
+                sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
+                <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
+                <Grid container spacing={2} sx={{backgroundColor:'#c3e1d7'}}>
+                <Grid xs={12} sm={6}><TextField required  label="1st Half Point" defaultValue={firstHalf} onChange={(e) => levelUp(e.target.value, secondHalf)}  fullWidth /></Grid>
+                  <Grid xs={12} sm={6}> <TextField required  label="Result" value={firstResult}  readOnly  fullWidth /> </Grid>
+                  </Grid>  
+                </Item>
+                </Grid>
+                <Grid  noValidate autoComplete="off"    lg={4} sm={6} xs={12}
+                sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
+                <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
+                <Grid container spacing={2} sx={{backgroundColor:'#badfcd'}}>
+                <Grid xs={12} sm={6}><TextField required  label="2nd Half Point" defaultValue={secondHalf} onChange={(e) => levelUp2(e.target.value, firstHalf)} fullWidth /></Grid>
+                  <Grid xs={12} sm={6}> <TextField required  label="Result" value={secondResult} readOnly fullWidth /> </Grid>
+                  </Grid>  
+                </Item>
+                </Grid>
+                <Grid  noValidate autoComplete="off"    lg={4} sm={6} xs={12}
+                sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
+                <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
+                <Grid container spacing={2} sx={{backgroundColor:'#fedddd'}}>
+                <Grid xs={12} sm={4}><TextField required  label="Final Point" value={finalPoint} readOnly fullWidth /></Grid>
+                  <Grid xs={12} sm={4}> <TextField required  label="Result" value={finalResult}  readOnly   fullWidth /> </Grid>
+                  <Grid xs={12} sm={4}> <TextField required  label="Level Up Points" value={levelUpPoints}  readOnly fullWidth /> </Grid>
+
+                  </Grid>  
+                </Item>
+                </Grid>
+
+            </Grid>
+            <Grid  container hidden={!hideGrid} spacing={2} sx={{mb: 2, '& .MuiInputLabel-root': {fontSize: '20px'},'& .MuiOutlinedInput-root': {
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'green',
+                  }, fontSize:'20px'
+                }, ...(isSmallScreen && { height: 'auto' })}}>
+     
               <Grid  noValidate autoComplete="off"    lg={4} sm={6} xs={12}
                 sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
                 <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
+                
                 <Grid container spacing={2}>
                 <Grid xs={12} sm={6}><TextField required  label="Position" defaultValue={position} onChange={(e) => setPosition(e.target.value)}  fullWidth /></Grid>
                   <Grid xs={12} sm={6}> <TextField required  label="Designation" defaultValue={designation}  onChange={(e) => setDesignation(e.target.value)}   fullWidth /> </Grid>
@@ -1554,11 +1969,11 @@ const setAction = (action) =>{
                   </Typography>
                   <Grid container spacing={2} >
                     <Grid lg={4} sm={6} xs={12}><TextField  required  label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required  label="Level" defaultValue={level} onChange={(e) => setLevel(e.target.value)}   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required  label="Level" value={level} onChange={(e) => setLevel(e.target.value)}   fullWidth /></Grid>
                     <Grid lg={4} sm={6} xs={12}><TextField required  label="Salary Type" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required type="number" label="Basic Salary" defaultValue={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField  type="number" label="Daily" defaultValue={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required type="number" label="Monthly Salary" defaultValue={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required type="number" label="Basic Salary" value={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField  type="number" label="Daily" value={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required type="number" label="Monthly Salary" value={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
 
                   </Grid>  
                   
@@ -1566,9 +1981,9 @@ const setAction = (action) =>{
                     Position
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid lg={3} sm={6} xs={12}><TextField required  label="PE Point" defaultValue={posPe} onChange={(e) => setPosPe(e.target.value)} fullWidth /></Grid>
-                    <Grid lg={6} sm={6} xs={12}><TextField required type="number" label="Allowance" defaultValue={posAllowance} onChange={(e) => setPosAllowance(e.target.value)} fullWidth /></Grid>
-                    <Grid lg={3} sm={6} xs={12}><TextField required  label="Rank" defaultValue={posRank} onChange={(e) => setPosRank(e.target.value)}  fullWidth/></Grid>
+                    <Grid lg={3} sm={6} xs={12}><TextField required  label="PE Point" value={posPe} onChange={(e) => setPosPe(e.target.value)} fullWidth /></Grid>
+                    <Grid lg={6} sm={6} xs={12}><TextField required type="number" label="Allowance" value={posAllowance} onChange={(e) => setPosAllowance(e.target.value)} fullWidth /></Grid>
+                    <Grid lg={3} sm={6} xs={12}><TextField required  label="Rank" value={posRank} onChange={(e) => setPosRank(e.target.value)}  fullWidth/></Grid>
                   </Grid>
                  
 
