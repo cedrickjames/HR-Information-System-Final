@@ -16,6 +16,8 @@ import SalaryIncrease from "./scenes/salaryincrease"
 import Line from "./scenes/line"
 import Teams from "./scenes/team"
 import PDFDocument from "./scenes/pdffiles"
+import ImportFile from "./scenes/import"
+
 
 import Login from "./scenes/authentication/login copy";
 
@@ -92,6 +94,8 @@ if (loggedIn) {
               <Route path="/line" element={<Line/>}/>
               <Route path="/team" element={<Teams/>}/>
               <Route path="/pdffiles" element={<PDFDocument/>}/>
+              <Route path="/import" element={<ImportFile/>}/>
+
 
               </Routes>
           </main>

@@ -593,6 +593,8 @@ if (allowancesArray) {
   const [posPebg, setPosPebg] = React.useState('');
 
   const [posAllowance, setPosAllowance] = React.useState('');
+  const [posAllowancebg, setPosAllowancebg] = React.useState('');
+
   const [posRank, setPosRank] = React.useState('');
   const [posRankbg, setPosRankbg] = React.useState('');
 
@@ -693,6 +695,8 @@ if (allowancesArray) {
     }
     else{
     setPosRank(posRankbg);
+    setPosAllowance(posAllowancebg);
+
     setPosPe(posPebg);
 
 
@@ -849,6 +853,7 @@ setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d1 + d1L1) * workingDay
       break;
     case "D2":
       setDaily((parseInt(levelset)-1)*d2+d2L1);
+      setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d2 + d2L1) * workingDays));
 
       break;
     case "DM2":
@@ -1130,6 +1135,7 @@ React.useEffect(() => {
     };
 
     Axios.post("http://192.168.60.53:3001/updatesirecord", {
+      from: "manual",
       section: section,
       daily: daily,
       id: id,
@@ -1425,7 +1431,7 @@ const setAction = (action) =>{
       setPosAllowance(employee.pAllowance);
       setPosRank(employee.pRank);
       setPosRankbg(employee.pRank);
-
+      setPosAllowancebg(employee.pAllowance);
       settsPEPoint(employee.tsPEPoint);
       settsAllowance(employee.tsAllowance);
       settsRank(employee.tsRank);

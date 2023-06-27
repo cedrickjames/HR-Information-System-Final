@@ -19,7 +19,6 @@ const db = mysql.createConnection({
     password: '',
     database: 'hr_information_system',
 });
-
 // app.use(bodyParser.urlencoded({extended:true}));
 app.post("/register", (req, res)=>{
     const username = req.body.username;
@@ -157,7 +156,34 @@ app.post("/setsitable", (req, res)=>{
     //    console.log(err);
     });
 });
+app.post("/selectLatest", (req, res)=>{
+  const userid = req.body.userid;
 
+  // const sqlSelect = ;
+  db.query(
+      "SELECT * FROM `salaryincrease` WHERE empNo = ?",
+      // "SELECT * FROM `salaryincrease` WHERE department = ?",
+      [userid],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+              return;
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+                  return;
+              }else{
+                
+                  res.send({message: "No Data Found"});
+                  return;
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
 
 app.post("/setsitablebefore", (req, res)=>{
   const empNo = req.body.empNo;
@@ -712,26 +738,33 @@ app.post("/addemployee", (req, res)=>{
     //    console.log(err);
     });
 
-
+ 
 });
 app.post("/updatesirecord", (req, res)=>{
+  console.log(req.body.from);
+  const from = req.body.from;
+
   const dateOfEffectivity = req.body.dateOfEffectivity;
+  const daily = req.body.daily;
+  const level = req.body.level;
+  const basicSalary = req.body.basicSalary;
+  const monthlySalary = req.body.monthlySalary;
+  const posPe = req.body.posPe;
+  const posAllowance = req.body.posAllowance;
+  const posRank = req.body.posRank;
+  const empNumber = req.body.empNumber;
+  const id = req.body.id;  
+
+  // if(from!=="import"){
     const department = req.body.department;
-    const daily = req.body.daily;
     const section = req.body.section;
-    const id = req.body.id;  
     const empName = req.body.empName;
-    const empNumber = req.body.empNumber;
     const position = req.body.position;
     const designation = req.body.designation;
     const empClass = req.body.empClass;
-    const level = req.body.level;
+ 
     const salary = req.body.salary;
-    const basicSalary = req.body.basicSalary;
-    const monthlySalary = req.body.monthlySalary;
-    const posPe = req.body.posPe;
-    const posAllowance = req.body.posAllowance;
-    const posRank = req.body.posRank;
+
     const tsPEPoint = req.body.tsPEPoint;
     const tsAllowance = req.body.tsAllowance;
     const tsRank = req.body.tsRank;
@@ -751,6 +784,9 @@ app.post("/updatesirecord", (req, res)=>{
     const serviceTerm = req.body.serviceTerm;
     const fullName = req.body.fullName;
 console.log(id);
+
+  // }
+   
 
 
     // db.query("UPDATE `salaryincrease` SET `department`=?,`section`=?,`employeeName`=?,`sex`=?,`birthday`=?,`age`=?,`empNo`=?,`dateHired`=?,`serviceTerm`=?,`position`=?,`designation`=?,`class`=?,`level`=?,`salaryType`=?,`basicSalary`=?,`daily`=?,`monthlySalary`=?,`pPEPoint`=?,`pAllowance`=?,`pRank`=?,`tsPEPoint`=?,`tsAllowance`=?,`tsRank`=?,`leLicenseFee`=?,`lePEPoint`=?,`leAllowance`=?,`leRank`=?,`ceCertificateOnFee`=?,`cePEPoint`=?,`ceAllowance`=?,`ceRank`=?,`Specialization`=? WHERE `id` = ?",
@@ -775,11 +811,13 @@ console.log(id);
         } else {
           if (rows.length > 0) {
             const previousRecord = rows[0]; // Store the previous record for comparison
-            
+            console.log("previous record: ", previousRecord)
             // Check each field for updates
             const updatedFields = {};
             const dateModified = new Date().toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' });
-if (department !== previousRecord.department) {
+
+if(from === "manual"){
+  if (department !== previousRecord.department) {
     updatedFields.department = {
       previousValue: previousRecord.department,
       updatedValue: department,
@@ -798,8 +836,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [department, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, department, modifier, rows[0].id],
      
           );
         }
@@ -834,8 +872,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [section, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, section, modifier, rows[0].id],
      
           );
         }
@@ -869,8 +907,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [empName, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, empName, modifier, rows[0].id],
      
           );
         }
@@ -908,8 +946,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [sex, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, sex, modifier, rows[0].id],
      
           );
         }
@@ -947,8 +985,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [birthday, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, birthday, modifier, rows[0].id],
      
           );
         }
@@ -986,8 +1024,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [age, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, age, modifier, rows[0].id],
      
           );
         }
@@ -1025,8 +1063,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [empNumber, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, empNumber, modifier, rows[0].id],
      
           );
         }
@@ -1064,8 +1102,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [dateHired, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, dateHired, modifier, rows[0].id],
      
           );
         }
@@ -1123,8 +1161,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [position, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, position, modifier, rows[0].id],
      
           );
         }
@@ -1163,8 +1201,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [designation, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, designation, modifier, rows[0].id],
      
           );
         }
@@ -1202,8 +1240,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [empClass, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, empClass, modifier, rows[0].id],
      
           );
         }
@@ -1219,45 +1257,6 @@ if (department !== previousRecord.department) {
     // db.query(
     //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
     //     [empNumber, dateModified, category, field, previousRecord.class, empClass, modifier, dateOfEffectivity],
- 
-    //   );
-  }
-  
-  if (level !== previousRecord.level) {
-    updatedFields.level = {
-      previousValue: previousRecord.level,
-      updatedValue: level,
-    };
-    console.log("Previous level:", previousRecord.level);
-    console.log("Updated level:", level);
-    const category = "Basic Salary";
-    const field = "level";
-
-    const modifier = fullName;
-    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
-      if (err) {
-        res.send({ err: err });
-        return;
-      } else {
-        if (rows.length > 0) {
-          db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [level, modifier, rows[0].id],
-     
-          );
-        }
-        else{
-          db.query(
-            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-            [empNumber, dateModified, category, field, previousRecord.level, level, modifier, dateOfEffectivity],
-     
-          );
-        }
-      }
-    })
-    // db.query(
-    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-    //     [empNumber, dateModified, category, field, previousRecord.level, level, modifier, dateOfEffectivity],
  
     //   );
   }
@@ -1280,8 +1279,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [salary, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, salary, modifier, rows[0].id],
      
           );
         }
@@ -1300,247 +1299,6 @@ if (department !== previousRecord.department) {
  
     //   );
   }
-  
-  if (basicSalary !== previousRecord.basicSalary) {
-    updatedFields.basicSalary = {
-      previousValue: previousRecord.basicSalary,
-      updatedValue: basicSalary,
-    };
-    console.log("Previous basicSalary:", previousRecord.basicSalary);
-    console.log("Updated basicSalary:", basicSalary);
-
-    const category = "Basic Salary";
-    const field = "basicSalary";
-
-    const modifier = fullName;
-    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
-      if (err) {
-        res.send({ err: err });
-        return;
-      } else {
-        if (rows.length > 0) {
-          db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [basicSalary, modifier, rows[0].id],
-     
-          );
-        }
-        else{
-          db.query(
-            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-            [empNumber, dateModified, category, field, previousRecord.basicSalary, basicSalary, modifier, dateOfEffectivity],
-     
-          );
-        }
-      }
-    })
-    // db.query(
-    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-    //     [empNumber, dateModified, category, field, previousRecord.basicSalary, basicSalary, modifier, dateOfEffectivity],
- 
-    //   );
-  }
-  if (daily !== previousRecord.daily) {
-    updatedFields.daily = {
-      previousValue: previousRecord.daily,
-      updatedValue: daily,
-    };
-    console.log("Previous daily:", previousRecord.daily);
-    console.log("Updated daily:", daily);
-    const category = "Salary Increase";
-    const field = "daily";
-
-    const modifier = "Cedrick James Orozo";
-
-    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
-      if (err) {
-        res.send({ err: err });
-        return;
-      } else {
-        if (rows.length > 0) {
-          db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [daily, modifier, rows[0].id],
-     
-          );
-        }
-        else{
-          db.query(
-            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-            [empNumber, dateModified, category, field, previousRecord.daily, daily, modifier, dateOfEffectivity],
-     
-          );
-        }
-      }
-    })
-    // db.query(
-    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-    //     [empNumber, dateModified, category, field, previousRecord.daily, daily, modifier, dateOfEffectivity],
- 
-    //   );
-  }
-  
-  
-  if (monthlySalary !== previousRecord.monthlySalary) {
-    updatedFields.monthlySalary = {
-      previousValue: previousRecord.monthlySalary,
-      updatedValue: monthlySalary,
-    };
-    console.log("Previous monthlySalary:", previousRecord.monthlySalary);
-    console.log("Updated monthlySalary:", monthlySalary); 
-    const category = "Basic Salary";
-    const field = "monthlySalary";
-
-    const modifier = fullName;
-    
-    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
-      if (err) {
-        res.send({ err: err });
-        return;
-      } else {
-        if (rows.length > 0) {
-          db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [monthlySalary, modifier, rows[0].id],
-     
-          );
-        }
-        else{
-          db.query(
-            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-            [empNumber, dateModified, category, field, previousRecord.monthlySalary, monthlySalary, modifier, dateOfEffectivity],
-     
-          );
-        }
-      }
-    })
-    // db.query(
-    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-    //     [empNumber, dateModified, category, field, previousRecord.monthlySalary, monthlySalary, modifier, dateOfEffectivity],
- 
-    //   );
-  }
-  
-  if (posPe !== previousRecord.pPEPoint) {
-    updatedFields.pPEPoint = {
-      previousValue: previousRecord.pPEPoint,
-      updatedValue: posPe,
-    };
-    console.log("Previous pPEPoint:", previousRecord.pPEPoint);
-    console.log("Updated pPEPoint:", posPe);
-    const category = "Position";
-    const field = "pPEPoint";
-
-    const modifier = fullName;
-    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
-      if (err) {
-        res.send({ err: err });
-        return;
-      } else {
-        if (rows.length > 0) {
-          db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [posPe, modifier, rows[0].id],
-     
-          );
-        }
-        else{
-          db.query(
-            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-            [empNumber, dateModified, category, field, previousRecord.pPEPoint, posPe, modifier, dateOfEffectivity],
-     
-          );
-        }
-      }
-    })
-    // db.query(
-    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-    //     [empNumber, dateModified, category, field, previousRecord.pPEPoint, posPe, modifier, dateOfEffectivity],
- 
-    //   );
-  }
-  
-  if (posAllowance !== previousRecord.pAllowance) {
-    updatedFields.pAllowance = {
-      previousValue: previousRecord.pAllowance,
-      updatedValue: posAllowance,
-    };
-    console.log("Previous pAllowance:", previousRecord.pAllowance);
-    console.log("Updated pAllowance:", posAllowance);
-    const category = "Position";
-    const field = "pAllowance";
-
-    const modifier = fullName;
-
-    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
-      if (err) {
-        res.send({ err: err });
-        return;
-      } else {
-        if (rows.length > 0) {
-          db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [posAllowance, modifier, rows[0].id],
-     
-          );
-        }
-        else{
-          db.query(
-            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-            [empNumber, dateModified, category, field, previousRecord.pAllowance, posAllowance, modifier, dateOfEffectivity],
-     
-          );
-        }
-      }
-    })
-    // db.query(
-    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-    //     [empNumber, dateModified, category, field, previousRecord.pAllowance, posAllowance, modifier, dateOfEffectivity],
- 
-    //   );
-  }
-  
-  if (posRank !== previousRecord.pRank) {
-    updatedFields.pRank = {
-      previousValue: previousRecord.pRank,
-      updatedValue: posRank,
-    };
-    console.log("Previous pRank:", previousRecord.pRank);
-    console.log("Updated pRank:", posRank);
-    const category = "Position";
-    const field = "pRank";
-
-    const modifier = fullName;
-
-    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
-      if (err) {
-        res.send({ err: err });
-        return;
-      } else {
-        if (rows.length > 0) {
-          db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [posRank, modifier, rows[0].id],
-     
-          );
-        }
-        else{
-          db.query(
-            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-            [empNumber, dateModified, category, field, previousRecord.pRank, posRank, modifier, dateOfEffectivity],
-     
-          );
-        }
-      }
-    })
-
-    // db.query(
-    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-    //     [empNumber, dateModified, category, field, previousRecord.pRank, posRank, modifier, dateOfEffectivity],
- 
-    //   );
-  }
-  
   if (tsPEPoint !== previousRecord.tsPEPoint) {
     updatedFields.tsPEPoint = {
       previousValue: previousRecord.tsPEPoint,
@@ -1560,8 +1318,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [tsPEPoint, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, tsPEPoint, modifier, rows[0].id],
      
           );
         }
@@ -1603,8 +1361,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [tsAllowance, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, tsAllowance, modifier, rows[0].id],
      
           );
         }
@@ -1640,8 +1398,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [tsRank, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, tsRank, modifier, rows[0].id],
      
           );
         }
@@ -1682,8 +1440,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [leLicenseFee, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, leLicenseFee, modifier, rows[0].id],
      
           );
         }
@@ -1725,8 +1483,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [lePEPoint, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, lePEPoint, modifier, rows[0].id],
      
           );
         }
@@ -1765,8 +1523,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [leAllowance, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, leAllowance, modifier, rows[0].id],
      
           );
         }
@@ -1807,8 +1565,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [leRank, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, leRank, modifier, rows[0].id],
      
           );
         }
@@ -1848,8 +1606,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [ceCertificateOnFee, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, ceCertificateOnFee, modifier, rows[0].id],
      
           );
         }
@@ -1890,8 +1648,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [cePEPoint, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, cePEPoint, modifier, rows[0].id],
      
           );
         }
@@ -1932,8 +1690,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [ceAllowance, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, ceAllowance, modifier, rows[0].id],
      
           );
         }
@@ -1972,8 +1730,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [ceRank, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, ceRank, modifier, rows[0].id],
      
           );
         }
@@ -2014,8 +1772,8 @@ if (department !== previousRecord.department) {
       } else {
         if (rows.length > 0) {
           db.query(
-            "UPDATE `history` SET `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [Specialization, modifier, rows[0].id],
+            "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, Specialization, modifier, rows[0].id],
      
           );
         }
@@ -2034,9 +1792,314 @@ if (department !== previousRecord.department) {
  
     //   );
   }
+}
+           
+  
+  if (level !== previousRecord.level) {
+    updatedFields.level = {
+      previousValue: previousRecord.level,
+      updatedValue: level,
+    };
+    console.log("Previous level:", previousRecord.level);
+    console.log("Updated level:", level);
+    const category = "Basic Salary";
+    const field = "level";
+
+    const modifier = fullName;
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `dateModified` = ?, `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, level, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.level, level, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.level, level, modifier, dateOfEffectivity],
+ 
+    //   );
+  }
+  
+  if (basicSalary !== previousRecord.basicSalary) {
+    updatedFields.basicSalary = {
+      previousValue: previousRecord.basicSalary,
+      updatedValue: basicSalary,
+    };
+    console.log("Previous basicSalary:", previousRecord.basicSalary);
+    console.log("Updated basicSalary:", basicSalary);
+
+    const category = "Basic Salary";
+    const field = "basicSalary";
+
+    const modifier = fullName;
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `dateModified` = ?, `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, basicSalary, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.basicSalary, basicSalary, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.basicSalary, basicSalary, modifier, dateOfEffectivity],
+ 
+    //   );
+  }
+  if (daily !== previousRecord.daily) {
+    updatedFields.daily = {
+      previousValue: previousRecord.daily,
+      updatedValue: daily,
+    };
+    console.log("Previous daily:", previousRecord.daily);
+    console.log("Updated daily:", daily);
+    const category = "Salary Increase";
+    const field = "daily";
+
+    const modifier = "Cedrick James Orozo";
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `dateModified` = ?, `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, daily, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.daily, daily, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.daily, daily, modifier, dateOfEffectivity],
+ 
+    //   );
+  }
+  
+  
+  if (monthlySalary !== previousRecord.monthlySalary) {
+    updatedFields.monthlySalary = {
+      previousValue: previousRecord.monthlySalary,
+      updatedValue: monthlySalary,
+    };
+    console.log("Previous monthlySalary:", previousRecord.monthlySalary);
+    console.log("Updated monthlySalary:", monthlySalary); 
+    const category = "Basic Salary";
+    const field = "monthlySalary";
+
+    const modifier = fullName;
+    
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `dateModified` = ?, `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, monthlySalary, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.monthlySalary, monthlySalary, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.monthlySalary, monthlySalary, modifier, dateOfEffectivity],
+ 
+    //   );
+  }
+  
+  if (posPe !== previousRecord.pPEPoint) {
+    updatedFields.pPEPoint = {
+      previousValue: previousRecord.pPEPoint,
+      updatedValue: posPe,
+    };
+    console.log("Previous pPEPoint:", previousRecord.pPEPoint);
+    console.log("Updated pPEPoint:", posPe);
+    const category = "Position";
+    const field = "pPEPoint";
+
+    const modifier = fullName;
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `dateModified` = ?, `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, posPe, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.pPEPoint, posPe, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.pPEPoint, posPe, modifier, dateOfEffectivity],
+ 
+    //   );
+  }
+  
+  if (posAllowance !== previousRecord.pAllowance) {
+    updatedFields.pAllowance = {
+      previousValue: previousRecord.pAllowance,
+      updatedValue: posAllowance,
+    };
+    console.log("Previous pAllowance:", previousRecord.pAllowance);
+    console.log("Updated pAllowance:", posAllowance);
+    const category = "Position";
+    const field = "pAllowance";
+
+    const modifier = fullName;
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `dateModified` = ?, `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, posAllowance, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.pAllowance, posAllowance, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.pAllowance, posAllowance, modifier, dateOfEffectivity],
+ 
+    //   );
+  }
+  
+  if (posRank !== previousRecord.pRank) {
+    updatedFields.pRank = {
+      previousValue: previousRecord.pRank,
+      updatedValue: posRank,
+    };
+    console.log("Previous pRank:", previousRecord.pRank);
+    console.log("Updated pRank:", posRank);
+    const category = "Position";
+    const field = "pRank";
+
+    const modifier = fullName;
+
+    db.query("SELECT * FROM `history` WHERE `employeeId` = ? and `dateOfEffectivity` = ?  and `category` = ? and `field` = ? ", [empNumber, dateOfEffectivity, category, field], (err, rows) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+      } else {
+        if (rows.length > 0) {
+          db.query(
+            "UPDATE `history` SET `dateModified` = ?, `hr_to`=?,`modifier`=? WHERE `id` = ?",
+            [dateModified, posRank, modifier, rows[0].id],
+     
+          );
+        }
+        else{
+          db.query(
+            "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+            [empNumber, dateModified, category, field, previousRecord.pRank, posRank, modifier, dateOfEffectivity],
+     
+          );
+        }
+      }
+    })
+
+    // db.query(
+    //     "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
+    //     [empNumber, dateModified, category, field, previousRecord.pRank, posRank, modifier, dateOfEffectivity],
+ 
+    //   );
+  }
+  
+  
             // Add other fields here...
             
             // Perform the update query
+            if(from === "import"){
+              db.query(
+                "UPDATE `salaryincrease` SET  `level`=?, `basicSalary`=?, `daily`=?, `monthlySalary`=?, `pPEPoint`=?, `pAllowance`=?, `pRank`=? WHERE `id` = ?",
+                [ level, basicSalary, daily, monthlySalary, posPe, posAllowance, posRank, id],
+                (err, result) => {
+                  if (err) {
+                    res.send({ err: err });
+                    return; 
+  
+                  } else {
+                    if (result.affectedRows > 0) {
+                      res.send({ message: "Data updated successfully", updatedFields: updatedFields });
+                    return;
+                    } else {
+                      res.send({ message: "No matching record found" });
+                    return;
+                    }
+                  }
+                }
+              );
+            }
+            else{
             db.query(
               "UPDATE `salaryincrease` SET `department`=?, `section`=?, `employeeName`=?, `sex`=?, `birthday`=?, `age`=?, `empNo`=?, `dateHired`=?, `serviceTerm`=?, `position`=?, `designation`=?, `class`=?, `level`=?, `salaryType`=?, `basicSalary`=?, `daily`=?, `monthlySalary`=?, `pPEPoint`=?, `pAllowance`=?, `pRank`=?, `tsPEPoint`=?, `tsAllowance`=?, `tsRank`=?, `leLicenseFee`=?, `lePEPoint`=?, `leAllowance`=?, `leRank`=?, `ceCertificateOnFee`=?, `cePEPoint`=?, `ceAllowance`=?, `ceRank`=?, `Specialization`=? WHERE `id` = ?",
               [department, section, empName, sex, birthday, age, empNumber, dateHired, serviceTerm, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, posPe, posAllowance, posRank, tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, id],
@@ -2056,6 +2119,7 @@ if (department !== previousRecord.department) {
                 }
               }
             );
+          }
           } else {
             res.send({ message: "No matching record found" });
             return;
@@ -2076,6 +2140,8 @@ app.get("/siadmin",(req, res)=>{
         }
     })
 });
+
+
 app.use('/',express.static(path.join(__dirname, 'public')));
 
 app.get('/*', (req, res) => {
