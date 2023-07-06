@@ -128,6 +128,34 @@ console.log(arrayOfUser);
 //     });
 // });
 
+app.post("/exportEmployees", (req, res)=>{
+  const department = req.body.department;
+
+  // const sqlSelect = ;
+  db.query(
+      "SELECT * from salaryincrease WHERE department = ? AND deactivated = 0 order by id desc",
+      // "SELECT * FROM `salaryincrease` WHERE department = ?",
+      [department],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+              return;
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+                  return;
+              }else{
+                
+                  res.send({message: "No Data Found"});
+                  return;
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
 app.post("/setsitable", (req, res)=>{
     const department = req.body.department;
  
@@ -317,8 +345,187 @@ app.post("/setsitablebefore", (req, res)=>{
   //    console.log(err);
   });
 });
+app.post("/basicallowancesettings", (req, res)=>{
 
+  // const sqlSelect = ;
+  db.query(
+      "SELECT * FROM `basicallowancesettings`",
+      [],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+              }else{
+                  res.send({message: "No Data Found"});
+                  
 
+              }
+          
+  //    console.log(err);
+  });
+});
+app.post("/allowancetable", (req, res)=>{
+
+  // const sqlSelect = ;
+  db.query(
+      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable`",
+      [],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+              }else{
+                  res.send({message: "No Data Found"});
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
+
+app.post("/allowancetableB", (req, res)=>{
+
+  // const sqlSelect = ;
+  db.query(
+      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable` WHERE `annex` = 'Annex B'",
+      [],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+              }else{
+                  res.send({message: "No Data Found"});
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
+
+app.post("/allowancetableC", (req, res)=>{
+
+  // const sqlSelect = ;
+  db.query(
+      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable` WHERE `annex` = 'Annex C'",
+      [],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+              }else{
+                  res.send({message: "No Data Found"});
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
+
+app.post("/allowancetableD", (req, res)=>{
+
+  // const sqlSelect = ;
+  db.query(
+      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable` WHERE `annex` = 'Annex D'",
+      [],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+              }else{
+                  res.send({message: "No Data Found"});
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
+
+app.post("/allowancetableDA2", (req, res)=>{
+
+  // const sqlSelect = ;
+  db.query(
+      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable` WHERE `annex` = 'Annex D A2'",
+      [],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+              }else{
+                  res.send({message: "No Data Found"});
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
+app.post("/allowancetableDA3", (req, res)=>{
+
+  // const sqlSelect = ;
+  db.query(
+      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable` WHERE `annex` = 'Annex D A3'",
+      [],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+              }else{
+                  res.send({message: "No Data Found"});
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
+
+app.post("/allowancetableDSpecial", (req, res)=>{
+
+  // const sqlSelect = ;
+  db.query(
+      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable` WHERE `annex` = 'Annex D Special'",
+      [],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+              }else{
+                  res.send({message: "No Data Found"});
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
 app.post("/history", (req, res)=>{
     const empId = req.body.employeeID;
  

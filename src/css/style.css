@@ -34,6 +34,14 @@
     background-position: center;
   }
 }
+.modalheader {
+  padding: 10px !important;
+}
+
+.iconColor {
+  color: black !important;
+}
+
 .grid-container {
   overflow-x: auto;
   white-space: nowrap;

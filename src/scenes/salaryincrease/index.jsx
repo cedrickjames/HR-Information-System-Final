@@ -242,19 +242,19 @@
             <Tab label="Administration" sx={{  borderColor: 'Violet' }} onClick={() => choosedept("Administration")}  {...a11yProps(0)} />
             <Tab label="Accounting"  onClick={() => choosedept("Accounting")}  {...a11yProps(1)} />
             <Tab label="Japanese" onClick={() => choosedept("Japanese")} {...a11yProps(2)} />
-            <Tab label="Parts Inspection" {...a11yProps(3)} />
-            <Tab label="Parts Production" {...a11yProps(4)} />
-            <Tab label="Production 1" {...a11yProps(4)} />
-            <Tab label="Production 2" {...a11yProps(6)} />
-            <Tab label="Production Management" {...a11yProps(7)} />
-            <Tab label="Production Technology" {...a11yProps(8)} />
-            <Tab label="PPIC" {...a11yProps(9)} />
-            <Tab label="Purchasing" {...a11yProps(10)} />
-            <Tab label="Quality Assurance" {...a11yProps(11)} />
-            <Tab label="Quality Control" {...a11yProps(12)} />
-            <Tab label="System Kaizen" {...a11yProps(13)} />
-            <Tab label="Warehouse" {...a11yProps(14)} />
-            <Tab label="DOK" {...a11yProps(15)} />
+            <Tab label="Parts Inspection" onClick={() => choosedept("Parts Inspection")}  {...a11yProps(3)} />
+            <Tab label="Parts Production" onClick={() => choosedept("Parts Production")}  {...a11yProps(4)} />
+            <Tab label="Production 1" onClick={() => choosedept("Production 1")}  {...a11yProps(4)} />
+            <Tab label="Production 2" onClick={() => choosedept("Production 2")}  {...a11yProps(6)} />
+            <Tab label="Production Management" onClick={() => choosedept("Production Management")}  {...a11yProps(7)} />
+            <Tab label="Production Technology" onClick={() => choosedept("Production Technology")}  {...a11yProps(8)} />
+            <Tab label="PPIC" onClick={() => choosedept("PPIC")}  {...a11yProps(9)} />
+            <Tab label="Purchasing" onClick={() => choosedept("Purchasing")}  {...a11yProps(10)} />
+            <Tab label="Quality Assurance" onClick={() => choosedept("Quality Assurance")}  {...a11yProps(11)} />
+            <Tab label="Quality Control" onClick={() => choosedept("Quality Control")}  {...a11yProps(12)} />
+            <Tab label="System Kaizen" onClick={() => choosedept("System Kaizen")}  {...a11yProps(13)} />
+            <Tab label="Warehouse" onClick={() => choosedept("Warehouse")}  {...a11yProps(14)} />
+            <Tab label="DOK" onClick={() => choosedept("DOK")}  {...a11yProps(15)} />
 
           </Tabs>
         </Box>

@@ -12,13 +12,15 @@ import SidebarMain from "./scenes/global/sidebar.jsx";
 // import Invoices from "./scenes/invoices"
 // import Contacts from "./scenes/Contacts"
 import SalaryIncrease from "./scenes/salaryincrease"
+import Salarytable from "./scenes/salaryTable"
+
 // import Form from "./scenes/form"
 import Line from "./scenes/line"
 import Teams from "./scenes/team"
 import PDFDocument from "./scenes/pdffiles"
 import ImportFile from "./scenes/import"
 
-
+import MergedRowTable from "./scenes/sample"
 import Login from "./scenes/authentication/login copy";
 
 import Register from "./scenes/authentication/register.js";
@@ -95,6 +97,10 @@ if (loggedIn) {
               <Route path="/team" element={<Teams/>}/>
               <Route path="/pdffiles" element={<PDFDocument/>}/>
               <Route path="/import" element={<ImportFile/>}/>
+              <Route path="/salaryTable" element={<Salarytable/>}/>
+              <Route path="/sample" element={<MergedRowTable/>}/>
+
+
 
 
               </Routes>

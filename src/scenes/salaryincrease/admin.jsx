@@ -44,12 +44,14 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
+import ImportFile from "../import";
 import EnhancedTable from './history';
 import { Button } from 'flowbite-react';
 
 // import  SalaryIncrease  from './index';
 import { Modal } from 'flowbite-react';
+import { Dropdown } from 'flowbite-react';
+import { HiCog, HiCurrencyDollar, HiLogout, HiViewGrid } from 'react-icons/hi';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -341,6 +343,8 @@ function EnhancedTableHead(props) {
   
 const SIAdmin = (props ) => {
 
+
+
   const [hideGrid, setHideGrid] = useState(true);
   
   const [inputValue, setInputValue] = useState('');
@@ -387,6 +391,18 @@ const SIAdmin = (props ) => {
     navigate('/pdffiles', { state: { customValue: value, customValueDate: inputValueDate, customValueAction: inputValue, customSelectedEmployees: selected2} });
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenImport, setIsModalOpenImport] = useState(false);
+
+
+
+  const closeModalImport = () => {
+    setIsModalOpenImport(false);
+  };
+
+  const openModalImport = () => {
+    setIsModalOpenImport(true);
+  };
+
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -417,6 +433,8 @@ const SIAdmin = (props ) => {
   useEffect(() => {
     const fullName = localStorage.getItem('fullName');
     setFullName(fullName)
+
+
    
   }, []);
 // //console.log({fullName});
@@ -429,7 +447,7 @@ const SIAdmin = (props ) => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const { department, tabNumber, setValue, date } = props;
     // setDateOfEffectiveness(date);
-    // //console.log(props);
+    // console.log(props);
   const [data, setData] = useState([]);
   const [rows, setRows] = useState([]);
   const [rowsBefore, setRowsBefore] = useState([]);
@@ -437,6 +455,15 @@ const SIAdmin = (props ) => {
   const [empId, setEmpId] = React.useState('');
   const [empName, setEmpName] = React.useState('');
   const [empNumber, setEmpNumber] = React.useState('');
+
+
+  //error state
+  const [levelState, setlevelState] = React.useState(false);
+  const [basicSalaryState, setbasicSalaryState] = React.useState(false);
+  const [dailyState, setdailyState] = React.useState(false);
+  const [monthlystate, setmonthlystate] = React.useState(false);
+
+  //end of error state
 
 //data of employee before
 const [empName1, setEmpName1] = React.useState('');
@@ -489,59 +516,162 @@ const [position1, setPosition1] = React.useState('');
   const [finalPoint, setFinalPoint] = React.useState(0);
   const [finalResult, setFinalResult] = React.useState('');
   const [levelUpPoints, setLevelUpPoints] = React.useState('');
+  const [levelSet, setLevelSet] = React.useState('');
+  const [d1, setD1] = React.useState();
+  const [d2, setD2] = React.useState();
+  const [d3, setD3] = React.useState();
+  const [m1, setM1] = React.useState();
+  const [m2, setM2] = React.useState();
+  const [m3, setM3] = React.useState();
+  const [m4, setM4] = React.useState();
+  const [m5, setM5] = React.useState();
+  const [f1, setF1] = React.useState();
+  const [f2, setF2] = React.useState();
+
+
+  const [d1L1, setD1L1] = React.useState();
+  const [d2L1, setD2L1] = React.useState();
+  const [d3L1, setD3L1] = React.useState();
   
-  const [d1, setD1] = React.useState(5.0);
-  const [d2, setD2] = React.useState(6.0);
-  const [d3, setD3] = React.useState(7.0);
-
-  const [d1L1, setD1L1] = React.useState(500);
-  const [d2L1, setD2L1] = React.useState(560);
-  const [d3L1, setD3L1] = React.useState(600);
-
-  const [workingDays, setWorkingDays] = React.useState(26.17);
-
-const [SeniorManager, setSeniorManager] = React.useState(['Senior Manager', 21000, 22000, 23000, 24000, 25000])
-const [Manager, setManager] = React.useState(['Manager', 16000, 17000, 18000, 19000, 20000])
-const [SeniorSupervisor, setSeniorSupervisor] = React.useState(['Senior Supervisor', 11000, 12000, 13000, 14000, 15000])
-const [Supervisor, setSupervisor] =  React.useState(['Supervisor ', 6000, 7000, 8000, 9000, 10000])
-const [AssistantSupervisor, setAssistantSupervisor] = React.useState(['Assistant Supervisor', 5000, 5400, 5800, 6200, 5800])
-const [Leader, setLeader] = React.useState(['Leader', 4000, 4200, 4400, 4600, 4800])
-const [SubLeader, setSubLeader] = React.useState(['Sub Leader', 3000, 3200, 3400, 3600, 3800])
-
-const [ProfessionalP5, setProfessionalP5]=React.useState(['Professional, P5', 21000, 22000, 23000, 24000, 25000])
-const [ProfessionalP4, setProfessionalP4]=React.useState(['Professional, P4', 16000, 17000, 18000, 19000, 20000])
-const [ProfessionalP3, setProfessionalP3]=React.useState(['Professional, P3', 11000, 12000, 13000, 14000, 15000])
-const [ProfessionalP2, setProfessionalP2]=React.useState(['Professional, P2', 6000, 7000, 8000, 9000, 10000])
-const [ProfessionalP1, setProfessionalP1]=React.useState(['Professional, P1', 5000, 5400, 5800, 6200, 5800])
-const [SpecialistS2, setSpecialistS2]=React.useState(['Specialist, S2', 4000, 4200, 4400, 4600, 4800])
-const [SpecialistS1, setSpecialistS1]=React.useState(['Specialist, S1', 3000, 3200, 3400, 3600, 3800])
-
-const [Lawyer, setLawyer]=React.useState(['Lawyer', 4000, 8000, 12000, 15000, 20000])
-const [CPA, setCPA]=React.useState(['CPA', 4000, 8000, 12000, 15000, 20000])
-const [RegisteredEngineer, setRegisteredEngineer]=React.useState(['Registered Engineer (Engr.)', 4000, 5000, 6000, 7000, 8000])
-const [RegisteredNurse, setRegisteredNurse]=React.useState(['Registered Nurse (RN)', 3000, 4000, 5000, 6000, 10000])
-const [LicensedCustomBroker, setLicensedCustomBroker]=React.useState(['Licensed Custom Broker', 2000, 3000, 4000, 5000, 10000])
-const [RegisteredMasterElectrician, setRegisteredMasterElectrician]=React.useState(['Registered Master Electrician', 1000, 1500, 2000, 2500, 5000])
+  const [m1L1, setM1L1] = React.useState();
+  const [m2L1, setM2L1] = React.useState();
+  const [m3L1, setM3L1] = React.useState();
+  const [m4L1, setM4L1] = React.useState();
+  const [m5L1, setM5L1] = React.useState();
+  const [f1L1, setF1L1] = React.useState();
+  const [f2L1, setF2L1] = React.useState();
 
 
-const [JapaneseInterpreterJLPLevelN1, setJapaneseInterpreterJLPLevelN1]=React.useState(['Japanese Interpreter (JLP Level N1)', 1000, 2000, 3000, 4000, 5000])
-const [JapaneseInterpreterJLPLevelN2, setJapaneseInterpreterJLPLevelN2]=React.useState(['Japanese Interpreter (JLP Level N2)', 1000, 2000, 3000, 4000, 5000])
-const [JapaneseInterpreterJLPLevelN3, setJapaneseInterpreterJLPLevelN3]=React.useState(['Japanese Interpreter (JLP Level N3)', 1000, 2000, 3000, 4000, 5000])
-const [SafetyOfficer3OHSPractitioner, setSafetyOfficer3OHSPractitioner]=React.useState(['Safety Officer 3 / OHS Practitioner (Certified)', 1000, 2000, 3000, 4000, 5000])
-const [SafetyOfficer2, setSafetyOfficer2]=React.useState(['Safety Officer 2 (Certified)', 1000, 2000, 3000, 4000, 5000])
-const [SafetyOfficer1, setSafetyOfficer1]=React.useState(['Safety Officer 1 (Certified)', 1000, 2000, 3000, 4000, 5000])
-const [EnergyConservationOfficer, setEnergyConservationOfficer]=React.useState(['Energy Conservation Officer (Certified)', 1000, 2000, 3000, 4000, 5000])
-const [PollutionControlOfficer, setPollutionControlOfficer]=React.useState(['Pollution Control Officer (Accredited)', 1000, 2000, 3000, 4000, 5000])
-const [RadiationSafetyOfficer, setRadiationSafetyOfficer]=React.useState(['Radiation Safety Officer (Certified)', 1000, 2000, 3000, 4000, 5000])
+  const [workingDays, setWorkingDays] = React.useState();
 
-const [TechnicalStaff, setTechnicalStaff]=React.useState(['Technical Staff (Certified by TESDA or GLORY LTD.)', 1000, 2000, 3000, 4000, 5000])
-const [CompanyDriverForkliftOperator, setCompanyDriverForkliftOperator]=React.useState(['Company Driver/Forklift Operator', 1000, 2000, 3000, 4000, 5000])	
+const [SeniorManager, setSeniorManager] = React.useState([])
+const [Manager, setManager] = React.useState([])
+const [SeniorSupervisor, setSeniorSupervisor] = React.useState([])
+const [Supervisor, setSupervisor] =  React.useState([])
+const [AssistantSupervisor, setAssistantSupervisor] = React.useState([])
+const [Leader, setLeader] = React.useState([])
+const [SubLeader, setSubLeader] = React.useState([])
 
-const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	=React.useState(['Employee with special experience', 1000, 2000, 3000, 4000, 5000])
+const [ProfessionalP5, setProfessionalP5] = React.useState([])
+const [ProfessionalP4, setProfessionalP4] = React.useState([])
+const [ProfessionalP3, setProfessionalP3] = React.useState([])
+const [ProfessionalP2, setProfessionalP2] = React.useState([])
+const [ProfessionalP1, setProfessionalP1] = React.useState([])
+const [SpecialistS2, setSpecialistS2] = React.useState([])
+const [SpecialistS1, setSpecialistS1] = React.useState([])
+
+const [Lawyer, setLawyer] = React.useState([])
+const [CPA, setCPA] = React.useState([])
+const [RegisteredEngineer, setRegisteredEngineer] = React.useState([])
+const [RegisteredNurse, setRegisteredNurse] = React.useState([])
+const [LicensedCustomBroker, setLicensedCustomBroker] = React.useState([])
+const [RegisteredMasterElectrician, setRegisteredMasterElectrician] = React.useState([])
 
 
-  const[arrayOfProfAllowances, setarrayOfProfAllowances] = React.useState([SeniorManager,Manager,SeniorSupervisor,Supervisor,AssistantSupervisor,Leader,SubLeader,ProfessionalP5,ProfessionalP4,ProfessionalP3,ProfessionalP2,ProfessionalP1,SpecialistS2,SpecialistS1,Lawyer,CPA,RegisteredEngineer,RegisteredNurse,LicensedCustomBroker,RegisteredMasterElectrician,JapaneseInterpreterJLPLevelN1,JapaneseInterpreterJLPLevelN2,JapaneseInterpreterJLPLevelN3,SafetyOfficer3OHSPractitioner,SafetyOfficer2,SafetyOfficer1,EnergyConservationOfficer,PollutionControlOfficer,RadiationSafetyOfficer,TechnicalStaff,CompanyDriverForkliftOperator,Employeewithspecialexperience]);
+const [JapaneseInterpreterJLPLevelN1, setJapaneseInterpreterJLPLevelN1] = React.useState([])
+const [JapaneseInterpreterJLPLevelN2, setJapaneseInterpreterJLPLevelN2] = React.useState([])
+const [JapaneseInterpreterJLPLevelN3, setJapaneseInterpreterJLPLevelN3] = React.useState([])
+const [SafetyOfficer3OHSPractitioner, setSafetyOfficer3OHSPractitioner] = React.useState([])
+const [SafetyOfficer2, setSafetyOfficer2] = React.useState([])
+const [SafetyOfficer1, setSafetyOfficer1] = React.useState([])
+const [EnergyConservationOfficer, setEnergyConservationOfficer] = React.useState([])
+const [PollutionControlOfficer, setPollutionControlOfficer] = React.useState([])
+const [RadiationSafetyOfficer, setRadiationSafetyOfficer] = React.useState([])
 
+const [TechnicalStaff, setTechnicalStaff] = React.useState([])
+const [CompanyDriverForkliftOperator, setCompanyDriverForkliftOperator] = React.useState([])	
+
+const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	= React.useState([])
+
+
+  const[arrayOfProfAllowances, setarrayOfProfAllowances] = React.useState([]);
+
+  function getsettings(){
+    console.log("123")
+    Axios.post("http://192.168.60.53:3001/basicallowancesettings", {
+    }).then((response) => {
+      console.log(response);
+      setD1(response.data.result[0].d1)
+    setD2(response.data.result[0].d2)
+    setD3(response.data.result[0].d3)
+    setM1(response.data.result[0].m1)
+      setM2(response.data.result[0].m2)
+      setM3(response.data.result[0].m3)
+      setM4(response.data.result[0].m4)
+      setM5(response.data.result[0].m5)
+      setF1(response.data.result[0].f1)
+      setF2(response.data.result[0].f2)
+      
+    setD1L1(response.data.result[0].d1l1)
+    setD2L1(response.data.result[0].d2l1)
+    setD3L1(response.data.result[0].d3l1)
+
+    setM1L1(response.data.result[0].m1l1)
+    setM2L1(response.data.result[0].m2l1)
+    setM3L1(response.data.result[0].m3l1)
+    setM4L1(response.data.result[0].m4l1)
+    setM5L1(response.data.result[0].m5l1)
+    setF1L1(response.data.result[0].f1l1)
+    setF2L1(response.data.result[0].f2l1)
+
+
+
+
+
+
+
+
+    setWorkingDays(response.data.result[0].workingdays);
+    
+    
+    });
+       Axios.post("http://192.168.60.53:3001/allowancetable", {
+    }).then((response) => {
+      console.log([response.data.result]);
+    // console.log(EnergyConservationOfficer);
+    setSeniorManager([response.data.result[0].positionLevel,response.data.result[0].r1,response.data.result[0].r2,response.data.result[0].r3,response.data.result[0].r4,response.data.result[0].r5]);
+    setManager([response.data.result[1].positionLevel,response.data.result[1].r1,response.data.result[1].r2,response.data.result[1].r3,response.data.result[1].r4,response.data.result[1].r5]);
+    setSeniorSupervisor([response.data.result[2].positionLevel,response.data.result[2].r1,response.data.result[2].r2,response.data.result[2].r3,response.data.result[2].r4,response.data.result[2].r5]);
+    setSupervisor([response.data.result[3].positionLevel,response.data.result[3].r1,response.data.result[3].r2,response.data.result[3].r3,response.data.result[3].r4,response.data.result[3].r5]);
+    setAssistantSupervisor([response.data.result[4].positionLevel,response.data.result[4].r1,response.data.result[4].r2,response.data.result[4].r3,response.data.result[4].r4,response.data.result[4].r5]);
+    setLeader([response.data.result[5].positionLevel,response.data.result[5].r1,response.data.result[5].r2,response.data.result[5].r3,response.data.result[5].r4,response.data.result[5].r5]);
+    setSubLeader([response.data.result[6].positionLevel,response.data.result[6].r1,response.data.result[6].r2,response.data.result[6].r3,response.data.result[6].r4,response.data.result[6].r5]);
+    setProfessionalP5([response.data.result[7].positionLevel,response.data.result[7].r1,response.data.result[7].r2,response.data.result[7].r3,response.data.result[7].r4,response.data.result[7].r5]);
+    setProfessionalP4([response.data.result[8].positionLevel,response.data.result[8].r1,response.data.result[8].r2,response.data.result[8].r3,response.data.result[8].r4,response.data.result[8].r5]);
+    setProfessionalP3([response.data.result[9].positionLevel,response.data.result[9].r1,response.data.result[9].r2,response.data.result[9].r3,response.data.result[9].r4,response.data.result[9].r5]);
+    setProfessionalP2([response.data.result[10].positionLevel,response.data.result[10].r1,response.data.result[10].r2,response.data.result[10].r3,response.data.result[10].r4,response.data.result[10].r5]);
+    setProfessionalP1([response.data.result[11].positionLevel,response.data.result[11].r1,response.data.result[11].r2,response.data.result[11].r3,response.data.result[11].r4,response.data.result[11].r5]);
+    setSpecialistS2([response.data.result[12].positionLevel,response.data.result[12].r1,response.data.result[12].r2,response.data.result[12].r3,response.data.result[12].r4,response.data.result[12].r5]);
+    setSpecialistS1([response.data.result[13].positionLevel,response.data.result[13].r1,response.data.result[13].r2,response.data.result[13].r3,response.data.result[13].r4,response.data.result[13].r5]);
+    setLawyer([response.data.result[14].positionLevel,response.data.result[14].r1,response.data.result[14].r2,response.data.result[14].r3,response.data.result[14].r4,response.data.result[14].r5]);
+    setCPA([response.data.result[15].positionLevel,response.data.result[15].r1,response.data.result[15].r2,response.data.result[15].r3,response.data.result[15].r4,response.data.result[15].r5]);
+    setRegisteredEngineer([response.data.result[16].positionLevel,response.data.result[16].r1,response.data.result[16].r2,response.data.result[16].r3,response.data.result[16].r4,response.data.result[16].r5]);
+    setRegisteredNurse([response.data.result[17].positionLevel,response.data.result[17].r1,response.data.result[17].r2,response.data.result[17].r3,response.data.result[17].r4,response.data.result[17].r5]);
+    setLicensedCustomBroker([response.data.result[18].positionLevel,response.data.result[18].r1,response.data.result[18].r2,response.data.result[18].r3,response.data.result[18].r4,response.data.result[18].r5]);
+    setRegisteredMasterElectrician([response.data.result[19].positionLevel,response.data.result[19].r1,response.data.result[19].r2,response.data.result[19].r3,response.data.result[19].r4,response.data.result[19].r5]);
+    setJapaneseInterpreterJLPLevelN1([response.data.result[20].positionLevel,response.data.result[20].r1,response.data.result[20].r2,response.data.result[20].r3,response.data.result[20].r4,response.data.result[20].r5]);
+    setJapaneseInterpreterJLPLevelN2([response.data.result[21].positionLevel,response.data.result[21].r1,response.data.result[21].r2,response.data.result[21].r3,response.data.result[21].r4,response.data.result[21].r5]);
+    setJapaneseInterpreterJLPLevelN3([response.data.result[22].positionLevel,response.data.result[22].r1,response.data.result[22].r2,response.data.result[22].r3,response.data.result[22].r4,response.data.result[22].r5]);
+    setSafetyOfficer3OHSPractitioner([response.data.result[23].positionLevel,response.data.result[23].r1,response.data.result[23].r2,response.data.result[23].r3,response.data.result[23].r4,response.data.result[23].r5]);
+    setSafetyOfficer2([response.data.result[24].positionLevel,response.data.result[24].r1,response.data.result[24].r2,response.data.result[24].r3,response.data.result[24].r4,response.data.result[24].r5]);
+    setSafetyOfficer1([response.data.result[25].positionLevel,response.data.result[25].r1,response.data.result[25].r2,response.data.result[25].r3,response.data.result[25].r4,response.data.result[25].r5]);
+    setEnergyConservationOfficer([response.data.result[26].positionLevel,response.data.result[26].r1,response.data.result[26].r2,response.data.result[26].r3,response.data.result[26].r4,response.data.result[26].r5]);
+    setPollutionControlOfficer([response.data.result[27].positionLevel,response.data.result[27].r1,response.data.result[27].r2,response.data.result[27].r3,response.data.result[27].r4,response.data.result[27].r5]);
+    setRadiationSafetyOfficer([response.data.result[28].positionLevel,response.data.result[28].r1,response.data.result[28].r2,response.data.result[28].r3,response.data.result[28].r4,response.data.result[28].r5]);
+    setTechnicalStaff([response.data.result[29].positionLevel,response.data.result[29].r1,response.data.result[29].r2,response.data.result[29].r3,response.data.result[29].r4,response.data.result[29].r5]);
+    setCompanyDriverForkliftOperator([response.data.result[30].positionLevel,response.data.result[30].r1,response.data.result[30].r2,response.data.result[30].r3,response.data.result[30].r4,response.data.result[30].r5]);
+    setEmployeewithspecialexperience([response.data.result[31].positionLevel,response.data.result[31].r1,response.data.result[31].r2,response.data.result[31].r3,response.data.result[31].r4,response.data.result[31].r5]); 
+    // setarrayOfProfAllowances([])
+    setarrayOfProfAllowances([SeniorManager,Manager,SeniorSupervisor,Supervisor,AssistantSupervisor,Leader,SubLeader,ProfessionalP5,ProfessionalP4,ProfessionalP3,ProfessionalP2,ProfessionalP1,SpecialistS2,SpecialistS1,Lawyer,CPA,RegisteredEngineer,RegisteredNurse,LicensedCustomBroker,RegisteredMasterElectrician,JapaneseInterpreterJLPLevelN1,JapaneseInterpreterJLPLevelN2,JapaneseInterpreterJLPLevelN3,SafetyOfficer3OHSPractitioner,SafetyOfficer2,SafetyOfficer1,EnergyConservationOfficer,PollutionControlOfficer,RadiationSafetyOfficer,TechnicalStaff,CompanyDriverForkliftOperator,Employeewithspecialexperience])
+     console.log(arrayOfProfAllowances)
+    
+    });
+  }
+  React.useEffect(() => {
+  //  console.log(arrayOfProfAllowances)
+ getsettings();
+
+  }, []); // Passing an empty dependency array
 
 
   React.useEffect(() => {
@@ -549,27 +679,92 @@ const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	=React.u
   
    console.log(arrayOfProfAllowances)
 
-   let samplePosition = "Specialist, S2";
-   let sampleRank = '2';
+//    let samplePosition = "Specialist, S2";
+//    let sampleRank = '2';
 
-  const allowancesArray = arrayOfProfAllowances.find(
-    allowances => allowances[0] === samplePosition
-  );
-console.log(allowancesArray)
+//   const allowancesArray = arrayOfProfAllowances.find(
+//     allowances => allowances[0] === samplePosition
+//   );
+// console.log(allowancesArray)
   
-if (allowancesArray) {
-  // If samplePosition is found in arrayOfProfAllowances
-  const allowance = allowancesArray[parseInt(sampleRank, 10)];
+// if (allowancesArray) {
+//   // If samplePosition is found in arrayOfProfAllowances
+//   const allowance = allowancesArray[parseInt(sampleRank, 10)];
 
-  console.log('Allowance:', allowance);
-} else {
-  console.log('samplePosition not found in arrayOfProfAllowances');
-}
+//   console.log('Allowance:', allowance);
+// } else {
+//   console.log('samplePosition not found in arrayOfProfAllowances');
+// }
 
   }, [arrayOfProfAllowances]);
   
-
+  function exportEmployees(){
+    Axios.post("http://192.168.60.53:3001/exportEmployees", {
+      department: department,
+    }).then((response) => {
+      console.log(response.data.result.length);
+      var rows =[];
   
+      var column1 = 'No.';
+      var column2 = 'IDNumber';
+      var column3 = 'Full Name';
+      var column4 = 'firsthalf';
+      var column5 = 'secondhalf';
+
+      rows.push(
+          [
+              column1,
+              column2,
+              column3,
+              column4,
+              column5,
+          ]
+      );
+      
+for(var i=0,row; i < response.data.result.length;i++){
+  console.log(response.data.result[i].employeeName);
+
+      var acolumn1 = parseInt(i) +1;
+      var acolumn2 = response.data.result[i].empNo;
+      var acolumn3 = response.data.result[i].employeeName;
+      var acolumn4 = "";
+      var acolumn5 = "";
+
+  console.log(acolumn3);
+      
+      rows.push(
+          [
+              acolumn1,
+              acolumn2,
+              acolumn3,
+              acolumn4,
+              acolumn5, 
+      
+          ]
+      );
+
+}
+var csvContent = "data:text/csv;charset=utf-8,";
+   /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
+  rows.forEach(function(rowArray){
+      row = rowArray.join('","');
+      row = '"' + row + '"';
+      csvContent += row + "\r\n";
+  });
+
+  /* create a hidden <a> DOM node and set its download attribute */
+  var encodedUri = encodeURI(csvContent);
+  var link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "Employees.csv");
+  document.body.appendChild(link);
+   /* download the data file named "Stock_Price_Report.csv" */
+  link.click();
+
+    });
+  }
+
+ 
 
 
   
@@ -626,8 +821,36 @@ if (allowancesArray) {
   const [overallTotal, setOverAllTotal] = useState(0);
   const [up, setUp] = useState(0);
   const [percentage, setPercentage] = useState(0);
+  const [showOptionValue1, setShowOptionValue1] = useState(false)
+  const [showOptionValue, setShowOptionValue] = useState('invisible opacity-0 z-10 bg-white w-fit rounded divide-y divide-gray-100 shadow transition-opacity duration-100 border border-gray-200 bg-white text-gray-900 dark:border-none dark:bg-gray-700 dark:text-white iconColor');
 
 
+  React.useEffect(() => {
+
+
+    if(level >40)
+    {
+      setlevelState(true);
+    }
+    else{
+      setlevelState(false);
+
+    }
+
+ 
+   }, [level]);
+function showOption(){
+if(!showOptionValue1){
+  setShowOptionValue('z-10 w-fit rounded divide-y divide-gray-100 shadow transition-opacity duration-100 border border-gray-200 bg-white text-gray-900 dark:border-none dark:bg-gray-700 dark:text-white iconColor')
+  setShowOptionValue1(true);
+}
+else{
+  setShowOptionValue('invisible opacity-0 z-10 w-fit rounded divide-y divide-gray-100 shadow transition-opacity duration-100 border border-gray-200 bg-white text-gray-900 dark:border-none dark:bg-gray-700 dark:text-white iconColor');
+  setShowOptionValue1(false);
+
+}
+
+}
   function levelUp2(secondPoint, firstPoint){
     setSecondHalf(secondPoint);
 
@@ -676,7 +899,7 @@ if (allowancesArray) {
 
     let samplePosition = position;
    let sampleRank = (isNaN(parseInt(posRankbg)) ? 0 : parseInt(posRankbg)) +1;
-
+console.log(arrayOfProfAllowances)
   const allowancesArray = arrayOfProfAllowances.find(
     allowances => allowances[0] === samplePosition
   );
@@ -766,7 +989,9 @@ if (allowancesArray) {
 
     }
     else{
-    setPosRank(posRankbg);
+        setPosRank(posRankbg);
+    setPosAllowance(posAllowancebg);
+
     setPosPe(posPebg);
 
 
@@ -784,6 +1009,7 @@ function finalresult(totalPoint){
       setLevelUpPoints('1');
   setLevel(parseInt(levelbg)+1);
   levelset = parseInt(levelbg)+1
+  setLevelSet(levelset);
      
       break;
     case (totalPoint > 1.99 && totalPoint <= 2.99):
@@ -798,6 +1024,7 @@ function finalresult(totalPoint){
       setLevelUpPoints('3');
       setLevel(parseInt(levelbg)+3);
       levelset = parseInt(levelbg)+3;
+      setLevelSet(levelset);
 
       break;
     case  (totalPoint > 3.33 && totalPoint <= 3.66):
@@ -805,6 +1032,7 @@ function finalresult(totalPoint){
       setLevelUpPoints('3');
       setLevel(parseInt(levelbg)+3);
       levelset = parseInt(levelbg)+3;
+      setLevelSet(levelset);
 
       break;
     case  (totalPoint > 3.66 && totalPoint <= 3.99):
@@ -812,6 +1040,7 @@ function finalresult(totalPoint){
       setLevelUpPoints('3');
       setLevel(parseInt(levelbg)+3);
       levelset = parseInt(levelbg)+3;
+      setLevelSet(levelset);
 
       break;
       case  (totalPoint > 3.99 && totalPoint <= 4.79):
@@ -819,6 +1048,7 @@ function finalresult(totalPoint){
         setLevelUpPoints('4');
         setLevel(parseInt(levelbg)+4);
         levelset = parseInt(levelbg)+4;
+        setLevelSet(levelset);
 
         break;
         case  (totalPoint > 4.79 && totalPoint <= 5.00):
@@ -826,6 +1056,7 @@ function finalresult(totalPoint){
           setLevelUpPoints('5');
           setLevel(parseInt(levelbg)+5);
           levelset = parseInt(levelbg)+5;
+          setLevelSet(levelset);
 
           break;
     default:
@@ -834,53 +1065,119 @@ function finalresult(totalPoint){
       setLevel(parseInt(levelbg));
 
   }
-  //console.log(levelset);
+//console.log(levelset);
 
 //console.log((parseInt(levelset)-1)*d1+d1L1);
 
+//   switch (empClass) {
+//     case "D1":
+// setDaily((parseInt(levelset)-1)*d1+d1L1);
+// setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d1 + d1L1) * workingDays));
+
+
+
+//       break;
+//     case "DM1":
+// setDaily((parseInt(levelset)-1)*d1+d1L1);
+// setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d1 + d1L1) * workingDays));
+
+//       break;
+//     case "D2":
+//       setDaily((parseInt(levelset)-1)*d2+d2L1);
+//       setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d2 + d2L1) * workingDays));
+
+//       break;
+//     case "DM2":
+//       setDaily((parseInt(levelset)-1)*d2+d2L1);
+//       setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d2 + d2L1) * workingDays));
+
+//       break;
+//     case "D3":
+//       setDaily((parseInt(levelset)-1)*d3+d3L1);
+//       setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d3 + d3L1) * workingDays));
+
+//       break;
+//       case "DM3":
+//         setDaily((parseInt(levelset)-1)*d3+d3L1);
+//         setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d3 + d3L1) * workingDays));
+
+//       break;
+//     default:
+
+//   }
+  
+}
+React.useEffect(()=> {
   switch (empClass) {
     case "D1":
-setDaily((parseInt(levelset)-1)*d1+d1L1);
-setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d1 + d1L1) * workingDays));
-
-
+setDaily((parseInt(level)-1)*d1+d1L1);
+setMonthlySalary( Math.round(((parseInt(level) - 1) * d1 + d1L1) * workingDays));
 
       break;
     case "DM1":
-setDaily((parseInt(levelset)-1)*d1+d1L1);
-setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d1 + d1L1) * workingDays));
+setDaily((parseInt(level)-1)*d1+d1L1);
+setMonthlySalary( Math.round(((parseInt(level) - 1) * d1 + d1L1) * workingDays));
 
       break;
     case "D2":
-      setDaily((parseInt(levelset)-1)*d2+d2L1);
-      setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d2 + d2L1) * workingDays));
+      setDaily((parseInt(level)-1)*d2+d2L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * d2 + d2L1) * workingDays));
 
       break;
     case "DM2":
-      setDaily((parseInt(levelset)-1)*d2+d2L1);
-      setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d2 + d2L1) * workingDays));
+      setDaily((parseInt(level)-1)*d2+d2L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * d2 + d2L1) * workingDays));
 
       break;
     case "D3":
-      setDaily((parseInt(levelset)-1)*d3+d3L1);
-      setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d3 + d3L1) * workingDays));
+      setDaily((parseInt(level)-1)*d3+d3L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * d3 + d3L1) * workingDays));
 
       break;
       case "DM3":
-        setDaily((parseInt(levelset)-1)*d3+d3L1);
-        setMonthlySalary( Math.round(((parseInt(levelset) - 1) * d3 + d3L1) * workingDays));
-
+        setDaily((parseInt(level)-1)*d3+d3L1);
+        setMonthlySalary( Math.round(((parseInt(level) - 1) * d3 + d3L1) * workingDays));
       break;
+      case "M1":
+        setDaily((parseInt(level)-1)*m1+m1L1);
+        setMonthlySalary( Math.round(((parseInt(level) - 1) * m1 + m1L1) * workingDays));
+      break;
+      case "M2":
+      setDaily((parseInt(level)-1)*m2+m2L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * m2 + m2L1) * workingDays));
+      break;
+      case "M3":
+      setDaily((parseInt(level)-1)*m3+m3L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * m3 + m3L1) * workingDays));
+      break;
+      case "M4":
+      setDaily((parseInt(level)-1)*m4+m4L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * m4 + m4L1) * workingDays));
+      break;
+      case "M5":
+      setDaily((parseInt(level)-1)*m5+m5L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * m5 + m5L1) * workingDays));
+      break;
+      case "F1":
+        setDaily((parseInt(level)-1)*f1+f1L1);
+        setMonthlySalary( Math.round(((parseInt(level) - 1) * f1 + f1L1) * workingDays));
+        break;
+        case "F2":
+        setDaily((parseInt(level)-1)*f2+f2L1);
+        setMonthlySalary( Math.round(((parseInt(level) - 1) * f2 + f2L1) * workingDays));
+  
+  
+        break;
     default:
 
   }
-  
-}
+
+},[empClass, level, d1, d1L1, d2, d2L1, d3, d3L1, m1, m1L1, m2, m2L1, m3, m3L1, m4, m4L1, m5, m5L1, f1, f1L1, f2, f2L1, workingDays])
 React.useEffect(() => {
   
   if(levelUpPoints===''){
-    setDaily(dailybg);
-    setMonthlySalary(monthlySalarybg);
+    // setDaily(dailybg);
+    // setMonthlySalary(monthlySalarybg);
     setBasicSalary(basicSalarybg)
   }
 
@@ -1007,61 +1304,9 @@ React.useEffect(() => {
       setRows(newRows);
     }
         
-  
-      
-      // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
-      
-      // //console.log(rows)
-   
 
     });
-//  Axios.post("http://192.168.60.53:3001/setsitablebefore", {
-//       department: department,
-//     }).then((response) => {
-//       //console.log(response);
-//       // (no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
-//       const newRows1 = response.data.map(row => createDatBefore(
-//         row.id, 
-//         row.section,
-//         row.employeeName,
-//         row.employeeId, 
-//         row.position,
-//         row.designation,
-//         row.class,
-//         row.level,
-//         row.salaryType,
-//         row.basicSalary,
-//         row.daily,
-//         row.monthlySalary,
-//         row.pPEPoint,
-//         row.pAllowance,
-//         row.pRank,
-//         row.tsPEPoint,
-//         row.tsAllowance,
-//         row.tsRank,
-//         row.leLicenseFee, 
-//         row.lePEPoint, 
-//         row.leAllowance, 
-//         row.leRank, 
-//         row.ceCertificateOnFee, 
-//         row.cePEPoint, 
-//         row.ceAllowance, 
-//         row.ceRank, 
-//         row.Specialization, 
-//         row.birthday,
-//         row.age,
-//         row.department,
-//         row.sex,
-//         row.dateHired,
-//         row.serviceTerm,
-        
-//         ));
-//         setRowsBefore(newRows1);
 
-//       // //console.log(rows)
-   
-
-//     });
   };
   const refreshTable = () => {
     //console.log(department);
@@ -1355,6 +1600,11 @@ const setAction = (action) =>{
     const [open, setOpen] = React.useState(false);
 
     const handleClickOpen = (type, employee) => {
+
+
+ getsettings();
+
+
       setHideGrid(true);
 
       Axios.post("http://192.168.60.53:3001/totalBefore", {
@@ -1421,8 +1671,8 @@ const setAction = (action) =>{
       setBasicSalarybg(employee.basicSalary);
 
       
-      setDaily(employee.daily);
-      setMonthlySalary(employee.monthlySalary);
+      // setDaily(employee.daily);
+      // setMonthlySalary(employee.monthlySalary);
       setDailybg(employee.daily);
       setMonthlySalarybg(employee.monthlySalary);
       setPosPe(employee.pPEPoint);
@@ -1482,7 +1732,11 @@ const setAction = (action) =>{
     const handleChange = (event) => {
       setdepartment2(event.target.value);
     };
-
+    function ThreeDotIcon() {
+      return (
+        <svg className="w-6 h-6 iconColor" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path></svg>
+      );
+    }
     return (
  
       <Box sx={{ width: '100%' }}>
@@ -1654,6 +1908,88 @@ const setAction = (action) =>{
         )}
     
 </div>
+
+    <div className="w-fit" data-testid="flowbite-tooltip-target"><button type="button" onClick={()=> showOption()}
+        className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-cyan-300
+        disabled:hover:bg-white dark:bg-gray-600 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700
+        dark:hover:border-gray-700 dark:focus:ring-gray-700 focus:!ring-2 group flex h-min items-center justify-center
+        p-0.5 text-center font-medium focus:z-10 rounded-lg" position="bottom-end"><span
+          className="flex items-center rounded-md text-sm px-3 py-1.5"><svg className="w-6 h-6 iconColor"
+            aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z">
+            </path>
+          </svg></span></button></div>
+
+    <div data-testid="flowbite-tooltip" tabIndex="-1" className={showOptionValue} id=":r4:" role="tooltip">
+      <div className="py-1 text-sm text-gray-700 dark:text-gray-200">
+        <ul className="py-1 bg-white drop-shadow-md"
+          style={{ paddingLeft: '0px', position: 'absolute', top: '61px', left: '1389.px', minWidth: '84px' }}>
+          <div className="block py-2 px-4 text-sm text-gray-700 dark:text-gray-200"><span
+              className="block text-sm">Options</span></div>
+          <div className="my-1 h-px bg-gray-100 dark:bg-gray-600"></div>
+          <li onClick={()=> exportEmployees()}
+            className="flex items-center justify-start py-2 px-4 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
+               
+              <svg className="mr-2 h-4 w-4" height="1em" width="1em" aria-hidden="true"  stroke="currentColor" fill="currentColor" strokeWidth="0" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 20 20">
+    <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z"/>
+    <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+  </svg>Export Employees</li>
+          <li onClick={openModalImport}
+            className="flex items-center justify-start py-2 px-4 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
+              <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" aria-hidden="true"
+              className="mr-2 h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" >
+    <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
+    <path d="M14.067 0H7v5a2 2 0 0 1-2 2H0v4h7.414l-1.06-1.061a1 1 0 1 1 1.414-1.414l2.768 2.768a1 1 0 0 1 0 1.414l-2.768 2.768a1 1 0 0 1-1.414-1.414L7.414 13H0v5a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2Z"/>
+  </svg>
+           Import Grades</li>
+        </ul>
+      </div>
+    </div>
+    <Modal    show={isModalOpenImport} onClose={closeModalImport}>
+      <div class="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
+        <div class="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
+          <h3 class="text-xl font-medium text-gray-900 dark:text-white">Import Grades</h3><button  onClick={closeModalImport} aria-label="Close"
+            class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+            type="button"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"
+              class="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg></button>
+        </div>
+        <ImportFile/>
+
+        {/* <div class="p-6 flex-1 overflow-auto">
+          <div class="space-y-6">
+          <ImportFile/>
+          </div>
+        </div>
+        <div class="flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600 border-t"><button
+            type="button"
+            class=" bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white border border-transparent hover:bg-cyan-600 hover:text-white focus:ring-4 focus:ring-cyan-300 disabled:hover:bg-cyan-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800 dark:disabled:hover:bg-cyan-600 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+              class="flex items-center rounded-md text-sm px-4 py-2">Continue</span></button><button type="button"
+            class="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-cyan-700 disabled:hover:bg-white focus:ring-cyan-700 focus:text-cyan-700 dark:bg-transparent dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 dark:disabled:hover:bg-gray-800 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+              class="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div> */}
+      </div>
+        {/* <Modal.Header  className="modalheader" >Terms of Service</Modal.Header>
+        <Modal.Body>
+          <div className="space-y-6">
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              With less than a month to go before the European Union enacts new consumer privacy laws for its citizens,
+              companies around the world are updating their terms of service agreements to comply.
+            </p>
+            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+              The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to
+              ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as
+              possible of high-risk data breaches that could personally affect them.
+            </p>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={() => props.setOpenModal(undefined)}>I accept</Button>
+          <Button color="gray" onClick={closeModalImport}>
+            Decline
+          </Button>
+        </Modal.Footer> */}
+      </Modal>
          {/* <TextField
             label="Search"
             value={searchQuery}
@@ -1974,12 +2310,43 @@ const setAction = (action) =>{
                     Basic Salary
                   </Typography>
                   <Grid container spacing={2} >
-                    <Grid lg={4} sm={6} xs={12}><TextField  required  label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required  label="Level" value={level} onChange={(e) => setLevel(e.target.value)}   fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required  label="Salary Type" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required type="number" label="Basic Salary" value={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField  type="number" label="Daily" value={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
-                    <Grid lg={4} sm={6} xs={12}><TextField required type="number" label="Monthly Salary" value={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}>
+                    <Select   required onChange={(e) => setEmpClass(e.target.value)}    fullWidth  value={empClass} style={{  padding:'0px', textAlign:'left' }}    >
+              
+              <MenuItem  value={"Choose"} disabled>Class</MenuItem>
+
+             <MenuItem  value={"D1"}>D1</MenuItem>
+             <MenuItem  value={"DM1"}>DM1</MenuItem>
+             <MenuItem  value={"D2"}>D2</MenuItem>
+             <MenuItem  value={"DM2"}>DM2</MenuItem>
+             <MenuItem  value={"D3"}>D3</MenuItem>
+             <MenuItem  value={"DM3"}>DM3</MenuItem>
+             <MenuItem  value={"M1"}>M1</MenuItem>
+             <MenuItem  value={"M2"}>M2</MenuItem>
+             <MenuItem  value={"M3"}>M3</MenuItem>
+             <MenuItem  value={"M4"}>M4</MenuItem>
+             <MenuItem  value={"M5"}>M5</MenuItem>
+             <MenuItem  value={"F1"}>F1</MenuItem>
+             <MenuItem  value={"F2"}>F2</MenuItem>
+
+
+           </Select>
+           {/* <TextField  required  label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /> */}
+           </Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required error={levelState} label="Level" value={level} onChange={(e) => setLevel(e.target.value)}   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}>
+                      {/* <TextField required  label="Salary Type" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /> */}
+                      <Select   required  onChange={(e) => setSalary(e.target.value)}  fullWidth  value={salary} style={{  padding:'0px', textAlign:'left' }}    >
+              
+              <MenuItem  value={"Choose"} disabled>Salary Type</MenuItem>
+
+             <MenuItem  value={"Monthly"}>Monthly</MenuItem>
+             <MenuItem  value={"Daily"}>Daily</MenuItem>
+           </Select>
+                      </Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required error={levelState} type="number" label="Basic Salary" value={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField  type="number" error={levelState} label="Daily" value={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
+                    <Grid lg={4} sm={6} xs={12}><TextField required  error={levelState} type="number" label="Monthly Salary" value={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
 
                   </Grid>  
                   

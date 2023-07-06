@@ -1,16 +1,35 @@
 import React,  { useEffect, useState,  } from 'react';
 import Papa from 'papaparse';
 import Axios from "axios";
+
+
+
 function CSVReader({ handleFile }) {
+  const [file, setFile] = useState();
+
   const handleInputChange = (event) => {
-    const file = event.target.files[0];
-    handleFile(file);
+    const files = event.target.files[0];
+    setFile(files)
+
+    // handleFile(file);
   };
 
   return (
     <div>
+    <div class="p-6 flex-1 overflow-auto">
+       <div class="space-y-6">
+       {/* <CSVReader handleFile={handleFile} /> */}
       <input type="file" accept=".csv" onChange={handleInputChange} />
-    </div>
+
+       </div>
+     </div>
+     <div class="flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600 border-t"><button
+         type="button" onClick={()=> handleFile(file)}
+         class=" bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white border border-transparent hover:from-teal-500 hover:via-teal-400 hover:to-teal-400 hover:text-white focus:ring-4 focus:ring-cyan-300 disabled:hover:bg-cyan-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800 dark:disabled:hover:bg-cyan-600 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           class="flex items-center rounded-md text-sm px-4 py-2">Continue</span></button><button type="button"  
+         class="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-cyan-700 disabled:hover:bg-white focus:ring-cyan-700 focus:text-cyan-700 dark:bg-transparent dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 dark:disabled:hover:bg-gray-800 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           class="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div>
+ </div>
   );
 }
 
@@ -44,62 +63,159 @@ const [posRankbg, setPosRankbg] = React.useState('');
 const [posAllowance, setPosAllowance] = React.useState('');
 
 //VARIABLES WITH VALUES. 
-const [d1, setD1] = React.useState(5.0);
-const [d2, setD2] = React.useState(6.0);
-const [d3, setD3] = React.useState(7.0);
+const [d1, setD1] = React.useState();
+const [d2, setD2] = React.useState();
+const [d3, setD3] = React.useState();
+const [m1, setM1] = React.useState();
+const [m2, setM2] = React.useState();
+const [m3, setM3] = React.useState();
+const [m4, setM4] = React.useState();
+const [m5, setM5] = React.useState();
+const [f1, setF1] = React.useState();
+const [f2, setF2] = React.useState();
 
-const [d1L1, setD1L1] = React.useState(500);
-const [d2L1, setD2L1] = React.useState(560);
-const [d3L1, setD3L1] = React.useState(600);
 
-const [workingDays, setWorkingDays] = React.useState(26.17);
+const [d1L1, setD1L1] = React.useState();
+const [d2L1, setD2L1] = React.useState();
+const [d3L1, setD3L1] = React.useState();
+
+const [m1L1, setM1L1] = React.useState();
+const [m2L1, setM2L1] = React.useState();
+const [m3L1, setM3L1] = React.useState();
+const [m4L1, setM4L1] = React.useState();
+const [m5L1, setM5L1] = React.useState();
+const [f1L1, setF1L1] = React.useState();
+const [f2L1, setF2L1] = React.useState();
+
+const [workingDays, setWorkingDays] = React.useState();
 const [posRank, setPosRank] = React.useState('');
 
+const [SeniorManager, setSeniorManager] = React.useState([])
+const [Manager, setManager] = React.useState([])
+const [SeniorSupervisor, setSeniorSupervisor] = React.useState([])
+const [Supervisor, setSupervisor] =  React.useState([])
+const [AssistantSupervisor, setAssistantSupervisor] = React.useState([])
+const [Leader, setLeader] = React.useState([])
+const [SubLeader, setSubLeader] = React.useState([])
 
-const [SeniorManager, setSeniorManager] = React.useState(['Senior Manager', 21000, 22000, 23000, 24000, 25000])
-const [Manager, setManager] = React.useState(['Manager', 16000, 17000, 18000, 19000, 20000])
-const [SeniorSupervisor, setSeniorSupervisor] = React.useState(['Senior Supervisor', 11000, 12000, 13000, 14000, 15000])
-const [Supervisor, setSupervisor] =  React.useState(['Supervisor ', 6000, 7000, 8000, 9000, 10000])
-const [AssistantSupervisor, setAssistantSupervisor] = React.useState(['Assistant Supervisor', 5000, 5400, 5800, 6200, 5800])
-const [Leader, setLeader] = React.useState(['Leader', 4000, 4200, 4400, 4600, 4800])
-const [SubLeader, setSubLeader] = React.useState(['Sub Leader', 3000, 3200, 3400, 3600, 3800])
+const [ProfessionalP5, setProfessionalP5] = React.useState([])
+const [ProfessionalP4, setProfessionalP4] = React.useState([])
+const [ProfessionalP3, setProfessionalP3] = React.useState([])
+const [ProfessionalP2, setProfessionalP2] = React.useState([])
+const [ProfessionalP1, setProfessionalP1] = React.useState([])
+const [SpecialistS2, setSpecialistS2] = React.useState([])
+const [SpecialistS1, setSpecialistS1] = React.useState([])
 
-const [ProfessionalP5, setProfessionalP5]=React.useState(['Professional, P5', 21000, 22000, 23000, 24000, 25000])
-const [ProfessionalP4, setProfessionalP4]=React.useState(['Professional, P4', 16000, 17000, 18000, 19000, 20000])
-const [ProfessionalP3, setProfessionalP3]=React.useState(['Professional, P3', 11000, 12000, 13000, 14000, 15000])
-const [ProfessionalP2, setProfessionalP2]=React.useState(['Professional, P2', 6000, 7000, 8000, 9000, 10000])
-const [ProfessionalP1, setProfessionalP1]=React.useState(['Professional, P1', 5000, 5400, 5800, 6200, 5800])
-const [SpecialistS2, setSpecialistS2]=React.useState(['Specialist, S2', 4000, 4200, 4400, 4600, 4800])
-const [SpecialistS1, setSpecialistS1]=React.useState(['Specialist, S1', 3000, 3200, 3400, 3600, 3800])
-
-const [Lawyer, setLawyer]=React.useState(['Lawyer', 4000, 8000, 12000, 15000, 20000])
-const [CPA, setCPA]=React.useState(['CPA', 4000, 8000, 12000, 15000, 20000])
-const [RegisteredEngineer, setRegisteredEngineer]=React.useState(['Registered Engineer (Engr.)', 4000, 5000, 6000, 7000, 8000])
-const [RegisteredNurse, setRegisteredNurse]=React.useState(['Registered Nurse (RN)', 3000, 4000, 5000, 6000, 10000])
-const [LicensedCustomBroker, setLicensedCustomBroker]=React.useState(['Licensed Custom Broker', 2000, 3000, 4000, 5000, 10000])
-const [RegisteredMasterElectrician, setRegisteredMasterElectrician]=React.useState(['Registered Master Electrician', 1000, 1500, 2000, 2500, 5000])
-
-
-const [JapaneseInterpreterJLPLevelN1, setJapaneseInterpreterJLPLevelN1]=React.useState(['Japanese Interpreter (JLP Level N1)', 1000, 2000, 3000, 4000, 5000])
-const [JapaneseInterpreterJLPLevelN2, setJapaneseInterpreterJLPLevelN2]=React.useState(['Japanese Interpreter (JLP Level N2)', 1000, 2000, 3000, 4000, 5000])
-const [JapaneseInterpreterJLPLevelN3, setJapaneseInterpreterJLPLevelN3]=React.useState(['Japanese Interpreter (JLP Level N3)', 1000, 2000, 3000, 4000, 5000])
-const [SafetyOfficer3OHSPractitioner, setSafetyOfficer3OHSPractitioner]=React.useState(['Safety Officer 3 / OHS Practitioner (Certified)', 1000, 2000, 3000, 4000, 5000])
-const [SafetyOfficer2, setSafetyOfficer2]=React.useState(['Safety Officer 2 (Certified)', 1000, 2000, 3000, 4000, 5000])
-const [SafetyOfficer1, setSafetyOfficer1]=React.useState(['Safety Officer 1 (Certified)', 1000, 2000, 3000, 4000, 5000])
-const [EnergyConservationOfficer, setEnergyConservationOfficer]=React.useState(['Energy Conservation Officer (Certified)', 1000, 2000, 3000, 4000, 5000])
-const [PollutionControlOfficer, setPollutionControlOfficer]=React.useState(['Pollution Control Officer (Accredited)', 1000, 2000, 3000, 4000, 5000])
-const [RadiationSafetyOfficer, setRadiationSafetyOfficer]=React.useState(['Radiation Safety Officer (Certified)', 1000, 2000, 3000, 4000, 5000])
-
-const [TechnicalStaff, setTechnicalStaff]=React.useState(['Technical Staff (Certified by TESDA or GLORY LTD.)', 1000, 2000, 3000, 4000, 5000])
-const [CompanyDriverForkliftOperator, setCompanyDriverForkliftOperator]=React.useState(['Company Driver/Forklift Operator', 1000, 2000, 3000, 4000, 5000])	
-
-const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	=React.useState(['Employee with special experience', 1000, 2000, 3000, 4000, 5000])
+const [Lawyer, setLawyer] = React.useState([])
+const [CPA, setCPA] = React.useState([])
+const [RegisteredEngineer, setRegisteredEngineer] = React.useState([])
+const [RegisteredNurse, setRegisteredNurse] = React.useState([])
+const [LicensedCustomBroker, setLicensedCustomBroker] = React.useState([])
+const [RegisteredMasterElectrician, setRegisteredMasterElectrician] = React.useState([])
 
 
-  const[arrayOfProfAllowances, setarrayOfProfAllowances] = React.useState([SeniorManager,Manager,SeniorSupervisor,Supervisor,AssistantSupervisor,Leader,SubLeader,ProfessionalP5,ProfessionalP4,ProfessionalP3,ProfessionalP2,ProfessionalP1,SpecialistS2,SpecialistS1,Lawyer,CPA,RegisteredEngineer,RegisteredNurse,LicensedCustomBroker,RegisteredMasterElectrician,JapaneseInterpreterJLPLevelN1,JapaneseInterpreterJLPLevelN2,JapaneseInterpreterJLPLevelN3,SafetyOfficer3OHSPractitioner,SafetyOfficer2,SafetyOfficer1,EnergyConservationOfficer,PollutionControlOfficer,RadiationSafetyOfficer,TechnicalStaff,CompanyDriverForkliftOperator,Employeewithspecialexperience]);
+const [JapaneseInterpreterJLPLevelN1, setJapaneseInterpreterJLPLevelN1] = React.useState([])
+const [JapaneseInterpreterJLPLevelN2, setJapaneseInterpreterJLPLevelN2] = React.useState([])
+const [JapaneseInterpreterJLPLevelN3, setJapaneseInterpreterJLPLevelN3] = React.useState([])
+const [SafetyOfficer3OHSPractitioner, setSafetyOfficer3OHSPractitioner] = React.useState([])
+const [SafetyOfficer2, setSafetyOfficer2] = React.useState([])
+const [SafetyOfficer1, setSafetyOfficer1] = React.useState([])
+const [EnergyConservationOfficer, setEnergyConservationOfficer] = React.useState([])
+const [PollutionControlOfficer, setPollutionControlOfficer] = React.useState([])
+const [RadiationSafetyOfficer, setRadiationSafetyOfficer] = React.useState([])
 
+const [TechnicalStaff, setTechnicalStaff] = React.useState([])
+const [CompanyDriverForkliftOperator, setCompanyDriverForkliftOperator] = React.useState([])	
+
+const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	= React.useState([])
+
+
+  const[arrayOfProfAllowances, setarrayOfProfAllowances] = React.useState([]);
+ 
+  useEffect(() => {
+    //  console.log(arrayOfProfAllowances)
+    Axios.post("http://192.168.60.53:3001/basicallowancesettings", {
+    }).then((response) => {
+      console.log(response);
+      setD1(response.data.result[0].d1)
+      setD2(response.data.result[0].d2)
+      setD3(response.data.result[0].d3)
+      setM1(response.data.result[0].m1)
+        setM2(response.data.result[0].m2)
+        setM3(response.data.result[0].m3)
+        setM4(response.data.result[0].m4)
+        setM5(response.data.result[0].m5)
+        setF1(response.data.result[0].f1)
+        setF2(response.data.result[0].f2)
+        
+      setD1L1(response.data.result[0].d1l1)
+      setD2L1(response.data.result[0].d2l1)
+      setD3L1(response.data.result[0].d3l1)
+  
+      setM1L1(response.data.result[0].m1l1)
+      setM2L1(response.data.result[0].m2l1)
+      setM3L1(response.data.result[0].m3l1)
+      setM4L1(response.data.result[0].m4l1)
+      setM5L1(response.data.result[0].m5l1)
+      setF1L1(response.data.result[0].f1l1)
+      setF2L1(response.data.result[0].f2l1)
+    setWorkingDays(response.data.result[0].workingdays);
+    
+    
+    });
+       Axios.post("http://192.168.60.53:3001/allowancetable", {
+    }).then((response) => {
+      console.log([response.data.result[11].positionLevel,response.data.result[11].r1,response.data.result[11].r2,response.data.result[11].r3,response.data.result[11].r4,response.data.result[11].r5]);
+    // console.log(EnergyConservationOfficer);
+    setSeniorManager([response.data.result[0].positionLevel,response.data.result[0].r1,response.data.result[0].r2,response.data.result[0].r3,response.data.result[0].r4,response.data.result[0].r5]);
+    setManager([response.data.result[1].positionLevel,response.data.result[1].r1,response.data.result[1].r2,response.data.result[1].r3,response.data.result[1].r4,response.data.result[1].r5]);
+    setSeniorSupervisor([response.data.result[2].positionLevel,response.data.result[2].r1,response.data.result[2].r2,response.data.result[2].r3,response.data.result[2].r4,response.data.result[2].r5]);
+    setSupervisor([response.data.result[3].positionLevel,response.data.result[3].r1,response.data.result[3].r2,response.data.result[3].r3,response.data.result[3].r4,response.data.result[3].r5]);
+    setAssistantSupervisor([response.data.result[4].positionLevel,response.data.result[4].r1,response.data.result[4].r2,response.data.result[4].r3,response.data.result[4].r4,response.data.result[4].r5]);
+    setLeader([response.data.result[5].positionLevel,response.data.result[5].r1,response.data.result[5].r2,response.data.result[5].r3,response.data.result[5].r4,response.data.result[5].r5]);
+    setSubLeader([response.data.result[6].positionLevel,response.data.result[6].r1,response.data.result[6].r2,response.data.result[6].r3,response.data.result[6].r4,response.data.result[6].r5]);
+    setProfessionalP5([response.data.result[7].positionLevel,response.data.result[7].r1,response.data.result[7].r2,response.data.result[7].r3,response.data.result[7].r4,response.data.result[7].r5]);
+    setProfessionalP4([response.data.result[8].positionLevel,response.data.result[8].r1,response.data.result[8].r2,response.data.result[8].r3,response.data.result[8].r4,response.data.result[8].r5]);
+    setProfessionalP3([response.data.result[9].positionLevel,response.data.result[9].r1,response.data.result[9].r2,response.data.result[9].r3,response.data.result[9].r4,response.data.result[9].r5]);
+    setProfessionalP2([response.data.result[10].positionLevel,response.data.result[10].r1,response.data.result[10].r2,response.data.result[10].r3,response.data.result[10].r4,response.data.result[10].r5]);
+    setProfessionalP1([response.data.result[11].positionLevel,response.data.result[11].r1,response.data.result[11].r2,response.data.result[11].r3,response.data.result[11].r4,response.data.result[11].r5]);
+    setSpecialistS2([response.data.result[12].positionLevel,response.data.result[12].r1,response.data.result[12].r2,response.data.result[12].r3,response.data.result[12].r4,response.data.result[12].r5]);
+    setSpecialistS1([response.data.result[13].positionLevel,response.data.result[13].r1,response.data.result[13].r2,response.data.result[13].r3,response.data.result[13].r4,response.data.result[13].r5]);
+    setLawyer([response.data.result[14].positionLevel,response.data.result[14].r1,response.data.result[14].r2,response.data.result[14].r3,response.data.result[14].r4,response.data.result[14].r5]);
+    setCPA([response.data.result[15].positionLevel,response.data.result[15].r1,response.data.result[15].r2,response.data.result[15].r3,response.data.result[15].r4,response.data.result[15].r5]);
+    setRegisteredEngineer([response.data.result[16].positionLevel,response.data.result[16].r1,response.data.result[16].r2,response.data.result[16].r3,response.data.result[16].r4,response.data.result[16].r5]);
+    setRegisteredNurse([response.data.result[17].positionLevel,response.data.result[17].r1,response.data.result[17].r2,response.data.result[17].r3,response.data.result[17].r4,response.data.result[17].r5]);
+    setLicensedCustomBroker([response.data.result[18].positionLevel,response.data.result[18].r1,response.data.result[18].r2,response.data.result[18].r3,response.data.result[18].r4,response.data.result[18].r5]);
+    setRegisteredMasterElectrician([response.data.result[19].positionLevel,response.data.result[19].r1,response.data.result[19].r2,response.data.result[19].r3,response.data.result[19].r4,response.data.result[19].r5]);
+    setJapaneseInterpreterJLPLevelN1([response.data.result[20].positionLevel,response.data.result[20].r1,response.data.result[20].r2,response.data.result[20].r3,response.data.result[20].r4,response.data.result[20].r5]);
+    setJapaneseInterpreterJLPLevelN2([response.data.result[21].positionLevel,response.data.result[21].r1,response.data.result[21].r2,response.data.result[21].r3,response.data.result[21].r4,response.data.result[21].r5]);
+    setJapaneseInterpreterJLPLevelN3([response.data.result[22].positionLevel,response.data.result[22].r1,response.data.result[22].r2,response.data.result[22].r3,response.data.result[22].r4,response.data.result[22].r5]);
+    setSafetyOfficer3OHSPractitioner([response.data.result[23].positionLevel,response.data.result[23].r1,response.data.result[23].r2,response.data.result[23].r3,response.data.result[23].r4,response.data.result[23].r5]);
+    setSafetyOfficer2([response.data.result[24].positionLevel,response.data.result[24].r1,response.data.result[24].r2,response.data.result[24].r3,response.data.result[24].r4,response.data.result[24].r5]);
+    setSafetyOfficer1([response.data.result[25].positionLevel,response.data.result[25].r1,response.data.result[25].r2,response.data.result[25].r3,response.data.result[25].r4,response.data.result[25].r5]);
+    setEnergyConservationOfficer([response.data.result[26].positionLevel,response.data.result[26].r1,response.data.result[26].r2,response.data.result[26].r3,response.data.result[26].r4,response.data.result[26].r5]);
+    setPollutionControlOfficer([response.data.result[27].positionLevel,response.data.result[27].r1,response.data.result[27].r2,response.data.result[27].r3,response.data.result[27].r4,response.data.result[27].r5]);
+    setRadiationSafetyOfficer([response.data.result[28].positionLevel,response.data.result[28].r1,response.data.result[28].r2,response.data.result[28].r3,response.data.result[28].r4,response.data.result[28].r5]);
+    setTechnicalStaff([response.data.result[29].positionLevel,response.data.result[29].r1,response.data.result[29].r2,response.data.result[29].r3,response.data.result[29].r4,response.data.result[29].r5]);
+    setCompanyDriverForkliftOperator([response.data.result[30].positionLevel,response.data.result[30].r1,response.data.result[30].r2,response.data.result[30].r3,response.data.result[30].r4,response.data.result[30].r5]);
+    setEmployeewithspecialexperience([response.data.result[31].positionLevel,response.data.result[31].r1,response.data.result[31].r2,response.data.result[31].r3,response.data.result[31].r4,response.data.result[31].r5]); 
+    // setarrayOfProfAllowances([])
+    setarrayOfProfAllowances([SeniorManager,Manager,SeniorSupervisor,Supervisor,AssistantSupervisor,Leader,SubLeader,ProfessionalP5,ProfessionalP4,ProfessionalP3,ProfessionalP2,ProfessionalP1,SpecialistS2,SpecialistS1,Lawyer,CPA,RegisteredEngineer,RegisteredNurse,LicensedCustomBroker,RegisteredMasterElectrician,JapaneseInterpreterJLPLevelN1,JapaneseInterpreterJLPLevelN2,JapaneseInterpreterJLPLevelN3,SafetyOfficer3OHSPractitioner,SafetyOfficer2,SafetyOfficer1,EnergyConservationOfficer,PollutionControlOfficer,RadiationSafetyOfficer,TechnicalStaff,CompanyDriverForkliftOperator,Employeewithspecialexperience])
+    
+    });
+  
+      return () => {
+        // This code will run when the component is unmounted (clean up)
+        // console.log(workingDays);
+  
+    // setarrayOfProfAllowances([SeniorManager,Manager,SeniorSupervisor,Supervisor,AssistantSupervisor,Leader,SubLeader,ProfessionalP5,ProfessionalP4,ProfessionalP3,ProfessionalP2,ProfessionalP1,SpecialistS2,SpecialistS1,Lawyer,CPA,RegisteredEngineer,RegisteredNurse,LicensedCustomBroker,RegisteredMasterElectrician,JapaneseInterpreterJLPLevelN1,JapaneseInterpreterJLPLevelN2,JapaneseInterpreterJLPLevelN3,SafetyOfficer3OHSPractitioner,SafetyOfficer2,SafetyOfficer1,EnergyConservationOfficer,PollutionControlOfficer,RadiationSafetyOfficer,TechnicalStaff,CompanyDriverForkliftOperator,Employeewithspecialexperience])
+  
+      };
+    }, [d1,d2,d3]); // Passing an empty dependency array
+  
 
 function finalresult(empNumber,employeeName,totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName){
+  
   let levelset;
   let finalResult;
   let LevelUpPoints;
@@ -233,6 +349,36 @@ MonthlySalary = Math.round(((parseInt(levelset) - 1) * d1 + d1L1) * workingDays)
         Daily  = (parseInt(levelset)-1)*d3+d3L1;
         MonthlySalary = Math.round(((parseInt(levelset) - 1) * d3 + d3L1) * workingDays);
       break;
+      case "M1":
+        setDaily((parseInt(level)-1)*m1+m1L1);
+        setMonthlySalary( Math.round(((parseInt(level) - 1) * m1 + m1L1) * workingDays));
+      break;
+      case "M2":
+      setDaily((parseInt(level)-1)*m2+m2L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * m2 + m2L1) * workingDays));
+      break;
+      case "M3":
+      setDaily((parseInt(level)-1)*m3+m3L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * m3 + m3L1) * workingDays));
+      break;
+      case "M4":
+      setDaily((parseInt(level)-1)*m4+m4L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * m4 + m4L1) * workingDays));
+      break;
+      case "M5":
+      setDaily((parseInt(level)-1)*m5+m5L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * m5 + m5L1) * workingDays));
+      break;
+      case "F1":
+        setDaily((parseInt(level)-1)*f1+f1L1);
+        setMonthlySalary( Math.round(((parseInt(level) - 1) * f1 + f1L1) * workingDays));
+        break;
+        case "F2":
+        setDaily((parseInt(level)-1)*f2+f2L1);
+        setMonthlySalary( Math.round(((parseInt(level) - 1) * f2 + f2L1) * workingDays));
+  
+  
+        break;
     default:
 
   }
@@ -308,6 +454,8 @@ Axios.post("http://192.168.60.53:3001/updatesirecord", {
     const totalPoint = Math.round(((  (isNaN(parseFloat(row.firsthalf)) ? 0 : parseFloat(row.firsthalf)) +   (isNaN(parseFloat(row.secondhalf)) ? 0 : parseFloat(row.secondhalf))) / 2) * 100) / 100;
     console.log(totalPoint);
     // Display each row in the console
+    
+ 
                   Axios.post("http://192.168.60.53:3001/selectLatest", {
                     userid: row.IDNumber,
                     
@@ -351,9 +499,7 @@ Axios.post("http://192.168.60.53:3001/updatesirecord", {
 
   return (
     <div>
-      <h1>CSV Reader</h1>
       <CSVReader handleFile={handleFile} />
-      <h1> {levelbg}</h1>
     </div>
   );
 }
