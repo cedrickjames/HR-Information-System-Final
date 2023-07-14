@@ -23,8 +23,26 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import SalaryIncrease from '../salaryincrease';
 import Axios from "axios";
-function createData(positionLevel,classs, r5, r4, r3, r2, r1) {
+import TextField from '@mui/material/TextField';
+import Backdrop from '@mui/material/Backdrop';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
+function createData(id, positionLevel,classs, r5, r4, r3, r2, r1) {
   return {
+    id,
     positionLevel,
     classs,
     r5,
@@ -228,6 +246,36 @@ const SalaryTableD = (props ) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   
+  const [rowId, setRowId] = React.useState('');
+
+  const [nameModal, setnameModal] = React.useState('');
+  const [classModal, setclassModal ] = React.useState('');
+  const [rsModal, setrsModal ] = React.useState('');
+  const [r4Modal, setr4Modal ] = React.useState('');
+  const [r3Modal, setr3Modal ] = React.useState('');
+  const [r2Modal, setr2Modal ] = React.useState('');
+  const [r1Modal, setr1Modal ] = React.useState('');
+
+
+  function updateRowsforAllowance (){
+    Axios.post("http://192.168.60.53:3001/updateAllowance", {
+      id: rowId,
+      positionLevel: nameModal,
+      class: classModal,
+      rs: rsModal,
+      r4: r4Modal,
+      r3: r3Modal,
+      r2: r2Modal,
+      r1: r1Modal,
+    }).then((response) => {
+      console.log(response)
+      refreshTable1();
+      handleClose();
+    });
+  }
+  
+
+
   const refreshTable1 = () => {
     //console.log(department);
     Axios.post("http://192.168.60.53:3001/allowancetableD", {
@@ -240,6 +288,7 @@ const SalaryTableD = (props ) => {
       }
       const newRows = response.data.result.map(row => 
         createData(
+        row.id,
         row.positionLevel, 
         row.class, 
         row.r5,
@@ -328,11 +377,80 @@ const SalaryTableD = (props ) => {
       ),
     [order, orderBy, page, rowsPerPage, rows],
   );
+ const [open, setOpen] = React.useState(false);
+  const [openIncrement, setOpenIncrement] = React.useState(false);
+  const handleOpen = (row) => {
+
+    setOpen(true);
+    console.log(row)
+    setRowId(row.id)
+    setnameModal(row.positionLevel)
+setclassModal(row.classs)
+setrsModal(row.r5)
+setr4Modal(row.r4)
+setr3Modal(row.r3)
+setr2Modal(row.r2)
+setr1Modal(row.r1)
+  
+  };
+
+  const handleOpenIncrement = () => {
+
+    setOpenIncrement(true);
+  
+  };
+  const handleClose = () => setOpen(false);
+  const handleCloseIncrement = () => setOpenIncrement(false);
 
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
+
+        <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleCloseIncrement}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style} className="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
+         <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Rank and file employee (Increments)</h3><button  onClick={handleClose} aria-label="Close"
+            className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+            type="button"><svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true"
+              className="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg></button>
+        </div>
+          <div className="p-6 flex-1 overflow-auto">
+       <div className="space-y-6">
+       <TextField    label="Name" value={nameModal} onChange={(e) =>  setnameModal(e.target.value)}  fullWidth />
+       <TextField    label="Class" value={classModal} onChange={(e) =>  setclassModal(e.target.value)}   fullWidth />
+       <TextField    label="RS"   value={rsModal} onChange={(e) =>  setrsModal(e.target.value)}   fullWidth />
+       <TextField    label="R4" value={r4Modal}  onChange={(e) => setr4Modal(e.target.value)}  fullWidth />
+       <TextField    label="R3" value={r3Modal}  onChange={(e) => setr3Modal(e.target.value)} fullWidth />
+       <TextField    label="R2" value = {r2Modal} onChange={(e) =>  setr2Modal(e.target.value)}  fullWidth />
+       <TextField    label="R1" value={r1Modal}  onChange={(e) => setr1Modal(e.target.value)} fullWidth />
+
+       </div>
+     </div>
+     <div className="flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600 border-t"><button type="button"
+           onClick={()=> updateRowsforAllowance()}
+         className=" bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white border border-transparent hover:from-teal-500 hover:via-teal-400 hover:to-teal-400 hover:text-white focus:ring-4 focus:ring-cyan-300 disabled:hover:bg-cyan-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800 dark:disabled:hover:bg-cyan-600 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           className="flex items-center rounded-md text-sm px-4 py-2">Update</span></button><button type="button"    onClick={handleClose} 
+         className="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-cyan-700 disabled:hover:bg-white focus:ring-cyan-700 focus:text-cyan-700 dark:bg-transparent dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 dark:disabled:hover:bg-gray-800 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           className="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div>
+          </Box>
+        </Fade>
+      </Modal>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -355,7 +473,9 @@ const SalaryTableD = (props ) => {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.positionLevel)}
+                    onClick={(event)=> {
+                      handleOpen(row);
+                      }}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}

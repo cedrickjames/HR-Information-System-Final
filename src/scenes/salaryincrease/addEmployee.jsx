@@ -20,6 +20,7 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import '../../../node_modules/flowbite/dist/flowbite.css';
 import Paper from '@mui/material/Paper';
+import dayjs from 'dayjs';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -38,6 +39,41 @@ const Item = styled(Paper)(({ theme }) => ({
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
   });
+
+  function createDataPosition (positions){
+    return{
+      positions
+    }
+  }
+
+  function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) {
+        return order;
+      }
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
+  }
+
+  
+function descendingComparator(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+function getComparator(order, orderBy) {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
 
   function createData(no,section, name, empNo, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank,tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total, birthday, age, department, sex, dateHired, serviceTerm,dateModified) {
     return {
@@ -80,16 +116,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   }
 const AddEmployee = ({ open, department, setRows, onClose }) => {
 
-   
-    
-    
-
-    useEffect(() => {
-        
-      }, []);
-
-    //   const [open, setOpen] = React.useState(false);
-
  
       const [employeeId, setEmployeeId] = useState([]);
 
@@ -100,13 +126,35 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
       const [data, setData] = useState([]);
       const [empId, setEmpId] = React.useState('');
 
-    
+    const [rowsPosition ,  setRowsPosition] = React.useState([]);
       //Data of the employee
       const [empName, setEmpName] = React.useState('');
       const [empNumber, setEmpNumber] = React.useState('');
     
+  //Data of the employee
+
+  const [levelbg, setLevelbg] = React.useState('');
+
+
+  const [basicSalarybg, setBasicSalarybg] = React.useState('');
+
+  const [dailybg, setDailybg] = React.useState('');
+  const [monthlySalarybg, setMonthlySalarybg] = React.useState('');
+  
+
+  const [posPebg, setPosPebg] = React.useState('');
+
+
+  const [posAllowancebg, setPosAllowancebg] = React.useState('');
+
+
+  const [posRankbg, setPosRankbg] = React.useState('');
+
+  const [overallBefore, setOverAllBefore] = React.useState('');
+  const [overallNow, setOverAllNow] = React.useState('');
+
     
-      const [position, setPosition] = React.useState('');
+      const [position, setPosition] = React.useState('Positions');
       const [designation, setDesignation] = React.useState('');
       const [empClass, setEmpClass] = React.useState('Choose');
       const [level, setLevel] = React.useState('');
@@ -159,6 +207,284 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
       const [monthlySalaryState, setMonthlySalaryState] = React.useState(false);
 
 
+
+      const [firstHalf, setfirstHalf] = React.useState('');
+      const [firstResult, setFirstResult] = React.useState('');
+      const [secondHalf, setSecondHalf] = React.useState('');
+      const [secondResult, setSecondResult] = React.useState('');
+      const [finalPoint, setFinalPoint] = React.useState(0);
+      const [finalResult, setFinalResult] = React.useState('');
+      const [levelUpPoints, setLevelUpPoints] = React.useState('');
+
+
+      const [d1, setD1] = React.useState();
+      const [d2, setD2] = React.useState();
+      const [d3, setD3] = React.useState();
+      const [m1, setM1] = React.useState();
+      const [m2, setM2] = React.useState();
+      const [m3, setM3] = React.useState();
+      const [m4, setM4] = React.useState();
+      const [m5, setM5] = React.useState();
+      const [f1, setF1] = React.useState();
+      const [f2, setF2] = React.useState();
+    
+    
+      const [d1L1, setD1L1] = React.useState();
+      const [d2L1, setD2L1] = React.useState();
+      const [d3L1, setD3L1] = React.useState();
+      
+      const [m1L1, setM1L1] = React.useState();
+      const [m2L1, setM2L1] = React.useState();
+      const [m3L1, setM3L1] = React.useState();
+      const [m4L1, setM4L1] = React.useState();
+      const [m5L1, setM5L1] = React.useState();
+      const [f1L1, setF1L1] = React.useState();
+      const [f2L1, setF2L1] = React.useState();
+    
+      const [workingDays, setWorkingDays] = React.useState();
+
+      const [SeniorManager, setSeniorManager] = React.useState([])
+      const [Manager, setManager] = React.useState([])
+      const [SeniorSupervisor, setSeniorSupervisor] = React.useState([])
+      const [Supervisor, setSupervisor] =  React.useState([])
+      const [AssistantSupervisor, setAssistantSupervisor] = React.useState([])
+      const [Leader, setLeader] = React.useState([])
+      const [SubLeader, setSubLeader] = React.useState([])
+      
+      const [ProfessionalP5, setProfessionalP5] = React.useState([])
+      const [ProfessionalP4, setProfessionalP4] = React.useState([])
+      const [ProfessionalP3, setProfessionalP3] = React.useState([])
+      const [ProfessionalP2, setProfessionalP2] = React.useState([])
+      const [ProfessionalP1, setProfessionalP1] = React.useState([])
+      const [SpecialistS2, setSpecialistS2] = React.useState([])
+      const [SpecialistS1, setSpecialistS1] = React.useState([])
+      
+      const [Lawyer, setLawyer] = React.useState([])
+      const [CPA, setCPA] = React.useState([])
+      const [RegisteredEngineer, setRegisteredEngineer] = React.useState([])
+      const [RegisteredNurse, setRegisteredNurse] = React.useState([])
+      const [LicensedCustomBroker, setLicensedCustomBroker] = React.useState([])
+      const [RegisteredMasterElectrician, setRegisteredMasterElectrician] = React.useState([])
+      
+      
+      const [JapaneseInterpreterJLPLevelN1, setJapaneseInterpreterJLPLevelN1] = React.useState([])
+      const [JapaneseInterpreterJLPLevelN2, setJapaneseInterpreterJLPLevelN2] = React.useState([])
+      const [JapaneseInterpreterJLPLevelN3, setJapaneseInterpreterJLPLevelN3] = React.useState([])
+      const [SafetyOfficer3OHSPractitioner, setSafetyOfficer3OHSPractitioner] = React.useState([])
+      const [SafetyOfficer2, setSafetyOfficer2] = React.useState([])
+      const [SafetyOfficer1, setSafetyOfficer1] = React.useState([])
+      const [EnergyConservationOfficer, setEnergyConservationOfficer] = React.useState([])
+      const [PollutionControlOfficer, setPollutionControlOfficer] = React.useState([])
+      const [RadiationSafetyOfficer, setRadiationSafetyOfficer] = React.useState([])
+      
+      const [TechnicalStaff, setTechnicalStaff] = React.useState([])
+      const [CompanyDriverForkliftOperator, setCompanyDriverForkliftOperator] = React.useState([])	
+      
+      const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	= React.useState([])
+      
+      
+        const[arrayOfProfAllowances, setarrayOfProfAllowances] = React.useState([]);
+      
+        function getsettings(){
+          console.log("123")
+          Axios.post("http://192.168.60.53:3001/positions", {
+          }).then((response) => {
+            console.log([response.data.result]);
+            if(response.data.message === 'Data found'){
+              const newRows = response.data.result.map(row => createDataPosition(
+                row.positionLevel
+                
+                ));
+                setRowsPosition(newRows);
+            }
+          });
+          Axios.post("http://192.168.60.53:3001/basicallowancesettings", {
+          }).then((response) => {
+            console.log(response);
+            setD1(response.data.result[0].d1)
+          setD2(response.data.result[0].d2)
+          setD3(response.data.result[0].d3)
+          setM1(response.data.result[0].m1)
+            setM2(response.data.result[0].m2)
+            setM3(response.data.result[0].m3)
+            setM4(response.data.result[0].m4)
+            setM5(response.data.result[0].m5)
+            setF1(response.data.result[0].f1)
+            setF2(response.data.result[0].f2)
+            
+          setD1L1(response.data.result[0].d1l1)
+          setD2L1(response.data.result[0].d2l1)
+          setD3L1(response.data.result[0].d3l1)
+      
+          setM1L1(response.data.result[0].m1l1)
+          setM2L1(response.data.result[0].m2l1)
+          setM3L1(response.data.result[0].m3l1)
+          setM4L1(response.data.result[0].m4l1)
+          setM5L1(response.data.result[0].m5l1)
+          setF1L1(response.data.result[0].f1l1)
+          setF2L1(response.data.result[0].f2l1)
+      
+      
+      
+      
+      
+      
+      
+      
+          setWorkingDays(response.data.result[0].workingdays);
+          
+          
+          });
+             Axios.post("http://192.168.60.53:3001/allowancetable", {
+          }).then((response) => {
+            console.log([response.data.result]);
+          // console.log(EnergyConservationOfficer);
+          setSeniorManager([response.data.result[0].positionLevel,response.data.result[0].r1,response.data.result[0].r2,response.data.result[0].r3,response.data.result[0].r4,response.data.result[0].r5]);
+          setManager([response.data.result[1].positionLevel,response.data.result[1].r1,response.data.result[1].r2,response.data.result[1].r3,response.data.result[1].r4,response.data.result[1].r5]);
+          setSeniorSupervisor([response.data.result[2].positionLevel,response.data.result[2].r1,response.data.result[2].r2,response.data.result[2].r3,response.data.result[2].r4,response.data.result[2].r5]);
+          setSupervisor([response.data.result[3].positionLevel,response.data.result[3].r1,response.data.result[3].r2,response.data.result[3].r3,response.data.result[3].r4,response.data.result[3].r5]);
+          setAssistantSupervisor([response.data.result[4].positionLevel,response.data.result[4].r1,response.data.result[4].r2,response.data.result[4].r3,response.data.result[4].r4,response.data.result[4].r5]);
+          setLeader([response.data.result[5].positionLevel,response.data.result[5].r1,response.data.result[5].r2,response.data.result[5].r3,response.data.result[5].r4,response.data.result[5].r5]);
+          setSubLeader([response.data.result[6].positionLevel,response.data.result[6].r1,response.data.result[6].r2,response.data.result[6].r3,response.data.result[6].r4,response.data.result[6].r5]);
+          setProfessionalP5([response.data.result[7].positionLevel,response.data.result[7].r1,response.data.result[7].r2,response.data.result[7].r3,response.data.result[7].r4,response.data.result[7].r5]);
+          setProfessionalP4([response.data.result[8].positionLevel,response.data.result[8].r1,response.data.result[8].r2,response.data.result[8].r3,response.data.result[8].r4,response.data.result[8].r5]);
+          setProfessionalP3([response.data.result[9].positionLevel,response.data.result[9].r1,response.data.result[9].r2,response.data.result[9].r3,response.data.result[9].r4,response.data.result[9].r5]);
+          setProfessionalP2([response.data.result[10].positionLevel,response.data.result[10].r1,response.data.result[10].r2,response.data.result[10].r3,response.data.result[10].r4,response.data.result[10].r5]);
+          setProfessionalP1([response.data.result[11].positionLevel,response.data.result[11].r1,response.data.result[11].r2,response.data.result[11].r3,response.data.result[11].r4,response.data.result[11].r5]);
+          setSpecialistS2([response.data.result[12].positionLevel,response.data.result[12].r1,response.data.result[12].r2,response.data.result[12].r3,response.data.result[12].r4,response.data.result[12].r5]);
+          setSpecialistS1([response.data.result[13].positionLevel,response.data.result[13].r1,response.data.result[13].r2,response.data.result[13].r3,response.data.result[13].r4,response.data.result[13].r5]);
+          setLawyer([response.data.result[14].positionLevel,response.data.result[14].r1,response.data.result[14].r2,response.data.result[14].r3,response.data.result[14].r4,response.data.result[14].r5]);
+          setCPA([response.data.result[15].positionLevel,response.data.result[15].r1,response.data.result[15].r2,response.data.result[15].r3,response.data.result[15].r4,response.data.result[15].r5]);
+          setRegisteredEngineer([response.data.result[16].positionLevel,response.data.result[16].r1,response.data.result[16].r2,response.data.result[16].r3,response.data.result[16].r4,response.data.result[16].r5]);
+          setRegisteredNurse([response.data.result[17].positionLevel,response.data.result[17].r1,response.data.result[17].r2,response.data.result[17].r3,response.data.result[17].r4,response.data.result[17].r5]);
+          setLicensedCustomBroker([response.data.result[18].positionLevel,response.data.result[18].r1,response.data.result[18].r2,response.data.result[18].r3,response.data.result[18].r4,response.data.result[18].r5]);
+          setRegisteredMasterElectrician([response.data.result[19].positionLevel,response.data.result[19].r1,response.data.result[19].r2,response.data.result[19].r3,response.data.result[19].r4,response.data.result[19].r5]);
+          setJapaneseInterpreterJLPLevelN1([response.data.result[20].positionLevel,response.data.result[20].r1,response.data.result[20].r2,response.data.result[20].r3,response.data.result[20].r4,response.data.result[20].r5]);
+          setJapaneseInterpreterJLPLevelN2([response.data.result[21].positionLevel,response.data.result[21].r1,response.data.result[21].r2,response.data.result[21].r3,response.data.result[21].r4,response.data.result[21].r5]);
+          setJapaneseInterpreterJLPLevelN3([response.data.result[22].positionLevel,response.data.result[22].r1,response.data.result[22].r2,response.data.result[22].r3,response.data.result[22].r4,response.data.result[22].r5]);
+          setSafetyOfficer3OHSPractitioner([response.data.result[23].positionLevel,response.data.result[23].r1,response.data.result[23].r2,response.data.result[23].r3,response.data.result[23].r4,response.data.result[23].r5]);
+          setSafetyOfficer2([response.data.result[24].positionLevel,response.data.result[24].r1,response.data.result[24].r2,response.data.result[24].r3,response.data.result[24].r4,response.data.result[24].r5]);
+          setSafetyOfficer1([response.data.result[25].positionLevel,response.data.result[25].r1,response.data.result[25].r2,response.data.result[25].r3,response.data.result[25].r4,response.data.result[25].r5]);
+          setEnergyConservationOfficer([response.data.result[26].positionLevel,response.data.result[26].r1,response.data.result[26].r2,response.data.result[26].r3,response.data.result[26].r4,response.data.result[26].r5]);
+          setPollutionControlOfficer([response.data.result[27].positionLevel,response.data.result[27].r1,response.data.result[27].r2,response.data.result[27].r3,response.data.result[27].r4,response.data.result[27].r5]);
+          setRadiationSafetyOfficer([response.data.result[28].positionLevel,response.data.result[28].r1,response.data.result[28].r2,response.data.result[28].r3,response.data.result[28].r4,response.data.result[28].r5]);
+          setTechnicalStaff([response.data.result[29].positionLevel,response.data.result[29].r1,response.data.result[29].r2,response.data.result[29].r3,response.data.result[29].r4,response.data.result[29].r5]);
+          setCompanyDriverForkliftOperator([response.data.result[30].positionLevel,response.data.result[30].r1,response.data.result[30].r2,response.data.result[30].r3,response.data.result[30].r4,response.data.result[30].r5]);
+          setEmployeewithspecialexperience([response.data.result[31].positionLevel,response.data.result[31].r1,response.data.result[31].r2,response.data.result[31].r3,response.data.result[31].r4,response.data.result[31].r5]); 
+          // setarrayOfProfAllowances([])
+          setarrayOfProfAllowances([SeniorManager,Manager,SeniorSupervisor,Supervisor,AssistantSupervisor,Leader,SubLeader,ProfessionalP5,ProfessionalP4,ProfessionalP3,ProfessionalP2,ProfessionalP1,SpecialistS2,SpecialistS1,Lawyer,CPA,RegisteredEngineer,RegisteredNurse,LicensedCustomBroker,RegisteredMasterElectrician,JapaneseInterpreterJLPLevelN1,JapaneseInterpreterJLPLevelN2,JapaneseInterpreterJLPLevelN3,SafetyOfficer3OHSPractitioner,SafetyOfficer2,SafetyOfficer1,EnergyConservationOfficer,PollutionControlOfficer,RadiationSafetyOfficer,TechnicalStaff,CompanyDriverForkliftOperator,Employeewithspecialexperience])
+           console.log(arrayOfProfAllowances)
+          
+          });
+        }
+        React.useEffect(() => {
+        //  console.log(arrayOfProfAllowances)
+       getsettings();
+      
+        }, []); // Passing an empty dependency array
+      
+
+      React.useEffect(()=> {
+        switch (empClass) {
+          case "D1":
+      setDaily((parseInt(level)-1)*d1+d1L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * d1 + d1L1) * workingDays));
+      
+            break;
+          case "DM1":
+      setDaily((parseInt(level)-1)*d1+d1L1);
+      setMonthlySalary( Math.round(((parseInt(level) - 1) * d1 + d1L1) * workingDays));
+      
+            break;
+          case "D2":
+            setDaily((parseInt(level)-1)*d2+d2L1);
+            setMonthlySalary( Math.round(((parseInt(level) - 1) * d2 + d2L1) * workingDays));
+      
+            break;
+          case "DM2":
+            setDaily((parseInt(level)-1)*d2+d2L1);
+            setMonthlySalary( Math.round(((parseInt(level) - 1) * d2 + d2L1) * workingDays));
+      
+            break;
+          case "D3":
+            setDaily((parseInt(level)-1)*d3+d3L1);
+            setMonthlySalary( Math.round(((parseInt(level) - 1) * d3 + d3L1) * workingDays));
+      
+            break;
+            case "DM3":
+              setDaily((parseInt(level)-1)*d3+d3L1);
+              setMonthlySalary( Math.round(((parseInt(level) - 1) * d3 + d3L1) * workingDays));
+            break;
+            case "M1":
+              setDaily((parseInt(level)-1)*m1+m1L1);
+              setMonthlySalary( Math.round(((parseInt(level) - 1) * m1 + m1L1) * workingDays));
+            break;
+            case "M2":
+            setDaily((parseInt(level)-1)*m2+m2L1);
+            setMonthlySalary( Math.round(((parseInt(level) - 1) * m2 + m2L1) * workingDays));
+            break;
+            case "M3":
+            setDaily((parseInt(level)-1)*m3+m3L1);
+            setMonthlySalary( Math.round(((parseInt(level) - 1) * m3 + m3L1) * workingDays));
+            break;
+            case "M4":
+            setDaily((parseInt(level)-1)*m4+m4L1);
+            setMonthlySalary( Math.round(((parseInt(level) - 1) * m4 + m4L1) * workingDays));
+            break;
+            case "M5":
+            setDaily((parseInt(level)-1)*m5+m5L1);
+            setMonthlySalary( Math.round(((parseInt(level) - 1) * m5 + m5L1) * workingDays));
+            break;
+            case "F1":
+              setDaily((parseInt(level)-1)*f1+f1L1);
+              setMonthlySalary( Math.round(((parseInt(level) - 1) * f1 + f1L1) * workingDays));
+              break;
+              case "F2":
+              setDaily((parseInt(level)-1)*f2+f2L1);
+              setMonthlySalary( Math.round(((parseInt(level) - 1) * f2 + f2L1) * workingDays));
+        
+        
+              break;
+          default:
+      
+        }
+        switch (level){
+          case "":
+            setDaily("0");
+            setMonthlySalary( "0");
+            
+                  break;
+                  case "0":
+            setDaily("0");
+            setMonthlySalary( "0");
+            
+                  break;
+                  default:
+        }
+      
+      },[empClass, level, d1, d1L1, d2, d2L1, d3, d3L1, m1, m1L1, m2, m2L1, m3, m3L1, m4, m4L1, m5, m5L1, f1, f1L1, f2, f2L1, workingDays])
+      React.useEffect(() => {
+  
+        if(levelUpPoints===''){
+          // setDaily(dailybg);
+          // setMonthlySalary(monthlySalarybg);
+          setBasicSalary(basicSalarybg)
+        }
+      
+        if(salary==="Monthly"){
+          setBasicSalary(monthlySalary);
+          
+        }
+        else if(salary === "Daily"){
+          setBasicSalary(daily);
+        }
+      // setLevel(parseInt(levelUpPoints) + level)
+      // setLevel(parseInt(levelUpPoints) + parseInt(level))
+      
+      }, [salary, dailybg, monthlySalarybg, levelUpPoints, basicSalarybg,monthlySalary,daily]);
+      
+
+
       const handleChange1 = (event) => {
         settsAllowance(event.target.value);
       };
@@ -170,8 +496,54 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
       const handleChange3 = (event) => {
         setceAllowance(event.target.value);
       };
+      function setPositionMain(value){
+        setPosition(value);
+        getsettings();
+      }
+      function levelUp(value) {
+        if(value > 0){
+          console.log(arrayOfProfAllowances);
+          setPosRank(value)
+        if( (position !=="Staff" && position !=="Senior Staff" && position !=="Operator" && position !=="Senior Operator")){
+          // setPosRank((isNaN(parseInt(posRankbg)) ? 0 : parseInt(posRankbg)) +1);
       
-
+          let samplePosition = position;
+         let sampleRank =value
+      
+        const allowancesArray = arrayOfProfAllowances.find(
+          allowances => allowances[0] === samplePosition
+        );
+      console.log(allowancesArray)
+        
+      if (allowancesArray) {
+        // If samplePosition is found in arrayOfProfAllowances
+        const allowance = allowancesArray[parseInt(sampleRank, 10)];
+      
+        console.log('Allowance:', allowance);
+        setPosAllowance(allowance)
+      } else {
+        console.log('sample Position not found in array Of Prof Allowances');
+      }
+      
+          }
+          else{
+              setPosRank(posRankbg);
+          setPosAllowance(posAllowancebg);
+      
+          setPosPe(posPebg);
+      
+      
+          }
+      
+      
+        }
+        else{
+          setPosAllowance("");
+        }
+       
+      
+        // setLevel(e.target.value);
+      }
 
   
     
@@ -425,7 +797,25 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
           sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
           <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
           <Grid container spacing={2}>
-          <Grid xs={12} sm={6}><TextField error={positionState} required  label="Position" defaultValue={position} onChange={(e) => setPosition(e.target.value)}  fullWidth /></Grid>
+          <Grid xs={12} sm={6}>
+            {/* <TextField error={positionState} required  label="Position" defaultValue={position} onChange={(e) => setPosition(e.target.value)}  fullWidth /> */}
+            <Select   required error={positionState}  fullWidth  value={position} style={{  padding:'0px', textAlign:'left' }} onChange={(e) => setPositionMain(e.target.value)}  >
+              
+              <MenuItem  selected value={"Positions"} disabled>Positions</MenuItem>
+              <MenuItem   value={"Staff"} >Staff</MenuItem>
+              <MenuItem   value={"Senior Staff"} >Senior Staff</MenuItem>
+              <MenuItem   value={"Operator"} >Operator</MenuItem>
+              <MenuItem   value={"Senior Operator"} >Senior Operator</MenuItem>
+
+
+
+              {rowsPosition.map((row, index) => (
+    <MenuItem key={index} value={row.positions}>
+      {row.positions}
+    </MenuItem>
+  ))}
+           </Select>
+            </Grid>
             <Grid xs={12} sm={6}> <TextField required error={designationState}  label="Designation" defaultValue={designation}  onChange={(e) => setDesignation(e.target.value)}   fullWidth /> </Grid>
             </Grid>  
             <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
@@ -443,6 +833,16 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
              <MenuItem  value={"DM2"}>DM2</MenuItem>
              <MenuItem  value={"D3"}>D3</MenuItem>
              <MenuItem  value={"DM3"}>DM3</MenuItem>
+             <MenuItem  value={"M1"}>M1</MenuItem>
+             <MenuItem  value={"M2"}>M2</MenuItem>
+             <MenuItem  value={"M3"}>M3</MenuItem>
+             <MenuItem  value={"M4"}>M4</MenuItem>
+             <MenuItem  value={"M5"}>M5</MenuItem>
+             <MenuItem  value={"F1"}>F1</MenuItem>
+             <MenuItem  value={"F2"}>F2</MenuItem>
+
+
+
            </Select>
            {/* <TextField  required error={empClassState} label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /> */}
            </Grid>
@@ -457,9 +857,9 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
            </Select>
                 {/* <TextField required error={salaryState} label="Salary Type" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /> */}
                 </Grid>
-              <Grid lg={4} sm={6} xs={12}><TextField required error={basicSalaryState} label="Basic Salary" defaultValue={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
-              <Grid lg={4} sm={6} xs={12}><TextField  label="Daily" defaultValue={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
-              <Grid lg={4} sm={6} xs={12}><TextField required error={monthlySalaryState} label="Monthly Salary" defaultValue={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
+              <Grid lg={4} sm={6} xs={12}><TextField required error={basicSalaryState} label="Basic Salary" value={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
+              <Grid lg={4} sm={6} xs={12}><TextField  label="Daily" value={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
+              <Grid lg={4} sm={6} xs={12}><TextField required error={monthlySalaryState} label="Monthly Salary" value={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
 
             </Grid>  
             
@@ -467,9 +867,9 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
               Position
             </Typography>
             <Grid container  spacing={2}>
-              <Grid lg={3} sm={6} xs={12}><TextField required  label="PE Point" defaultValue={posPe} onChange={(e) => setPosPe(e.target.value)} fullWidth /></Grid>
-              <Grid lg={6} sm={6} xs={12}><TextField required  label="Allowance" defaultValue={posAllowance} onChange={(e) => setPosAllowance(e.target.value)} fullWidth /></Grid>
-              <Grid lg={3} sm={6} xs={12}><TextField required  label="Rank" defaultValue={posRank} onChange={(e) => setPosRank(e.target.value)}  fullWidth/></Grid>
+              <Grid lg={3} sm={6} xs={12}><TextField required  label="PE Point" value={posPe} onChange={(e) => setPosPe(e.target.value)} fullWidth /></Grid>
+              <Grid lg={6} sm={6} xs={12}><TextField required  label="Allowance" value={posAllowance} onChange={(e) => setPosAllowance(e.target.value)} fullWidth /></Grid>
+              <Grid lg={3} sm={6} xs={12}><TextField required  label="Rank" defaultValue={posRank} onChange={(e) => levelUp(e.target.value)}   fullWidth/></Grid>
             </Grid>
            
 
@@ -555,11 +955,11 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
                <LocalizationProvider   dateAdapter={AdapterDayjs}>
       <DemoContainer fullWidth components={['DatePicker', 'DatePicker', 'DatePicker']}>
                <DatePicker fullWidth 
-              value={birthday}
-    label="Birthday"
-    views={['month', 'day', 'year']}
-  
-    onChange={(newValue) => setbirthday(newValue)}
+              value={dayjs(birthday)}
+              label="Birthday"
+              views={['month', 'day', 'year']}
+            
+              onChange={(newValue) => setbirthday(dayjs(newValue).format('MMMM DD, YYYY'))}
     renderInput={(params) => <TextField {...params} />}
   />
                 {/* <TextField required error={birthdayState} label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /> */}

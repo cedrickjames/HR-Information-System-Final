@@ -16,19 +16,19 @@ function CSVReader({ handleFile }) {
 
   return (
     <div>
-    <div class="p-6 flex-1 overflow-auto">
-       <div class="space-y-6">
+    <div className="p-6 flex-1 overflow-auto">
+       <div className="space-y-6">
        {/* <CSVReader handleFile={handleFile} /> */}
       <input type="file" accept=".csv" onChange={handleInputChange} />
 
        </div>
      </div>
-     <div class="flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600 border-t"><button
+     <div className="flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600 border-t"><button
          type="button" onClick={()=> handleFile(file)}
-         class=" bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white border border-transparent hover:from-teal-500 hover:via-teal-400 hover:to-teal-400 hover:text-white focus:ring-4 focus:ring-cyan-300 disabled:hover:bg-cyan-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800 dark:disabled:hover:bg-cyan-600 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
-           class="flex items-center rounded-md text-sm px-4 py-2">Continue</span></button><button type="button"  
-         class="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-cyan-700 disabled:hover:bg-white focus:ring-cyan-700 focus:text-cyan-700 dark:bg-transparent dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 dark:disabled:hover:bg-gray-800 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
-           class="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div>
+         className=" bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white border border-transparent hover:from-teal-500 hover:via-teal-400 hover:to-teal-400 hover:text-white focus:ring-4 focus:ring-cyan-300 disabled:hover:bg-cyan-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800 dark:disabled:hover:bg-cyan-600 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           className="flex items-center rounded-md text-sm px-4 py-2">Continue</span></button><button type="button"  
+         className="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-cyan-700 disabled:hover:bg-white focus:ring-cyan-700 focus:text-cyan-700 dark:bg-transparent dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 dark:disabled:hover:bg-gray-800 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           className="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div>
  </div>
   );
 }

@@ -213,6 +213,167 @@ app.post("/selectLatest", (req, res)=>{
   });
 });
 
+app.post("/maintable", (req, res)=>{
+
+
+  // const sqlSelect = ;
+  db.query(
+      `SELECT
+      si.id AS id,
+     si.empNo AS employeeId,
+   COALESCE(MAX(CASE WHEN h.field = 'department' THEN h.hr_from END), si.department) AS department,
+   COALESCE(MAX(CASE WHEN h.field = 'section' THEN h.hr_from END), si.section) AS section,
+   COALESCE(MAX(CASE WHEN h.field = 'employeeName' THEN h.hr_from END), si.employeeName) AS employeeName,
+   COALESCE(MAX(CASE WHEN h.field = 'sex' THEN h.hr_from END), si.sex) AS sex,
+   COALESCE(MAX(CASE WHEN h.field = 'birthday' THEN h.hr_from END), si.birthday) AS birthday,
+   COALESCE(MAX(CASE WHEN h.field = 'age' THEN h.hr_from END), si.age) AS age,
+   COALESCE(MAX(CASE WHEN h.field = 'dateHired' THEN h.hr_from END), si.dateHired) AS dateHired,
+   COALESCE(MAX(CASE WHEN h.field = 'serviceTerm' THEN h.hr_from END), si.serviceTerm) AS serviceTerm,
+   COALESCE(MAX(CASE WHEN h.field = 'position' THEN h.hr_from END), si.position) AS 'position',
+   COALESCE(MAX(CASE WHEN h.field = 'designation' THEN h.hr_from END), si.designation) AS designation,
+   COALESCE(MAX(CASE WHEN h.field = 'class' THEN h.hr_from END), si.class) AS class,
+   COALESCE(MAX(CASE WHEN h.field = 'level' THEN h.hr_from END), si.level) AS level,
+   COALESCE(MAX(CASE WHEN h.field = 'salaryType' THEN h.hr_from END), si.salaryType) AS salaryType,
+   COALESCE(MAX(CASE WHEN h.field = 'basicSalary' THEN h.hr_from END), si.basicSalary) AS basicSalary,
+   COALESCE(MAX(CASE WHEN h.field = 'daily' THEN h.hr_from END), si.daily) AS daily,
+   COALESCE(MAX(CASE WHEN h.field = 'monthlySalary' THEN h.hr_from END), si.monthlySalary) AS monthlySalary,
+   COALESCE(MAX(CASE WHEN h.field = 'pPEPoint' THEN h.hr_from END), si.pPEPoint) AS pPEPoint,
+   COALESCE(MAX(CASE WHEN h.field = 'pAllowance' THEN h.hr_from END), si.pAllowance) AS pAllowance,
+   COALESCE(MAX(CASE WHEN h.field = 'pRank' THEN h.hr_from END), si.pRank) AS pRank,
+   COALESCE(MAX(CASE WHEN h.field = 'tsPEPoint' THEN h.hr_from END), si.tsPEPoint) AS tsPEPoint,
+   COALESCE(MAX(CASE WHEN h.field = 'tsAllowance' THEN h.hr_from END), si.tsAllowance) AS tsAllowance,
+   COALESCE(MAX(CASE WHEN h.field = 'tsRank' THEN h.hr_from END), si.tsRank) AS tsRank,
+   COALESCE(MAX(CASE WHEN h.field = 'leLicenseFee' THEN h.hr_from END), si.leLicenseFee) AS leLicenseFee,
+   COALESCE(MAX(CASE WHEN h.field = 'lePEPoint' THEN h.hr_from END), si.lePEPoint) AS lePEPoint,
+   COALESCE(MAX(CASE WHEN h.field = 'leAllowance' THEN h.hr_from END), si.leAllowance) AS leAllowance,
+   COALESCE(MAX(CASE WHEN h.field = 'leRank' THEN h.hr_from END), si.leRank) AS leRank,
+   COALESCE(MAX(CASE WHEN h.field = 'ceCertificateOnFee' THEN h.hr_from END), si.ceCertificateOnFee) AS ceLicenseFee,
+   COALESCE(MAX(CASE WHEN h.field = 'cePEPoint' THEN h.hr_from END), si.cePEPoint) AS cePEPoint,
+   COALESCE(MAX(CASE WHEN h.field = 'ceAllowance' THEN h.hr_from END), si.ceAllowance) AS ceAllowance,
+   COALESCE(MAX(CASE WHEN h.field = 'ceRank' THEN h.hr_from END), si.ceRank) AS ceRank,
+   COALESCE(MAX(CASE WHEN h.field = 'Specialization' THEN h.hr_from END), si.Specialization) AS Specialization,
+   (SELECT MAX(dateOfEffectivity)
+   FROM history
+   WHERE employeeId = si.empNo
+     AND dateOfEffectivity < (SELECT MAX(dateOfEffectivity)
+                             FROM history
+                             WHERE employeeId = si.empNo)
+  ) AS second_max_dateOfEffectivity,
+  h.dateOfEffectivity as dateOfEffectivity,
+  (COALESCE(MAX(CASE WHEN h.field = 'monthlySalary' THEN h.hr_from END), si.monthlySalary)+
+  COALESCE(MAX(CASE WHEN h.field = 'pAllowance' THEN h.hr_from END), si.pAllowance)+
+  COALESCE(MAX(CASE WHEN h.field = 'tsAllowance' THEN h.hr_from END), si.tsAllowance)+
+  COALESCE(MAX(CASE WHEN h.field = 'leLicenseFee' THEN h.hr_from END), si.leLicenseFee)+
+  COALESCE(MAX(CASE WHEN h.field = 'leAllowance' THEN h.hr_from END), si.leAllowance)+
+  COALESCE(MAX(CASE WHEN h.field = 'ceCertificateOnFee' THEN h.hr_from END), si.ceCertificateOnFee)+
+  COALESCE(MAX(CASE WHEN h.field = 'ceAllowance' THEN h.hr_from END), si.ceAllowance)) AS total_sum,
+  (si.monthlySalary  + si.pAllowance  + si.tsAllowance  + si.leLicenseFee  + si.leAllowance  + si.ceCertificateOnFee  + si.ceAllowance ) as total_sum_now,
+   si.total,
+   si.employeeName as newEmployeeName,
+   si.empNo as newEmpNo,
+   si.dateHired as newDateHired,
+   si.section as newSection,
+   si.department as newDepartment,
+   si.position as newPosition,
+   si.designation as newDesignation,
+   si.class as newClass,
+   si.level as newLevel,
+   si.salaryType as newSalaryType,
+   si.basicSalary as newBasicSalary,
+   si.daily as newDaily,
+   si.monthlySalary as newMonthly,
+   si.pPEPoint as newpePoint,
+   si.pAllowance as newPAllowance,
+   si.pRank as newPeRank,
+   si.tsPEPoint as newTsPePoint,
+   si.tsAllowance as newTsAllowance,
+   si.tsRank as newTsRank,
+   si.leLicenseFee as newleLicenseFee,
+   si.lePEPoint as newLePEPoint,
+   si.leAllowance as newLEAllowance,
+   si.leRank as newLeRank,
+   si.ceCertificateOnFee as newceCertificateOnFee,
+   si.cePEPoint as newCePePoint,
+   si.ceAllowance as newCEAllowance,
+   si.ceRank as newCeRank,
+   si.Specialization as newSpecialization
+  
+ FROM
+   salaryincrease si
+ LEFT JOIN (
+   SELECT
+     h1.employeeId,
+     h1.field,
+     h1.hr_from,
+     h1.dateOfEffectivity
+     
+   FROM
+     history h1
+     JOIN (
+       SELECT
+         employeeId,
+         MAX(dateOfEffectivity) AS maxDate
+       FROM
+         history
+       GROUP BY
+         employeeId
+     ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateOfEffectivity = subquery.maxDate
+   WHERE
+     (h1.employeeId, h1.dateOfEffectivity, h1.field, h1.id) IN (
+       SELECT
+         employeeId,
+         dateOfEffectivity,
+         field,
+         MAX(id)
+       FROM
+         history
+       WHERE
+         (employeeId, dateOfEffectivity, field) IN (
+           SELECT
+             employeeId,
+             dateOfEffectivity,
+             field
+           FROM
+             history
+           GROUP BY
+             employeeId,
+             dateOfEffectivity,
+             field
+           HAVING
+             MAX(id) = MAX(CASE WHEN dateOfEffectivity = subquery.maxDate THEN id END)
+         )
+       GROUP BY
+         employeeId,
+         dateOfEffectivity,
+         field
+     )
+ ) h ON si.empNo = h.employeeId WHERE si.deactivated = 0
+ GROUP BY
+   si.empNo
+ ORDER BY
+   si.empNo;
+    `,
+      // "SELECT * FROM `salaryincrease` WHERE department = ?",
+    
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+              return;
+          }
+              if(result.length > 0){
+                  res.send(result)
+                  return;
+              }else{
+                  res.send({message: "No Data Found"});
+                  return;
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
+
 app.post("/setsitablebefore", (req, res)=>{
   const empNo = req.body.empNo;
 
@@ -345,6 +506,30 @@ app.post("/setsitablebefore", (req, res)=>{
   //    console.log(err);
   });
 });
+
+
+app.post("/positions", (req, res)=>{
+
+  // const sqlSelect = ;
+  db.query(
+      "SELECT positionLevel FROM `allowancetable`",
+      [],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+              }else{
+                  res.send({message: "No Data Found"});
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
 app.post("/basicallowancesettings", (req, res)=>{
 
   // const sqlSelect = ;
@@ -367,11 +552,235 @@ app.post("/basicallowancesettings", (req, res)=>{
   //    console.log(err);
   });
 });
+
+app.post("/updateAllowance", (req, res)=>{
+  const id = req.body.id;
+  const positionLevel = req.body.positionLevel;
+  const classs = req.body.class;
+  const rs = req.body.rs;
+  const r4 = req.body.r4;
+  const r3 = req.body.r3;
+  const r2 = req.body.r2;
+  const r1 = req.body.r1;
+  
+  db.query(
+    "UPDATE `allowancetable` SET `positionLevel`=?,`r1`=?,`r2`=?,`r3`=?,`r4`=?,`r5`=?,`class`=? WHERE `id` = ?",
+    [positionLevel,r1,r2, r3,r4,rs, classs, id],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+        return;
+
+      } else {
+        if (result.affectedRows > 0) {
+          res.send({result: result, message: "Data updated successfully" });
+        return;
+        } else {
+          res.send({ message: "No matching record found" });
+        return;
+        }
+      }
+    })
+});
+app.post("/updateSalaryIncrement", (req, res)=>{
+
+  const type = req.body.type;
+    // const sqlSelect = ;
+    if(type==="rank"){
+      const dailyInc1 = req.body.dailyInc1;
+      const dailyInc2 = req.body.dailyInc2;
+      const dailyInc3 = req.body.dailyInc3;
+      db.query(
+        "UPDATE `basicallowancesettings` SET `d1`=?,`d2`=?,`d3`=? WHERE `id`='1'",
+        [dailyInc1,dailyInc2, dailyInc3],
+        (err, result) => {
+          if (err) {
+            res.send({ err: err });
+            return;
+  
+          } else {
+            if (result.affectedRows > 0) {
+              res.send({result: result, message: "Data updated successfully" });
+            return;
+            } else {
+              res.send({ message: "No matching record found" });
+            return;
+            }
+          }
+        })
+    }
+    else if(type ==="supervisor"){
+      const dailyInc1 = req.body.dailyInc1;
+      const dailyInc2 = req.body.dailyInc2;
+      db.query(
+        "UPDATE `basicallowancesettings` SET `m1`=?,`m2`=? WHERE `id`='1'",
+        [dailyInc1, dailyInc2],
+        (err, result) => {
+          if (err) {
+            res.send({ err: err });
+            return;
+  
+          } else {
+            if (result.affectedRows > 0) {
+              res.send({ message: "Data updated successfully" });
+            return;
+            } else {
+              res.send({ message: "No matching record found" });
+            return;
+            }
+          }
+        })
+    }
+    else if(type === "managerial"){
+      const dailyInc1 = req.body.dailyInc1;
+      const dailyInc2 = req.body.dailyInc2;
+      const dailyInc3 = req.body.dailyInc3;
+  
+      db.query(
+        "UPDATE `basicallowancesettings` SET `m3`=?,`m4`=?, `m5`=? WHERE `id`='1'",
+        [dailyInc1, dailyInc2, dailyInc3],
+        (err, result) => {
+          if (err) {
+            res.send({ err: err });
+            return;
+  
+          } else {
+            if (result.affectedRows > 0) {
+              res.send({ message: "Data updated successfully" });
+            return;
+            } else {
+              res.send({ message: "No matching record found" });
+            return;
+            }
+          }
+        })
+    }
+    else if(type ==="felow"){
+      const dailyInc1 = req.body.dailyInc1;
+      const dailyInc2 = req.body.dailyInc2;
+      db.query(
+        "UPDATE `basicallowancesettings` SET `f1`=?,`f2`=? WHERE `id`='1'",
+        [dailyInc1, dailyInc2],
+        (err, result) => {
+          if (err) {
+            res.send({ err: err });
+            return;
+  
+          } else {
+            if (result.affectedRows > 0) {
+              res.send({ message: "Data updated successfully" });
+            return;
+            } else {
+              res.send({ message: "No matching record found" });
+            return;
+            }
+          }
+        })
+    }
+  
+  });
+app.post("/updateSalary", (req, res)=>{
+
+const type = req.body.type;
+  // const sqlSelect = ;
+  if(type==="rank"){
+    const daily1 = req.body.daily1;
+    const daily2 = req.body.daily2;
+    const daily3 = req.body.daily3;
+    db.query(
+      "UPDATE `basicallowancesettings` SET `d1l1`=?,`d2l1`=?,`d3l1`=? WHERE `id`='1'",
+      [daily1, daily2, daily3],
+      (err, result) => {
+        if (err) {
+          res.send({ err: err });
+          return;
+
+        } else {
+          if (result.affectedRows > 0) {
+            res.send({result: result, message: "Data updated successfully" });
+          return;
+          } else {
+            res.send({ message: "No matching record found" });
+          return;
+          }
+        }
+      })
+  }
+  else if(type ==="supervisor"){
+    const daily1 = req.body.daily1;
+    const daily2 = req.body.daily2;
+    db.query(
+      "UPDATE `basicallowancesettings` SET `m1l1`=?,`m2l1`=? WHERE `id`='1'",
+      [daily1, daily2],
+      (err, result) => {
+        if (err) {
+          res.send({ err: err });
+          return;
+
+        } else {
+          if (result.affectedRows > 0) {
+            res.send({ message: "Data updated successfully" });
+          return;
+          } else {
+            res.send({ message: "No matching record found" });
+          return;
+          }
+        }
+      })
+  }
+  else if(type === "managerial"){
+    const daily1 = req.body.daily1;
+    const daily2 = req.body.daily2;
+    const daily3 = req.body.daily3;
+
+    db.query(
+      "UPDATE `basicallowancesettings` SET `m3l1`=?,`m4l1`=?, `m5l1`=? WHERE `id`='1'",
+      [daily1, daily2, daily3],
+      (err, result) => {
+        if (err) {
+          res.send({ err: err });
+          return;
+
+        } else {
+          if (result.affectedRows > 0) {
+            res.send({ message: "Data updated successfully" });
+          return;
+          } else {
+            res.send({ message: "No matching record found" });
+          return;
+          }
+        }
+      })
+  }
+  else if(type ==="felow"){
+    const daily1 = req.body.daily1;
+    const daily2 = req.body.daily2;
+    db.query(
+      "UPDATE `basicallowancesettings` SET `f1l1`=?,`f2l1`=? WHERE `id`='1'",
+      [daily1, daily2],
+      (err, result) => {
+        if (err) {
+          res.send({ err: err });
+          return;
+
+        } else {
+          if (result.affectedRows > 0) {
+            res.send({ message: "Data updated successfully" });
+          return;
+          } else {
+            res.send({ message: "No matching record found" });
+          return;
+          }
+        }
+      })
+  }
+
+});
 app.post("/allowancetable", (req, res)=>{
 
   // const sqlSelect = ;
   db.query(
-      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable`",
+      "SELECT * FROM `allowancetable`",
       [],
       (err, result)=>{
           if(err){
@@ -394,7 +803,7 @@ app.post("/allowancetableB", (req, res)=>{
 
   // const sqlSelect = ;
   db.query(
-      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable` WHERE `annex` = 'Annex B'",
+      "SELECT * FROM `allowancetable` WHERE `annex` = 'Annex B'",
       [],
       (err, result)=>{
           if(err){
@@ -417,7 +826,7 @@ app.post("/allowancetableC", (req, res)=>{
 
   // const sqlSelect = ;
   db.query(
-      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable` WHERE `annex` = 'Annex C'",
+      "SELECT * FROM `allowancetable` WHERE `annex` = 'Annex C'",
       [],
       (err, result)=>{
           if(err){
@@ -440,7 +849,7 @@ app.post("/allowancetableD", (req, res)=>{
 
   // const sqlSelect = ;
   db.query(
-      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable` WHERE `annex` = 'Annex D'",
+      "SELECT * FROM `allowancetable` WHERE `annex` = 'Annex D'",
       [],
       (err, result)=>{
           if(err){
@@ -463,7 +872,7 @@ app.post("/allowancetableDA2", (req, res)=>{
 
   // const sqlSelect = ;
   db.query(
-      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable` WHERE `annex` = 'Annex D A2'",
+      "SELECT * FROM `allowancetable` WHERE `annex` = 'Annex D A2'",
       [],
       (err, result)=>{
           if(err){
@@ -485,7 +894,7 @@ app.post("/allowancetableDA3", (req, res)=>{
 
   // const sqlSelect = ;
   db.query(
-      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable` WHERE `annex` = 'Annex D A3'",
+      "SELECT * FROM `allowancetable` WHERE `annex` = 'Annex D A3'",
       [],
       (err, result)=>{
           if(err){
@@ -508,7 +917,7 @@ app.post("/allowancetableDSpecial", (req, res)=>{
 
   // const sqlSelect = ;
   db.query(
-      "SELECT `positionLevel`,`class`,`r1`,`r2`,`r3`,`r4`,`r5` FROM `allowancetable` WHERE `annex` = 'Annex D Special'",
+      "SELECT * FROM `allowancetable` WHERE `annex` = 'Annex D Special'",
       [],
       (err, result)=>{
           if(err){

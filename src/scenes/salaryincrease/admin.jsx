@@ -827,18 +827,32 @@ var csvContent = "data:text/csv;charset=utf-8,";
 
   React.useEffect(() => {
 
+if(empClass === "D1" || empClass === "D2" || empClass === "D3" || empClass === "DM1" || empClass === "DM2" || empClass === "DM3")
+{
+  if(level > 40)
+  {
+    setlevelState(true);
+  }
+  else{
+    setlevelState(false);
 
-    if(level >40)
-    {
-      setlevelState(true);
-    }
-    else{
-      setlevelState(false);
+  }
+}
+else{
+  if(level > 50)
+  {
+    setlevelState(true);
+  }
+  else{
+    setlevelState(false);
 
-    }
+  }
+}
+
+
 
  
-   }, [level]);
+   }, [level,empClass]);
 function showOption(){
 if(!showOptionValue1){
   setShowOptionValue('z-10 w-fit rounded divide-y divide-gray-100 shadow transition-opacity duration-100 border border-gray-200 bg-white text-gray-900 dark:border-none dark:bg-gray-700 dark:text-white iconColor')
@@ -895,11 +909,13 @@ else{
 
 
     if(totalPoint>=4 && (position !=="Staff" && position !=="Senior Staff" && position !=="Operator" && position !=="Senior Operator")){
-    setPosRank((isNaN(parseInt(posRankbg)) ? 0 : parseInt(posRankbg)) +1);
+   
 
     let samplePosition = position;
    let sampleRank = (isNaN(parseInt(posRankbg)) ? 0 : parseInt(posRankbg)) +1;
-console.log(arrayOfProfAllowances)
+console.log(sampleRank)
+if(sampleRank<=5){
+  setPosRank((isNaN(parseInt(posRankbg)) ? 0 : parseInt(posRankbg)) +1);
   const allowancesArray = arrayOfProfAllowances.find(
     allowances => allowances[0] === samplePosition
   );
@@ -914,6 +930,9 @@ if (allowancesArray) {
 } else {
   console.log('samplePosition not found in arrayOfProfAllowances');
 }
+}
+
+
 
     }
     else{
@@ -1702,6 +1721,15 @@ const setAction = (action) =>{
       setsex(employee.sex)
       setdateHired(employee.dateHired)
      
+       setfirstHalf('');
+       setFirstResult('');
+       setSecondHalf('');
+       setSecondResult('');
+       setFinalPoint(0);
+       setFinalResult('');
+       setLevelUpPoints('');
+
+
 
       var date = new Date();
       var day = date.getDate();
@@ -1846,6 +1874,7 @@ const setAction = (action) =>{
         <button
       onClick={() => {
         setOpenAdd(true);
+        getsettings();
         }}
       type="button"
       className=" text-white h-10 w-96 bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center mr-2 "
@@ -1946,13 +1975,13 @@ const setAction = (action) =>{
       </div>
     </div>
     <Modal    show={isModalOpenImport} onClose={closeModalImport}>
-      <div class="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
-        <div class="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
-          <h3 class="text-xl font-medium text-gray-900 dark:text-white">Import Grades</h3><button  onClick={closeModalImport} aria-label="Close"
-            class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-            type="button"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"
-              class="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+      <div className="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
+        <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Import Grades</h3><button  onClick={closeModalImport} aria-label="Close"
+            className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+            type="button"><svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true"
+              className="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
             </svg></button>
         </div>
         <ImportFile/>
@@ -2444,7 +2473,7 @@ const setAction = (action) =>{
     label="Birthday"
     views={['month', 'day', 'year']}
   
-    onChange={(newValue) => setbirthday(newValue)}
+    onChange={(newValue) => setbirthday(dayjs(newValue).format('MMMM DD, YYYY'))}
     renderInput={(params) => <TextField {...params} />}
   />
                 {/* <TextField required error={birthdayState} label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /> */}
@@ -2464,7 +2493,7 @@ const setAction = (action) =>{
     label="Date Hired"
     views={['month', 'day', 'year']}
   
-    onChange={(newValue) => setdateHired(newValue)}
+    onChange={(newValue) => setdateHired(dayjs(newValue).format('MMMM DD, YYYY'))}
     renderInput={(params) => <TextField {...params} />}
   />
                 {/* <TextField required error={birthdayState} label="Birthday" defaultValue={birthday} onChange={(e) => setbirthday(e.target.value)}  fullWidth /> */}

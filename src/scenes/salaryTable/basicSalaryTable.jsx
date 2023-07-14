@@ -1,4 +1,4 @@
-import React,  { useEffect, useState,  } from "react";
+import React,  { useEffect, useState, useRef  } from "react";
 import PropTypes from 'prop-types';
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -23,8 +23,26 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import SalaryIncrease from '../salaryincrease';
 import Axios from "axios";
-import { Modal } from 'flowbite-react';
+// import { Modal } from 'flowbite-react';
 import TextField from '@mui/material/TextField';
+import { TextInput } from "flowbite-react";
+import Backdrop from '@mui/material/Backdrop';
+import Modal from '@mui/material/Modal';
+import Fade from '@mui/material/Fade';
+
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
+
 function createData(level,daily,monthly, daily2, monthly2, daily3, monthly3 ) {
   return {
     level,daily,monthly, daily2, monthly2, daily3, monthly3 
@@ -80,41 +98,9 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-const headCells = [
-  {
-    id: 'name',
-    numeric: false,
-    disablePadding: true,
-    label: 'Dessert (100g serving)',
-  },
-  {
-    id: 'calories',
-    numeric: true,
-    disablePadding: false,
-    label: 'Calories',
-  },
-  {
-    id: 'fat',
-    numeric: true,
-    disablePadding: false,
-    label: 'Fat (g)',
-  },
-  {
-    id: 'carbs',
-    numeric: true,
-    disablePadding: false,
-    label: 'Carbs (g)',
-  },
-  {
-    id: 'protein',
-    numeric: true,
-    disablePadding: false,
-    label: 'Protein (g)',
-  },
-];
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, class1, class2, daily1, onRequestSort } =
+  const { class1, class2, dailyone1, increment, onRequestSort } =
     props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -123,20 +109,22 @@ function EnhancedTableHead(props) {
 
   return (
     <TableHead>
-       <TableRow>
-        <TableCell  colSpan={3} style={{  border: '1px solid black', fontWeight: 'bold', fontSize: '16px' }} key='4' align='left' padding='normal'>
-          <TableSortLabel >Level 1: {daily1} </TableSortLabel>
+       <TableRow >
+        <TableCell  style={{  border: '1px solid black', fontWeight: 'bold', fontSize: '16px' }} align='left' padding='normal'>
+          <TableSortLabel >Level 1: {dailyone1} </TableSortLabel>
         </TableCell>
-      
+        <TableCell  colSpan={2} style={{  border: '1px solid black', fontWeight: 'bold', fontSize: '16px' }}  align='left' padding='normal'>
+          <TableSortLabel >Increment: {increment} </TableSortLabel>
+        </TableCell>
       </TableRow>
-      <TableRow>
-        <TableCell style={{  border: '1px solid black', fontWeight: 'bold', fontSize: '16px' }} key='4' align='left' padding='normal'>
+      <TableRow >
+        <TableCell style={{  border: '1px solid black', fontWeight: 'bold', fontSize: '16px' }}  align='left' padding='normal'>
           <TableSortLabel > Level </TableSortLabel>
         </TableCell>
-        <TableCell style={{  border: '1px solid black', fontWeight: 'bold', fontSize: '16px' }}  key='5' align='left' padding='normal'>
+        <TableCell style={{  border: '1px solid black', fontWeight: 'bold', fontSize: '16px' }}   align='left' padding='normal'>
           <TableSortLabel > {class1} </TableSortLabel>
         </TableCell>
-        <TableCell style={{  border: '1px solid black', fontWeight: 'bold', fontSize: '16px' }}  key='6' align='left' padding='normal'>
+        <TableCell style={{  border: '1px solid black', fontWeight: 'bold', fontSize: '16px' }}   align='left' padding='normal'>
           <TableSortLabel >
            {class2}
           </TableSortLabel>
@@ -156,12 +144,25 @@ EnhancedTableHead.propTypes = {
   orderBy: PropTypes.string.isRequired,
   class1: PropTypes.string.isRequired,
   class2: PropTypes.string.isRequired,
-
+  dailyone1:PropTypes.number.isRequired,
   rowCount: PropTypes.number.isRequired,
 };
 
-function EnhancedTableToolbar(props) {
-  const [levelState, setlevelState] = React.useState(false);
+// function EnhancedTableToolbar(props) {
+ 
+//   return (
+    
+//   );
+// }
+
+// EnhancedTableToolbar.propTypes = {
+//   numSelected: PropTypes.number.isRequired,
+// };
+
+const BasicSalaryTable = (props ) => {
+  const { d1, d1l1, d2, d2l1, d3, d3l1, workingDays } = props;
+
+  
   const [showOptionValue1, setShowOptionValue1] = useState(false)
   const [showOptionValue, setShowOptionValue] = useState('invisible opacity-0 z-10 bg-white w-fit rounded divide-y divide-gray-100 shadow transition-opacity duration-100 border border-gray-200 bg-white text-gray-900 dark:border-none dark:bg-gray-700 dark:text-white iconColor');
 
@@ -170,13 +171,12 @@ const [isModalOpen, setIsModalOpen] = useState(false);
 const [isModalOpenImport, setIsModalOpenImport] = useState(false);
 
 
+
 const closeModalImport = () => {
   setIsModalOpenImport(false);
 };
 
-const openModalImport = () => {
-  setIsModalOpenImport(true);
-};
+
   function showOption(){
     if(!showOptionValue1){
       setShowOptionValue('z-10 w-fit rounded divide-y divide-gray-100 shadow transition-opacity duration-100 border border-gray-200 bg-white text-gray-900 dark:border-none dark:bg-gray-700 dark:text-white iconColor')
@@ -189,120 +189,10 @@ const openModalImport = () => {
     }
     
     }
-  const { numSelected, daily1, daily2, daily3} = props;
 
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%', fontSize: '16px' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Rank & File Employee
-        </Typography>
-      )}
-
-
-<div className="w-fit" data-testid="flowbite-tooltip-target"><button type="button" onClick={()=> showOption()}
-        className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-cyan-300
-        disabled:hover:bg-white dark:bg-gray-600 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700
-        dark:hover:border-gray-700 dark:focus:ring-gray-700 focus:!ring-2 group flex h-min items-center justify-center
-        p-0.5 text-center font-medium focus:z-10 rounded-lg" position="bottom-end"><span
-          className="flex items-center rounded-md text-sm px-3 py-1.5"><svg className="w-6 h-6 iconColor"
-            aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z">
-            </path>
-          </svg></span></button></div>
-
-          <div data-testid="flowbite-tooltip" tabIndex="-1" className={showOptionValue} id=":r4:" role="tooltip">
-      <div className="py-1 text-sm text-gray-700 dark:text-gray-200">
-        <ul className="py-1 bg-white drop-shadow-md"
-          style={{ paddingLeft: '0px', position: 'absolute', top: '61px', left: '1389.px', minWidth: '84px' }}>
-          <div className="block py-2 px-4 text-sm text-gray-700 dark:text-gray-200"><span
-              className="block text-sm">Options</span></div>
-          <div className="my-1 h-px bg-gray-100 dark:bg-gray-600"></div>
-          <li  onClick={openModalImport}
-            className="flex items-center justify-start py-2 px-4 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
-               
-              <svg className="mr-2 h-4 w-4" height="1em" width="1em" aria-hidden="true"  stroke="currentColor" fill="currentColor" strokeWidth="0" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 20 20">
-    <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z"/>
-    <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
-  </svg>Change Values</li>
-          {/* <li onClick={openModalImport}
-            className="flex items-center justify-start py-2 px-4 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
-              <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" aria-hidden="true"
-              className="mr-2 h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" >
-    <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
-    <path d="M14.067 0H7v5a2 2 0 0 1-2 2H0v4h7.414l-1.06-1.061a1 1 0 1 1 1.414-1.414l2.768 2.768a1 1 0 0 1 0 1.414l-2.768 2.768a1 1 0 0 1-1.414-1.414L7.414 13H0v5a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2Z"/>
-  </svg>
-           Import Grades</li> */}
-        </ul>
-      </div>
-    </div>
-
-    <Modal    show={isModalOpenImport} onClose={closeModalImport}>
-      <div class="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
-        <div class="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
-          <h3 class="text-xl font-medium text-gray-900 dark:text-white">Rank and file employee</h3><button  onClick={closeModalImport} aria-label="Close"
-            class="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-            type="button"><svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"
-              class="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-            </svg></button>
-        </div>
-        <div>
-    <div class="p-6 flex-1 overflow-auto">
-       <div class="space-y-6">
-       {/* <CSVReader handleFile={handleFile} /> */}
-       <TextField    label="D1 level 1" value = {daily1}  readOnly fullWidth />
-       <TextField    label="D2 level 1" value = {daily2} readOnly fullWidth />
-       <TextField    label="D3 level 1" value = {daily3} readOnly fullWidth />
-
-
-       </div>
-     </div>
-     <div class="flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600 border-t"><button
-         type="button"
-          // onClick={()=> handleFile(file)}
-         class=" bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white border border-transparent hover:from-teal-500 hover:via-teal-400 hover:to-teal-400 hover:text-white focus:ring-4 focus:ring-cyan-300 disabled:hover:bg-cyan-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800 dark:disabled:hover:bg-cyan-600 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
-           class="flex items-center rounded-md text-sm px-4 py-2">Continue</span></button><button type="button"  
-         class="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-cyan-700 disabled:hover:bg-white focus:ring-cyan-700 focus:text-cyan-700 dark:bg-transparent dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 dark:disabled:hover:bg-gray-800 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
-           class="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div>
- </div>
-        </div>
-        
-      </Modal>
-    </Toolbar>
-  );
-}
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
-const BasicSalaryTable = (props ) => {
 
  
+
 
 console.log (props);
   // const [d1, setD1] = React.useState();
@@ -315,9 +205,13 @@ console.log (props);
   // const [workingDays, setWorkingDays] = useState();
 
 
-  const { d1, d1l1, d2, d2l1, d3, d3l1, workingDays } = props;
 
-
+  const openModalImport = () => {
+  
+    setIsModalOpenImport(true);
+  
+  };
+ 
   const [rows, setRows] = useState([]);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -326,8 +220,17 @@ console.log (props);
   const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [rowColor, setRowColor] = React.useState('');
+  const [sample, setSample] = React.useState(d1l1);
+  const [d1value, setD1Value] = React.useState(d1);
+  const [d2value, setD2Value] = React.useState(d2);
+  const [d3value, setD3Value] = React.useState(d3);
 
 
+
+
+  const [dailyValue1, setDailyValue1] = React.useState(d1l1);
+  const [dailyValue2, setDailyValue2] = useState('');
+  const [dailyValue3, setDailyValue3] = useState('');
 
   const visibleRows = React.useMemo(
     () =>
@@ -337,7 +240,7 @@ console.log (props);
       ),
     [order, orderBy, page, rowsPerPage, rows],
   );
-  function maintable (){
+  function maintable (sample){
 
     console.log(d1, d1l1)
 
@@ -345,7 +248,7 @@ console.log (props);
 
       for (var i=40; i>=1; i--){
 
-  var daily = (i-1)*parseFloat(d1)+parseFloat(d1l1)
+  var daily = (i-1)*parseFloat(d1)+parseFloat(sample)
   var monthly = Math.round(parseFloat(workingDays) * parseFloat (daily));
   var daily2 = (i-1)*parseFloat(d2)+parseFloat(d2l1)
   var monthly2 = Math.round(parseFloat(workingDays) * parseFloat (daily2));
@@ -364,14 +267,18 @@ console.log (props);
     }
     setRows(tableRows);
 console.log(tableRows)
+console.log(sample)
+
     return tableRows;
   }
   
 
 
   useEffect(() => {
-
-    maintable();
+    setDailyValue1(d1l1)
+    setDailyValue2(d2l1)
+    setDailyValue3(d3l1)
+    maintable(sample);
 // console.log(rows)
 
 
@@ -429,8 +336,82 @@ console.log(tableRows)
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  
+  function updateSalary (){
+    Axios.post("http://192.168.60.53:3001/updateSalary", {
+      daily1: dailyValue1,
+      daily2: dailyValue2,
+      daily3: dailyValue3,
+      type : "rank",
+    }).then((response) => {
+      console.log(response);
+      setDailyValue1(dailyValue1)
+      setDailyValue2(dailyValue2)
+      setDailyValue3(dailyValue3)
+      setSample(parseInt(dailyValue1));
+      maintable(dailyValue1);
+      window.location.reload();
+      setOpen(false);
+    });
+  }
+  
+    
+  function updateSalaryIncrement (){
+    Axios.post("http://192.168.60.53:3001/updateSalaryIncrement", {
+      dailyInc1: d1value,
+      dailyInc2: d2value,
+      dailyInc3: d3value,
+      type : "rank",
+    }).then((response) => {
+      console.log(response);
+      setD1Value(d1value)
+      setD2Value(d2value)
+      setD3Value(d3value)
+      setSample(parseInt(dailyValue1));
+      maintable(dailyValue1);
+      window.location.reload();
+      setOpen(false);
+    });
+  }
+  
+  
+    function showOption(){
+      if(!showOptionValue1){
+        setShowOptionValue('z-10 w-fit rounded divide-y divide-gray-100 shadow transition-opacity duration-100 border border-gray-200 bg-white text-gray-900 dark:border-none dark:bg-gray-700 dark:text-white iconColor')
+        setShowOptionValue1(true);
+      }
+      else{
+        setShowOptionValue('invisible opacity-0 z-10 w-fit rounded divide-y divide-gray-100 shadow transition-opacity duration-100 border border-gray-200 bg-white text-gray-900 dark:border-none dark:bg-gray-700 dark:text-white iconColor');
+        setShowOptionValue1(false);
+      
+      }
+      
+      }
+    const { numSelected, dailyOne, dailyTwo, dailyThree} = props;
+  
+   
+    const [open, setOpen] = React.useState(false);
+    const [openIncrement, setOpenIncrement] = React.useState(false);
 
-
+      // const handleOpen = () => setOpen(true);
+  
+      const handleOpen = () => {
+        setDailyValue1(d1l1)
+        setDailyValue2(d2l1)
+        setDailyValue3(d3l1)
+        setOpen(true);
+      
+      };
+  
+      const handleOpenIncrement = () => {
+        setD1Value(d1)
+        setD2Value(d2)
+        setD3Value(d3)
+        setOpenIncrement(true);
+      
+      };
+      const handleClose = () => setOpen(false);
+      const handleCloseIncrement = () => setOpenIncrement(false);
 
   return (
     <Box sx={{ width: '100%' }}>
@@ -440,14 +421,168 @@ console.log(tableRows)
 
     
     
-        <EnhancedTableToolbar numSelected={selected.length} daily1 = {d1l1} daily2 = {d2l1} daily3 = {d3l1} />
+        {/* <EnhancedTableToolbar numSelected={selected.length} dailyOne = {d1l1} dailyTwo = {d2l1} dailyThree = {d3l1} /> */}
+      
+        <Toolbar
+      sx={{
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+        ...(numSelected > 0 && {
+          bgcolor: (theme) =>
+            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+        }),
+      }}
+    >
+      {numSelected > 0 ? (
+        <Typography
+          sx={{ flex: '1 1 100%' }}
+          color="inherit"
+          variant="subtitle1"
+          component="div"
+        >
+          {numSelected} selected
+        </Typography>
+      ) : (
+        <Typography
+          sx={{ flex: '1 1 100%', fontSize: '16px' }}
+          variant="h6"
+          id="tableTitle"
+          component="div"
+        >
+          Rank & File Employee
+        </Typography>
+      )}
+
+
+<div className="w-fit" data-testid="flowbite-tooltip-target"><button type="button" onClick={()=> showOption()}
+        className="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 focus:ring-4 focus:ring-cyan-300
+        disabled:hover:bg-white dark:bg-gray-600 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700
+        dark:hover:border-gray-700 dark:focus:ring-gray-700 focus:!ring-2 group flex h-min items-center justify-center
+        p-0.5 text-center font-medium focus:z-10 rounded-lg" position="bottom-end"><span
+          className="flex items-center rounded-md text-sm px-3 py-1.5"><svg className="w-6 h-6 iconColor"
+            aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z">
+            </path>
+          </svg></span></button></div>
+
+          <div data-testid="flowbite-tooltip" tabIndex="-1" className={showOptionValue} id=":r4:" role="tooltip">
+      <div className="py-1 text-sm text-gray-700 dark:text-gray-200">
+        <ul className="py-1 bg-white drop-shadow-md"
+          style={{ paddingLeft: '0px', position: 'absolute', top: '61px', left: '1389.px', minWidth: '84px' }}>
+          <div className="block py-2 px-4 text-sm text-gray-700 dark:text-gray-200"><span
+              className="block text-sm">Options</span></div>
+          <div className="my-1 h-px bg-gray-100 dark:bg-gray-600"></div>
+          <li onClick={handleOpen}
+            className="flex items-center justify-start py-2 px-4 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
+               
+              Change Level 1</li>
+              <li onClick={handleOpenIncrement}
+            className="flex items-center justify-start py-2 px-4 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
+               
+              Change Increment</li>
+          {/* <li onClick={openModalImport}
+            className="flex items-center justify-start py-2 px-4 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
+              <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" aria-hidden="true"
+              className="mr-2 h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" >
+    <path d="M5 5V.13a2.96 2.96 0 0 0-1.293.749L.879 3.707A2.96 2.96 0 0 0 .13 5H5Z"/>
+    <path d="M14.067 0H7v5a2 2 0 0 1-2 2H0v4h7.414l-1.06-1.061a1 1 0 1 1 1.414-1.414l2.768 2.768a1 1 0 0 1 0 1.414l-2.768 2.768a1 1 0 0 1-1.414-1.414L7.414 13H0v5a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2Z"/>
+  </svg>
+           Import Grades</li> */}
+        </ul>
+      </div>
+    </div>
+    <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openIncrement}
+        onClose={handleCloseIncrement}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+      >
+        <Fade in={openIncrement}>
+          <Box sx={style} className="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
+         <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Rank and file employee (Increments)</h3><button  onClick={handleCloseIncrement} aria-label="Close"
+            className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+            type="button"><svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true"
+              className="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg></button>
+        </div>
+          <div className="p-6 flex-1 overflow-auto">
+       <div className="space-y-6">
+    
+       <TextField    label="D1 Increment" value = {d1value} onChange={(e) => setD1Value(e.target.value)}    fullWidth />
+       <TextField    label="D2 Increment" value = {d2value} onChange={(e) => setD2Value(e.target.value)}  fullWidth />
+       <TextField    label="D3 Increment" value = {d3value}  onChange={(e) => setD3Value(e.target.value)}  fullWidth />
+       </div>
+     </div>
+     <div className="flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600 border-t"><button type="button"
+          onClick={()=> updateSalaryIncrement()}
+         className=" bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white border border-transparent hover:from-teal-500 hover:via-teal-400 hover:to-teal-400 hover:text-white focus:ring-4 focus:ring-cyan-300 disabled:hover:bg-cyan-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800 dark:disabled:hover:bg-cyan-600 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           className="flex items-center rounded-md text-sm px-4 py-2">Update</span></button><button type="button"    onClick={handleCloseIncrement} 
+         className="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-cyan-700 disabled:hover:bg-white focus:ring-cyan-700 focus:text-cyan-700 dark:bg-transparent dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 dark:disabled:hover:bg-gray-800 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           className="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div>
+          </Box>
+        </Fade>
+      </Modal>
+    <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={style} className="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
+         <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Rank and file employee</h3><button  onClick={handleClose} aria-label="Close"
+            className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+            type="button"><svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true"
+              className="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg></button>
+        </div>
+          <div className="p-6 flex-1 overflow-auto">
+       <div className="space-y-6">
+    
+       <TextField    label="D1 level 1" value = {dailyValue1} onChange={(e) => setDailyValue1(e.target.value)}    fullWidth />
+       <TextField    label="D2 level 1" value = {dailyValue2} onChange={(e) => setDailyValue2(e.target.value)}  fullWidth />
+       <TextField    label="D3 level 1" value = {dailyValue3}  onChange={(e) => setDailyValue3(e.target.value)}  fullWidth />
+     
+
+       </div>
+     </div>
+     <div className="flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600 border-t"><button type="button"
+          onClick={()=> updateSalary()}
+         className=" bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white border border-transparent hover:from-teal-500 hover:via-teal-400 hover:to-teal-400 hover:text-white focus:ring-4 focus:ring-cyan-300 disabled:hover:bg-cyan-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800 dark:disabled:hover:bg-cyan-600 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           className="flex items-center rounded-md text-sm px-4 py-2">Update</span></button><button type="button"    onClick={handleClose} 
+         className="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-cyan-700 disabled:hover:bg-white focus:ring-cyan-700 focus:text-cyan-700 dark:bg-transparent dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 dark:disabled:hover:bg-gray-800 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           className="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div>
+          </Box>
+        </Fade>
+      </Modal>
+    </Toolbar>
         <TableContainer sx={{ display: 'flex'}}>
           <Table
+          
             sx={{  width: '33.33%', }}
             aria-labelledby="tableTitle"
             size={dense ? 'small' : 'medium'}
           >
             <EnhancedTableHead
+           
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -456,9 +591,11 @@ console.log(tableRows)
               rowCount={rows.length}
               class1="Daily (D1)"
               class2 = "Monthly (DM1)"
-              daily1 = {d1l1}
+              dailyone1 = {sample}
+              increment = {d1value}
 
             />
+            
             <TableBody>
             {/* {maintable()}
              */}
@@ -470,7 +607,7 @@ console.log(tableRows)
                 const rowColor = isEven ? '#bbebff' : '#ffe6ea';
               
                 return (
-                  <TableRow  style={{ backgroundColor: rowColor }} hover >
+                  <TableRow key={index}  style={{ backgroundColor: rowColor }} hover >
           <TableCell style={{ border: '1px solid black', fontWeight: 'bold', fontSize: '16px' }} align="left">
            {row.level}
 
@@ -504,6 +641,7 @@ console.log(tableRows)
             size={dense ? 'small' : 'medium'}
           >
             <EnhancedTableHead
+            
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -512,7 +650,9 @@ console.log(tableRows)
               rowCount={rows.length}
               class1="Daily (D2)"
               class2 = "Monthly (DM2)"
-              daily1 = {d2l1}
+              dailyone1 = {d2l1}
+              increment = {d2value}
+
             />
             <TableBody>
             {/* {maintable()}
@@ -524,7 +664,7 @@ console.log(tableRows)
                 const rowColor = isEven ? '#8ecee9' : '#fbc6cf';
               
                 return (
-                  <TableRow  style={{ backgroundColor: rowColor }} hover >
+                  <TableRow key={index}  style={{ backgroundColor: rowColor }} hover >
           <TableCell style={{ border: '1px solid black', fontWeight: 'bold', fontSize: '16px' }} align="left">
            {row.level}
 
@@ -557,6 +697,7 @@ console.log(tableRows)
             size={dense ? 'small' : 'medium'}
           >
             <EnhancedTableHead
+           
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -565,7 +706,9 @@ console.log(tableRows)
               rowCount={rows.length}
               class1="Daily (D3)"
               class2 = "Monthly (DM3)"
-              daily1 = {d3l1}
+              dailyone1 = {d3l1}
+              increment = {d3value}
+
             />
             <TableBody>
             {/* {maintable()}
@@ -577,7 +720,7 @@ console.log(tableRows)
                 const rowColor = isEven ? '#60b5d9' : '#ff9bab';
               
                 return (
-                  <TableRow  style={{ backgroundColor: rowColor }} hover >
+                  <TableRow key={index}  style={{ backgroundColor: rowColor }} hover >
           <TableCell style={{ border: '1px solid black', fontWeight: 'bold', fontSize: '16px' }} align="left">
            {row.level}
 

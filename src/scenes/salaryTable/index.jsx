@@ -147,7 +147,7 @@ const Salarytable = () => {
         <TabPanel value={value} index={1}>
 
                 
-                <BasicSalaryTable d1 = {d1} d2={d2} d3 = {d3} d1l1 = {d1L1} d2l1 = {d2L1} d3l1 = {d3L1} workingDays = {workingDays}/>
+                <BasicSalaryTable setD1={setD1} d1 = {d1} d2={d2} d3 = {d3} d1l1 = {d1L1} d2l1 = {d2L1} d3l1 = {d3L1} workingDays = {workingDays}/>
                 <SuperVisory m1 = {m1} m2={m2} m3 = {m3} m1l1 = {m1L1} m2l1 = {m2L1} m3l1 = {m3L1} m4l1 = {m4L1} m5l1 = {m5L1} workingDays = {workingDays}/>
                 <Managerial m1 = {m1} m2={m2} m3 = {m3} m4 = {m4} m5 ={m5} m1l1 = {m1L1} m2l1 = {m2L1} m3l1 = {m3L1} m4l1 = {m4L1} m5l1 = {m5L1} workingDays = {workingDays}/>
                 <Felow f1 = {f1} f2={f2} f1l1 = {f1L1} f2l1 = {f2L1} workingDays = {workingDays}/>
