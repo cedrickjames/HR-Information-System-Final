@@ -136,7 +136,7 @@ function Login(props) {
 
       props.onLogin(username);
 
-      console.log(data[0].name);
+      console.log(data.result[0].name);
     } else {
       // Login failed
       setloginStatus(data.message);

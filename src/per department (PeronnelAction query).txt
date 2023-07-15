@@ -50,6 +50,7 @@ SELECT
   si.ceAllowance as newCEAllowance,
   si.leLicenseFee as newleLicenseFee,
   si.ceCertificateOnFee as newceCertificateOnFee
+ 
 FROM
   salaryincrease si
 LEFT JOIN (
@@ -97,8 +98,8 @@ LEFT JOIN (
         dateOfEffectivity,
         field
     )
-) h ON si.empNo = h.employeeId
+) h ON si.empNo = h.employeeId WHERE si.department = ?
 GROUP BY
   si.empNo
 ORDER BY
-  si.empNo;
+  si.empNo

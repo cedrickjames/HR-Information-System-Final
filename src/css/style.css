@@ -34,6 +34,37 @@
     background-position: center;
   }
 }
+.modalheader {
+  padding: 10px !important;
+}
+
+.iconColor {
+  color: black !important;
+}
+
+.grid-container {
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.css-13pmtsg-MuiGrid2-root .MuiTextField-root {
+  margin: 0px !important;
+}
+
+.css-10e3ze8-MuiStack-root {
+  overflow: hidden !important;
+  padding-top: 0px !important;
+}
+
+.css-10e3ze8-MuiStack-root > .MuiTextField-root {
+  min-width: 20px !important;
+}
+
+.grid-item {
+  flex-shrink: 0;
+  width: 50%; /* Adjust this value according to your needs */
+}
+
 .line {
   width: 100%;
   text-align: center;

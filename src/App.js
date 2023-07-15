@@ -12,9 +12,15 @@ import SidebarMain from "./scenes/global/sidebar.jsx";
 // import Invoices from "./scenes/invoices"
 // import Contacts from "./scenes/Contacts"
 import SalaryIncrease from "./scenes/salaryincrease"
+import Salarytable from "./scenes/salaryTable"
+
 // import Form from "./scenes/form"
 import Line from "./scenes/line"
 import Teams from "./scenes/team"
+import PDFDocument from "./scenes/pdffiles"
+import ImportFile from "./scenes/import"
+
+import MergedRowTable from "./scenes/sample"
 import Login from "./scenes/authentication/login copy";
 
 import Register from "./scenes/authentication/register.js";
@@ -36,7 +42,7 @@ function App() {
     const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
     const fullName = localStorage.getItem('fullName');
 
-    console.log(fullName)
+    //console.log(fullName)
     setName(fullName);
     if (isLoggedIn) {
       setLoggedIn(true);
@@ -46,13 +52,13 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(name);
+    //console.log(name);
   }, [name]);
 
   function handleLogin() {
     setLoggedIn(true);
     localStorage.setItem('loggedIn', 'true');
-    // console.log(name)
+    // //console.log(name)
     navigate('/dashboard');
     
   }
@@ -89,6 +95,14 @@ if (loggedIn) {
               <Route path="/salaryincrease" element={<SalaryIncrease name={name}/>}/>
               <Route path="/line" element={<Line/>}/>
               <Route path="/team" element={<Teams/>}/>
+              <Route path="/pdffiles" element={<PDFDocument/>}/>
+              <Route path="/import" element={<ImportFile/>}/>
+              <Route path="/salaryTable" element={<Salarytable/>}/>
+              <Route path="/sample" element={<MergedRowTable/>}/>
+
+
+
+
               </Routes>
           </main>
         </div>
@@ -111,6 +125,8 @@ return (
      <Topbar onLogout={handleLogout}/>
      {/* <Login onLogin={handleLogin}/> */}
      <Routes>
+          <Route path="/" element={<Login setName={setName} onLogin={handleLogin}/>}/>
+
               <Route path="/register" element={<Register/>}/>
               <Route path="/login" element={<Login setName={setName} onLogin={handleLogin}/>}/>
              

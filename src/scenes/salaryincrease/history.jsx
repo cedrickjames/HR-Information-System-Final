@@ -23,7 +23,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 
-function createData(date, category, field, from, to, modifier,) {
+function createData(date, category, field, from, to, modifier,dateOfEffectivity,) {
   return {
     date,
     category,
@@ -31,7 +31,7 @@ function createData(date, category, field, from, to, modifier,) {
     from,
     to,
     modifier,
-
+    dateOfEffectivity,
   };
 }
 
@@ -106,6 +106,12 @@ const headCells = [
     disablePadding: false,
     label: 'Modifier',
   },
+  {  id: 'dateOfEffectivity',
+  numeric: true,
+  disablePadding: false,
+  label: 'Date of Effectivity',
+},
+
 ];
 
 function EnhancedTableHead(props) {
@@ -217,19 +223,24 @@ const EnhancedTable = (emp) => {
         Axios.post("http://192.168.60.53:3001/history", {
             employeeID: employeeid,
           }).then((response) => {
-            //  console.log(response)
-            // console.log(response);(no,section, name, empnumber, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank) 
-            const newRows = response.data.map(row => createData(
+            
+            if(response.data.message === 'Data found'){
+              const newRows = response.data.result.map(row => createData(
               row.dateModified, 
               row.category, 
               row.field, 
               row.hr_from,
               row.hr_to, 
               row.modifier, 
+              row.dateOfEffectivity, 
+
 
               ));
             setRows(newRows);
+          }
           });
+
+          
       }, []);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -362,7 +373,9 @@ const EnhancedTable = (emp) => {
                       displayField = "Date Hired";
                     
                     break;
-                  
+                    case "position":
+                      displayField = "Position";
+                    break;
                     case "designation":
                       displayField = "Designation";
                     
@@ -461,6 +474,8 @@ const EnhancedTable = (emp) => {
                     <TableCell align="center">{row.from}</TableCell>
                     <TableCell align="center">{row.to}</TableCell>
                     <TableCell align="center">{row.modifier}</TableCell>
+                    <TableCell align="center">{row.dateOfEffectivity}</TableCell>
+
 
                   </TableRow>
                 );

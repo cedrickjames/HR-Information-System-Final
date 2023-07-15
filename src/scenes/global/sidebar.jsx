@@ -9,7 +9,7 @@ import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 // import "react-pro-sidebar/dist/css/styles.css";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMoneyBillTrendUp } from '@fortawesome/free-solid-svg-icons'
+import { faMoneyBillTrendUp, faTable } from '@fortawesome/free-solid-svg-icons'
 import React,  { useEffect, useState, useContext } from "react";
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -40,7 +40,7 @@ const SidebarMain = (props) => {
   
     const fullName = localStorage.getItem('fullName');
 
-    console.log(fullName)
+    //console.log(fullName)
     setName(fullName)
    
   }, []);
@@ -54,7 +54,9 @@ const SidebarMain = (props) => {
       setSelected("Dashboard");
     } else if (location.pathname === "/salaryincrease") {
       setSelected("Salary Increase");
-    } else if (location.pathname === "/line") {
+    } else if (location.pathname === "/salaryTable") {
+      setSelected("Salary Table");
+    }else if (location.pathname === "/line") {
       setSelected("Line");
     }
   }, [location.pathname]);
@@ -192,6 +194,13 @@ const SidebarMain = (props) => {
               title="Salary Increase"
               to="/salaryincrease"
               icon={ <FontAwesomeIcon icon={faMoneyBillTrendUp} size="lg"/>}
+              selected={selected}
+              setSelected={setSelected}
+            />
+                        <Item
+              title="Salary Table"
+              to="/salaryTable"
+              icon={ <FontAwesomeIcon icon={faTable} size="lg"/>}
               selected={selected}
               setSelected={setSelected}
             />
