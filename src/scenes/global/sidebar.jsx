@@ -260,52 +260,45 @@ const SidebarMain = (propsLogout) => {
           </Box>)}
           </Box>
 
-          <Box paddingLeft={broken ? undefined : "10%"} color={colors.grey2[1000]}>
+          <div style={{ display: 'flex', flexDirection: 'column', height: '600px' }}>
+  <Box paddingLeft={broken ? undefined : "10%"} color={colors.grey2[1000]}>
+    <Item
+      title="Salary Increase"
+      to="/salaryincrease"
+      icon={<FontAwesomeIcon icon={faMoneyBillTrendUp} size="lg" />}
+      selected={selected}
+      setSelected={setSelected}
+      color={colors.grey2[1000]}
+    />
+    <Item
+      title="Salary Table"
+      to="/salaryTable"
+      icon={<FontAwesomeIcon icon={faTable} size="lg" />}
+      selected={selected}
+      setSelected={setSelected}
+      color={colors.grey2[1000]}
+    />
+    
+    {/* Other menu items go here */}
+  </Box>
 
+  <div style={{ marginTop: 'auto' }}>
+  <Box paddingLeft={broken ? undefined : "10%"} color={colors.grey2[1000]}>
+    <Link to={"/login"}>
+      <Item
+        title="Logout"
+        to="/login"
+        icon={<LogoutTwoTone />}
+        selected={selected}
+        setSelected={handeLogout}
+        onClick={handeLogout}
+        color={colors.grey2[1000]}
+      />
+    </Link>
+    </Box>
+  </div>
+</div>
 
-            <Item
-              title="Salary Increase"
-              to="/salaryincrease"
-              icon={ <FontAwesomeIcon icon={faMoneyBillTrendUp} size="lg"/>}
-              selected={selected}
-              setSelected={setSelected}
-              color={colors.grey2[1000]}
-            />
-             <Item
-              title="Salary Table"
-              to="/salaryTable"
-              icon={ <FontAwesomeIcon icon={faTable} size="lg"/>}
-              selected={selected}
-              setSelected={setSelected}
-              color={colors.grey2[1000]}
-            />
-            {/* <Item
-              title="Line"
-              to="/line"
-              icon={<ContactsOutlined />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Manage Team"
-              to="/team"
-              icon={<PeopleOutline />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
-            <Link to={"/login"}>
-            <Item
-              title="Logout"
-              to="/login"
-              icon={<LogoutTwoTone/>}
-              selected={selected}
-              setSelected={handeLogout}
-              onClick={handeLogout}
-              color={colors.grey2[1000]}
-            />
-            </Link>
-           
-          </Box>
         </Menu>
       </Sidebar>
     </Box>

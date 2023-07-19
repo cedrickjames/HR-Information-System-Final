@@ -240,73 +240,78 @@
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={value}  textColor="secondary"
   indicatorColor="secondary" onChange={handleChange} aria-label="basic tabs example"   variant="scrollable" scrollButtons="auto" >
-            <Tab label="Administration" sx={{  borderColor: 'Violet' }} onClick={() => choosedept("Administration")}  {...a11yProps(0)} />
-            <Tab label="Accounting"  onClick={() => choosedept("Accounting")}  {...a11yProps(1)} />
-            <Tab label="Japanese" onClick={() => choosedept("Japanese")} {...a11yProps(2)} />
-            <Tab label="Parts Inspection" onClick={() => choosedept("Parts Inspection")}  {...a11yProps(3)} />
-            <Tab label="Parts Production" onClick={() => choosedept("Parts Production")}  {...a11yProps(4)} />
-            <Tab label="Production 1" onClick={() => choosedept("Production 1")}  {...a11yProps(4)} />
-            <Tab label="Production 2" onClick={() => choosedept("Production 2")}  {...a11yProps(6)} />
-            <Tab label="Production Management" onClick={() => choosedept("Production Management")}  {...a11yProps(7)} />
-            <Tab label="Production Technology" onClick={() => choosedept("Production Technology")}  {...a11yProps(8)} />
-            <Tab label="PPIC" onClick={() => choosedept("PPIC")}  {...a11yProps(9)} />
-            <Tab label="Purchasing" onClick={() => choosedept("Purchasing")}  {...a11yProps(10)} />
-            <Tab label="Quality Assurance" onClick={() => choosedept("Quality Assurance")}  {...a11yProps(11)} />
-            <Tab label="Quality Control" onClick={() => choosedept("Quality Control")}  {...a11yProps(12)} />
-            <Tab label="System Kaizen" onClick={() => choosedept("System Kaizen")}  {...a11yProps(13)} />
-            <Tab label="Warehouse" onClick={() => choosedept("Warehouse")}  {...a11yProps(14)} />
-            <Tab label="DOK" onClick={() => choosedept("DOK")}  {...a11yProps(15)} />
+            <Tab label="All" sx={{  borderColor: 'Violet' }} onClick={() => choosedept("All")}  {...a11yProps(0)} />
+
+            <Tab label="Administration" sx={{  borderColor: 'Violet' }} onClick={() => choosedept("Administration")}  {...a11yProps(1)} />
+            <Tab label="Accounting"  onClick={() => choosedept("Accounting")}  {...a11yProps(2)} />
+            <Tab label="Japanese" onClick={() => choosedept("Japanese")} {...a11yProps(3)} />
+            <Tab label="Parts Inspection" onClick={() => choosedept("Parts Inspection")}  {...a11yProps(4)} />
+            <Tab label="Parts Production" onClick={() => choosedept("Parts Production")}  {...a11yProps(5)} />
+            <Tab label="Production 1" onClick={() => choosedept("Production 1")}  {...a11yProps(6)} />
+            <Tab label="Production 2" onClick={() => choosedept("Production 2")}  {...a11yProps(7)} />
+            <Tab label="Production Management" onClick={() => choosedept("Production Management")}  {...a11yProps(8)} />
+            <Tab label="Production Technology" onClick={() => choosedept("Production Technology")}  {...a11yProps(9)} />
+            <Tab label="PPIC" onClick={() => choosedept("PPIC")}  {...a11yProps(10)} />
+            <Tab label="Purchasing" onClick={() => choosedept("Purchasing")}  {...a11yProps(11)} />
+            <Tab label="Quality Assurance" onClick={() => choosedept("Quality Assurance")}  {...a11yProps(12)} />
+            <Tab label="Quality Control" onClick={() => choosedept("Quality Control")}  {...a11yProps(13)} />
+            <Tab label="System Kaizen" onClick={() => choosedept("System Kaizen")}  {...a11yProps(14)} />
+            <Tab label="Warehouse" onClick={() => choosedept("Warehouse")}  {...a11yProps(15)} />
+            <Tab label="DOK" onClick={() => choosedept("DOK")}  {...a11yProps(16)} />
 
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
-        <SIAdmin department={"Administration"} fullName = {name} tabNumber = {0} setValue={setValue} date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"All"} fullName = {name} tabNumber = {0} setValue={setValue} date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={1}>
-        <SIAdmin department={"Accounting"}  fullName = {name} tabNumber = {1} setValue={setValue}   date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"Administration"} fullName = {name} tabNumber = {1} setValue={setValue} date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={2}>
-        <SIAdmin department={"Japanese"} fullName = {name} tabNumber = {2} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
-
+        <SIAdmin department={"Accounting"}  fullName = {name} tabNumber = {2} setValue={setValue}   date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={3}>
-        <SIAdmin department={"Parts Inspection"} fullName = {name} tabNumber = {3} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"Japanese"} fullName = {name} tabNumber = {3} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
+
         </TabPanel>
         <TabPanel value={value} index={4}>
-        <SIAdmin department={"Parts Production"} fullName = {name} tabNumber = {4} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"Parts Inspection"} fullName = {name} tabNumber = {4} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={5}>
-        <SIAdmin department={"Production 1"} fullName = {name} tabNumber = {5} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"Parts Production"} fullName = {name} tabNumber = {5} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={6}>
-        <SIAdmin department={"Production 2"} fullName = {name} tabNumber = {6} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"Production 1"} fullName = {name} tabNumber = {6} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={7}>
-        <SIAdmin department={"Production Management"} fullName = {name} tabNumber = {7} setValue={setValue}   date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"Production 2"} fullName = {name} tabNumber = {7} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={8}>
-        <SIAdmin department={"Production Technology"} fullName = {name} tabNumber = {8} setValue={setValue}   date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"Production Management"} fullName = {name} tabNumber = {8} setValue={setValue}   date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={9}>
-        <SIAdmin department={"PPIC"} fullName = {name} tabNumber = {9} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"Production Technology"} fullName = {name} tabNumber = {9} setValue={setValue}   date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={10}>
-        <SIAdmin department={"Purchasing"} fullName = {name} tabNumber = {10} setValue={setValue}   date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"PPIC"} fullName = {name} tabNumber = {10} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={11}>
-        <SIAdmin department={"Quality Assurance"} fullName = {name} tabNumber = {11} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"Purchasing"} fullName = {name} tabNumber = {11} setValue={setValue}   date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={12}>
-        <SIAdmin department={"Quality Control"} fullName = {name} tabNumber = {12} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"Quality Assurance"} fullName = {name} tabNumber = {12} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={13}>
-        <SIAdmin department={"System Kaizen"} fullName = {name} tabNumber = {13} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"Quality Control"} fullName = {name} tabNumber = {13} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={14}>
-        <SIAdmin department={"Warehouse"} fullName = {name} tabNumber = {14} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"System Kaizen"} fullName = {name} tabNumber = {14} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={15}>
-        <SIAdmin department={"DOK"} fullName = {name} tabNumber = {15} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
+        <SIAdmin department={"Warehouse"} fullName = {name} tabNumber = {15} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
+        </TabPanel>
+        <TabPanel value={value} index={16}>
+        <SIAdmin department={"DOK"} fullName = {name} tabNumber = {16} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
 
       </Box>

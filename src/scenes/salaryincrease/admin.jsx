@@ -1819,8 +1819,8 @@ const setAction = (action) =>{
   Info
 </Button> */}
     <div className="relative  w-96 mr-2">
-    <input    value={inputValue}
-      onChange={handleInputChange} type="text" id="floating_outlined" className=" h-10 block  w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+    <input   value={inputValue}
+      onChange={handleInputChange} type="text" id="floating_outlined" className=" h-10 block  w-full  bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
     {selected.length > 0 ? (
          <label 
          style={{ backgroundColor: colors.grey[900] }}
@@ -1836,7 +1836,7 @@ const setAction = (action) =>{
 </div>
     <div className="relative  w-96 mr-2">
     <input    value={inputValueDate}
-      onChange={handleInputChangeDate}  type="date" id="floating_outlined" className=" h-10 block  w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      onChange={handleInputChangeDate}  type="date" id="floating_outlined" className=" h-10 block  w-full bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
     {selected.length > 0 ? (
          <label 
          style={{ backgroundColor: colors.grey[900] }}

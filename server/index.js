@@ -202,31 +202,58 @@ app.post("/exportEmployees", (req, res)=>{
 });
 app.post("/setsitable", (req, res)=>{
     const department = req.body.department;
- 
-    // const sqlSelect = ;
-    db.query(
-        "SELECT u.*, IFNULL(h.dateModified, '') AS dateModified  FROM salaryincrease u  LEFT JOIN history h ON u.empNo = h.employeeId WHERE (h.id = (SELECT MAX(id) FROM history WHERE employeeId = u.empNo) OR h.id IS NULL) AND u.department = ? AND u.deactivated = 0 order by u.id desc",
-        // "SELECT * FROM `salaryincrease` WHERE department = ?",
-        [department],
-        (err, result)=>{
-            if(err){
-                res.send({err: err});
+ if(department === "All"){
+  db.query(
+    "SELECT u.*, IFNULL(h.dateModified, '') AS dateModified  FROM salaryincrease u  LEFT JOIN history h ON u.empNo = h.employeeId WHERE (h.id = (SELECT MAX(id) FROM history WHERE employeeId = u.empNo) OR h.id IS NULL)  AND u.deactivated = 0 order by u.id desc",
+    // "SELECT * FROM `salaryincrease` WHERE department = ?",
+    [],
+    (err, result)=>{
+        if(err){
+            res.send({err: err});
+            return;
+        }
+            if(result.length > 0){
+              const message = 'Data found';
+              res.send({ result: result, message: message });
                 return;
-            }
-                if(result.length > 0){
-                  const message = 'Data found';
-                  res.send({ result: result, message: message });
-                    return;
-                }else{
-                  
-                    res.send({message: "No Data Found"});
-                    return;
-                    
+            }else{
+              
+                res.send({message: "No Data Found"});
+                return;
+                
 
-                }
-            
-    //    console.log(err);
-    });
+            }
+        
+//    console.log(err);
+});
+ }
+ else{
+  db.query(
+    "SELECT u.*, IFNULL(h.dateModified, '') AS dateModified  FROM salaryincrease u  LEFT JOIN history h ON u.empNo = h.employeeId WHERE (h.id = (SELECT MAX(id) FROM history WHERE employeeId = u.empNo) OR h.id IS NULL) AND u.department = ? AND u.deactivated = 0 order by u.id desc",
+    // "SELECT * FROM `salaryincrease` WHERE department = ?",
+    [department],
+    (err, result)=>{
+        if(err){
+            res.send({err: err});
+            return;
+        }
+            if(result.length > 0){
+              const message = 'Data found';
+              res.send({ result: result, message: message });
+                return;
+            }else{
+              
+                res.send({message: "No Data Found"});
+                return;
+                
+
+            }
+        
+//    console.log(err);
+});
+ }
+    // const sqlSelect = ;
+
 });
 app.post("/selectLatest", (req, res)=>{
   const userid = req.body.userid;
