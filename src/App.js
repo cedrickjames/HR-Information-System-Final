@@ -19,7 +19,7 @@ import Line from "./scenes/line"
 import Teams from "./scenes/team"
 import PDFDocument from "./scenes/pdffiles"
 import ImportFile from "./scenes/import"
-
+import UploadProfilePictureModal from "./scenes/uploadProfile"
 import MergedRowTable from "./scenes/sample"
 import Login from "./scenes/authentication/login copy";
 
@@ -34,6 +34,10 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState();
+  const [profilePic, setProfilePic] = useState();
+  const [userId, setUserId] = useState();
+
+
  
 
   const navigate = useNavigate();
@@ -41,9 +45,17 @@ function App() {
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('loggedIn') === 'true';
     const fullName = localStorage.getItem('fullName');
+    const profilePicture = localStorage.getItem('profilePicture');
+    const userid = localStorage.getItem('userid');
+
+
 
     //console.log(fullName)
     setName(fullName);
+    setProfilePic(profilePicture);
+    setUserId(userid);
+
+
     if (isLoggedIn) {
       setLoggedIn(true);
 
@@ -53,13 +65,13 @@ function App() {
 
   useEffect(() => {
     //console.log(name);
-  }, [name]);
+  }, [name, profilePic, userId]);
 
   function handleLogin() {
     setLoggedIn(true);
     localStorage.setItem('loggedIn', 'true');
     // //console.log(name)
-    navigate('/dashboard');
+    navigate('/salaryincrease');
     
   }
 
@@ -86,23 +98,20 @@ if (loggedIn) {
         <div className="app">
     
          
-          <SidebarMain name={name}/>
+          <SidebarMain name={name} profilePic = {profilePic} userId={userId} onLogout={handleLogout}/>
           <main className="content" style={{overflow: 'auto'}}>
             <Topbar onLogout={handleLogout}/>
             <Routes>
-            <Route path="/" element={<Dashboard name={name}/>}/>
-              <Route path="/dashboard" element={<Dashboard name={name} />}/>
-              <Route path="/salaryincrease" element={<SalaryIncrease name={name}/>}/>
+            <Route path="/" element={<SalaryIncrease name={name} profilePic = {profilePic} userId={userId}/>}/>
+              {/* <Route path="/dashboard" element={<Dashboard name={name} profilePic = {profilePic} userId={userId} />}/> */}
+              <Route path="/salaryincrease" element={<SalaryIncrease name={name} profilePic = {profilePic} userId={userId}/>}/>
               <Route path="/line" element={<Line/>}/>
               <Route path="/team" element={<Teams/>}/>
               <Route path="/pdffiles" element={<PDFDocument/>}/>
               <Route path="/import" element={<ImportFile/>}/>
               <Route path="/salaryTable" element={<Salarytable/>}/>
               <Route path="/sample" element={<MergedRowTable/>}/>
-
-
-
-
+              <Route path="/uploadProfile" element={<UploadProfilePictureModal/>}/>
               </Routes>
           </main>
         </div>
@@ -125,7 +134,7 @@ return (
      <Topbar onLogout={handleLogout}/>
      {/* <Login onLogin={handleLogin}/> */}
      <Routes>
-          <Route path="/" element={<Login setName={setName} onLogin={handleLogin}/>}/>
+          <Route path="/" element={<Login setName={setName} setProfilePic = {setProfilePic} setUserId = {setUserId} onLogin={handleLogin}/>}/>
 
               <Route path="/register" element={<Register/>}/>
               <Route path="/login" element={<Login setName={setName} onLogin={handleLogin}/>}/>

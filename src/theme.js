@@ -5,7 +5,7 @@ import { createTheme } from "@mui/material/styles";
 export const tokens = (mode) => ({
   ...(mode === "dark"
     ? {
-      gradient:"linear-gradient(90deg, rgb(255 255 255) 10%, 91%, #374466 100%)",
+      gradient:"linear-gradient(90deg, #374466 10%, 91%, rgb(255 255 255) 100%)",
         grey: {
           100: "#e0e0e0",
           200: "#c2c2c2",
@@ -16,6 +16,7 @@ export const tokens = (mode) => ({
           700: "#3d3d3d",
           800: "#292929",
           900: "#141414",
+
         },
         lebelbg: {
           100:"#1f1d1d",
@@ -30,13 +31,15 @@ export const tokens = (mode) => ({
           700: "#a3a3a3",
           800: "#c2c2c2",
           900: "#e0e0e0",
+          1000: "#e0e0e0",
+
         },
         primary: {
           100: "#d0d1d5",
           200: "#a1a4ab",
           300: "#727681",
           400: "#1F2A40",
-          500: "#141b2d",
+          500: "#1A212C",
           600: "#101624",
           700: "#0c101b",
           800: "#080b12",
@@ -46,7 +49,7 @@ export const tokens = (mode) => ({
           100: "#040509",
           200: "#080b12",
           300: "#0c101b",
-          400: "#f2f0f0a6", // manually changed
+          400: "#1f2a40a8", // manually changed
           500: "#141b2d",
           600: "#1F2A40",
           700: "#727681",
@@ -67,7 +70,7 @@ export const tokens = (mode) => ({
         greenAccent2: {
           100: "#0f2922",
           200: "#1e5245",
-          300: "#2e7c67",
+          300: "#94e2cd",
           400: "#3da58a",
           500: "#4cceac",
           600: "#70d8bd",
@@ -150,6 +153,8 @@ export const tokens = (mode) => ({
           700: "#3d3d3d",
           800: "#292929",
           900: "#141414",
+          1000: "#e0e0e0",
+
         },
         primary: {
           100: "#040509",

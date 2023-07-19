@@ -238,7 +238,8 @@
             <Box>
             <Box sx={{ width: '100%'}}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={value} onChange={handleChange} aria-label="basic tabs example"   variant="scrollable" scrollButtons="auto" >
+          <Tabs value={value}  textColor="secondary"
+  indicatorColor="secondary" onChange={handleChange} aria-label="basic tabs example"   variant="scrollable" scrollButtons="auto" >
             <Tab label="Administration" sx={{  borderColor: 'Violet' }} onClick={() => choosedept("Administration")}  {...a11yProps(0)} />
             <Tab label="Accounting"  onClick={() => choosedept("Accounting")}  {...a11yProps(1)} />
             <Tab label="Japanese" onClick={() => choosedept("Japanese")} {...a11yProps(2)} />

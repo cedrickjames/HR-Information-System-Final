@@ -4,6 +4,8 @@ const express = require('express')
 const cors = require("cors");
 const app = express()
 const path = require('path');
+const multer = require('multer');
+
 
 app.use(cors({
     origin: '*'
@@ -57,6 +59,48 @@ app.post("/register", (req, res)=>{
 
 })
 
+// Create a storage engine to define the destination and filename
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'public/uploads'); // Destination folder path
+  },
+  filename: function (req, file, cb) {
+    const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, uniquePrefix + '-' + file.originalname); // New filename
+  },
+});
+
+// Create the multer instance
+const upload = multer({ storage: storage });
+
+// Define the route to handle file upload
+app.post('/upload', upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded.');
+  }
+
+  const userId = req.body.userId;
+  // File is successfully uploaded and moved
+  const filePath = req.file.path;
+  // res.status(200).send('File is successfully uploaded and moved.');
+  db.query(
+    "UPDATE user SET profile_picture = ? WHERE id = ?",
+    [ filePath, userId],
+    (err, result)=>{
+      if(err){
+          res.send({err: err});
+      }else {
+          if (result.affectedRows > 0) {
+            res.send({ filePath: filePath, message: "Data updated successfully" });
+          } else {
+            res.send({ message: "There is an error in adding employee" });
+          }
+        }
+      
+//    console.log(err);
+});
+
+});
 app.post("/login", (req, res)=>{
     const username = req.body.username;
     const password = req.body.password;

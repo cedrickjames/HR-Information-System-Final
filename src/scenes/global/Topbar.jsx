@@ -398,12 +398,12 @@ var csvContent = "data:text/csv;charset=utf-8,";
                     <LightModeOutlined/>
                 )}
             </IconButton>
-            <IconButton >
+            {/* <IconButton >
             <NotificationsOutlined/>
             </IconButton>
             <IconButton>
                 <SettingsOutlined/>
-            </IconButton>
+            </IconButton> */}
             <IconButton aria-describedby={id} variant="contained" onClick={handleClick}>
                 <PersonOutlined/>
             </IconButton>

@@ -3,14 +3,16 @@ import { useTheme } from "@mui/system";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
 import { HomeOutlined } from "@mui/icons-material";
-import { PeopleOutline } from "@mui/icons-material";
+import { PeopleOutline,  LogoutTwoTone }from "@mui/icons-material";
 import { ContactsOutlined } from "@mui/icons-material";
 import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 // import "react-pro-sidebar/dist/css/styles.css";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMoneyBillTrendUp, faTable } from '@fortawesome/free-solid-svg-icons'
+import { faMoneyBillTrendUp, faTable, faCamera, } from '@fortawesome/free-solid-svg-icons'
 import React,  { useEffect, useState, useContext } from "react";
+import axios from 'axios';
+
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -19,12 +21,12 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
       <MenuItem
        component="div"
         active={selected === title}
-        style={{ color: colors.grey2[100] }}
+        style={{ color: colors.grey2[1000] }}
         onClick={() => setSelected(title)}
         icon={icon}
       >
         <Typography
-          style={{ color: colors.grey2[100], textDecoration: "none" }}
+          style={{ color: colors.grey2[1000], textDecoration: "none" }}
         >
           {title}
         </Typography>
@@ -33,17 +35,88 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-const SidebarMain = (props) => {
-  const [name, setName] = useState();
+const SidebarMain = (propsLogout) => {
 
+    const [name, setName] = useState();
+  const [profilePic, setProfilePic] = useState(localStorage.getItem('profilePicture'));
+  const [userId, setUserId] = useState();
+
+  // const profilePics = ;
+  function handeLogout(event) {
+    // console.log("Asd");
+    propsLogout.onLogout(false);
+    
+  }
   useEffect(() => {
   
     const fullName = localStorage.getItem('fullName');
+    
+    const userid = localStorage.getItem('userid');
 
-    //console.log(fullName)
-    setName(fullName)
+    const modifiedProfilePics = profilePic.replace(/\\/g, '/').substring(6);
+
+    console.log(modifiedProfilePics)
+    setName(fullName);
+    setUserId(userid)
+    setProfilePic("http://192.168.60.53:3001"+ modifiedProfilePics);
+
+
    
   }, []);
+  const [selectedImage, setSelectedImage] = useState();
+  const [targetfiles, setTargetFiles] = useState(null);
+
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    // setTargetFiles(e.target.files[0])
+    const reader = new FileReader();
+
+    reader.onloadend = () => {
+      setProfilePic(reader.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('userId', userId);
+    axios
+      .post('/upload', formData)
+      .then((response) => {
+
+        console.log(response.data.filePath);
+        const modifiedProfilePics3 = response.data.filePath;
+        console.log(modifiedProfilePics3)
+        localStorage.setItem('profilePicture',modifiedProfilePics3);
+        const modifiedProfilePics4 = modifiedProfilePics3.replace(/\\/g, '/').substring(6);
+        setProfilePic("http://192.168.60.53:3001"+ modifiedProfilePics4);
+        console.log(response.data); // File is successfully uploaded and moved
+      })
+      .catch((error) => {
+        console.error('Error uploading file:', error);
+      });
+    console.log('Upload the selected image:', profilePic);
+  };
+
+  // const handleImageUpload = (e) => {
+  //   const file = targetfiles;
+  //   const formData = new FormData();
+  //   formData.append('image', file);
+  
+  //   axios
+  //     .post('/upload', formData)
+  //     .then((response) => {
+  //       console.log(response.data); // File is successfully uploaded and moved
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error uploading file:', error);
+  //     });
+  //   console.log('Upload the selected image:', selectedImage);
+  // };
+
 
   // const {fullName} = localStorage.getItem('fullName');
   const location = useLocation();
@@ -100,7 +173,7 @@ const SidebarMain = (props) => {
             // icon={broken ? <MenuOutlined/>:undefined}
             style={{
               margin: "20px 0 20px 0",
-              color: colors.grey2[100],
+              color: colors.grey2[1000],
             }}
           >
             {!collapsed ? (
@@ -110,7 +183,7 @@ const SidebarMain = (props) => {
                 alignItems="center"
                 justifyContent="center"
               >
-                <Typography variant="h3" color={colors.grey2[100]}>
+                <Typography variant="h3" color={colors.grey2[1000]}>
                   HR Information Sys.
                 </Typography>
               </Box>
@@ -122,7 +195,7 @@ const SidebarMain = (props) => {
                 ml="15px"
                 padding="10px"
               >
-                <Typography variant="h3" color={colors.grey2[100]}>
+                <Typography variant="h3" color={colors.grey2[1000]}>
                   HRIS
                 </Typography>
               </Box>
@@ -134,6 +207,8 @@ const SidebarMain = (props) => {
               <div
                 //   src={`../../assets/5R (3).JPG`}
                 style={{
+                  display: "flex",
+                  alignItems: "center",
                   width: `${collapsed ? "50px" : "100px"}`,
                   height: `${collapsed ? "50px" : "100px"}`,
                   cursor: "pointer",
@@ -141,15 +216,26 @@ const SidebarMain = (props) => {
                   backgroundSize: "cover",
                   backgroundClip: "content-box",
                   boxSizing: "border-box",
-                  backgroundImage: "url('../../assets/user.JPG')",
+                  backgroundImage: `url('${profilePic}')`,
+                  position:"relative",
+                  overflow: "hidden"
+                  
                 }}
-              ></div>
+              >
+                <div className="blueBackground">
+                <input type="file" className="editProfile"accept="image/*" onChange={handleImageChange}/>
+                <FontAwesomeIcon className="profilepic__icon" style={{
+                  margin: "auto", color: "white"
+                }} icon={faCamera} size="3x"/>
+                </div>
+               
+              </div>
             </Box>
             {!collapsed ? (
             <Box textAlign="center">
                 <Typography
                   variant="h2"
-                  color={colors.grey2[100]}
+                  color={colors.grey2[1000]}
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
@@ -162,7 +248,7 @@ const SidebarMain = (props) => {
             ):( <Box textAlign="center">
             <Typography
               variant="h2"
-              color={colors.grey2[100]}
+              color={colors.grey2[1000]}
               fontWeight="bold"
               sx={{ m: "10px 0 0 0" }}
             >
@@ -174,37 +260,26 @@ const SidebarMain = (props) => {
           </Box>)}
           </Box>
 
-          <Box paddingLeft={broken ? undefined : "10%"}>
-            <Item
-              title="Dashboard"
-              to="/dashboard"
-              icon={<HomeOutlined />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+          <Box paddingLeft={broken ? undefined : "10%"} color={colors.grey2[1000]}>
 
-            <Typography
-              variant="h6"
-              color={colors.grey2[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Data
-            </Typography>
+
             <Item
               title="Salary Increase"
               to="/salaryincrease"
               icon={ <FontAwesomeIcon icon={faMoneyBillTrendUp} size="lg"/>}
               selected={selected}
               setSelected={setSelected}
+              color={colors.grey2[1000]}
             />
-                        <Item
+             <Item
               title="Salary Table"
               to="/salaryTable"
               icon={ <FontAwesomeIcon icon={faTable} size="lg"/>}
               selected={selected}
               setSelected={setSelected}
+              color={colors.grey2[1000]}
             />
-            <Item
+            {/* <Item
               title="Line"
               to="/line"
               icon={<ContactsOutlined />}
@@ -217,14 +292,19 @@ const SidebarMain = (props) => {
               icon={<PeopleOutline />}
               selected={selected}
               setSelected={setSelected}
-            />
+            /> */}
+            <Link to={"/login"}>
             <Item
               title="Logout"
               to="/login"
-              icon={<PeopleOutline />}
+              icon={<LogoutTwoTone/>}
               selected={selected}
-              setSelected={setSelected}
+              setSelected={handeLogout}
+              onClick={handeLogout}
+              color={colors.grey2[1000]}
             />
+            </Link>
+           
           </Box>
         </Menu>
       </Sidebar>

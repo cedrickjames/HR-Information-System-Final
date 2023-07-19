@@ -131,6 +131,10 @@ function Login(props) {
 
       // setFullName(data[0].name);
       localStorage.setItem('fullName', data.result[0].name);
+      localStorage.setItem('profilePicture', data.result[0].profile_picture);
+      localStorage.setItem('userid', data.result[0].id);
+
+
 
       // setName(fullName);
 
