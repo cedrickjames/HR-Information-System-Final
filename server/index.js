@@ -176,7 +176,33 @@ app.post("/exportEmployees", (req, res)=>{
   const department = req.body.department;
 
   // const sqlSelect = ;
-  db.query(
+  if(department === "All"){
+    db.query(
+      "SELECT * from salaryincrease AND deactivated = 0 order by id desc",
+      // "SELECT * FROM `salaryincrease` WHERE department = ?",
+      [],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+              return;
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+                  return;
+              }else{
+                
+                  res.send({message: "No Data Found"});
+                  return;
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+  }
+  else{
+    db.query(
       "SELECT * from salaryincrease WHERE department = ? AND deactivated = 0 order by id desc",
       // "SELECT * FROM `salaryincrease` WHERE department = ?",
       [department],
@@ -199,6 +225,7 @@ app.post("/exportEmployees", (req, res)=>{
           
   //    console.log(err);
   });
+  }
 });
 app.post("/setsitable", (req, res)=>{
     const department = req.body.department;

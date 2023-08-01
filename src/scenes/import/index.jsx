@@ -418,24 +418,51 @@ if (allowancesArray) {
 
 console.log(PosRank, Allowance )
  
+if(empclass === "D1" || empclass === "D2" || empclass === "D3" || empclass === "DM1" || empclass === "DM2" || empclass === "DM3")
+{
+  if(levelset > 40)
+  {
+    // setlevelState(true);
+    console.log("ito ay greater than 40",empNumber,empclass)
+  }
+  else{
+    // setlevelState(false);
+    console.log("ito ay hindi greater than 40",empNumber, empclass)
 
-Axios.post("http://192.168.60.53:3001/updatesirecord", {
-  from: "import",
-  id: id,
-  daily: Daily,
-  level :levelset, 
-  basicSalary :BasicSalary, 
-  monthlySalary :MonthlySalary, 
-  posPe :totalPoint, 
-  posAllowance :Allowance, 
-  posRank :PosRank, 
-  dateOfEffectivity: inputValueDate,
-  empNumber : empNumber,
-  fullName: fullName,
-}).then((response) => {
-  //console.log(response)
+
+  }
+}
+else{
+  if(levelset > 50)
+  {
+    // setlevelState(true);
+    console.log("ito ay greater than 50",empNumber,empclass)
+
+  }
+  else{
+    // setlevelState(false);
+    console.log("ito ay hindi greater than 50",empNumber,empclass)
+
+
+  }
+}
+// Axios.post("http://192.168.60.53:3001/updatesirecord", {
+//   from: "import",
+//   id: id,
+//   daily: Daily,
+//   level :levelset, 
+//   basicSalary :BasicSalary, 
+//   monthlySalary :MonthlySalary, 
+//   posPe :totalPoint, 
+//   posAllowance :Allowance, 
+//   posRank :PosRank, 
+//   dateOfEffectivity: inputValueDate,
+//   empNumber : empNumber,
+//   fullName: fullName,
+// }).then((response) => {
+//   //console.log(response)
   
-});
+// });
 
 
 
