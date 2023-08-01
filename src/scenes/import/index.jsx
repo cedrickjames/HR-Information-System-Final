@@ -350,32 +350,32 @@ MonthlySalary = Math.round(((parseInt(levelset) - 1) * d1 + d1L1) * workingDays)
         MonthlySalary = Math.round(((parseInt(levelset) - 1) * d3 + d3L1) * workingDays);
       break;
       case "M1":
-        setDaily((parseInt(level)-1)*m1+m1L1);
-        setMonthlySalary( Math.round(((parseInt(level) - 1) * m1 + m1L1) * workingDays));
+        setDaily((parseInt(levelset)-1)*m1+m1L1);
+        setMonthlySalary( Math.round(((parseInt(levelset) - 1) * m1 + m1L1) * workingDays));
       break;
       case "M2":
-      setDaily((parseInt(level)-1)*m2+m2L1);
-      setMonthlySalary( Math.round(((parseInt(level) - 1) * m2 + m2L1) * workingDays));
+      setDaily((parseInt(levelset)-1)*m2+m2L1);
+      setMonthlySalary( Math.round(((parseInt(levelset) - 1) * m2 + m2L1) * workingDays));
       break;
       case "M3":
-      setDaily((parseInt(level)-1)*m3+m3L1);
-      setMonthlySalary( Math.round(((parseInt(level) - 1) * m3 + m3L1) * workingDays));
+      setDaily((parseInt(levelset)-1)*m3+m3L1);
+      setMonthlySalary( Math.round(((parseInt(levelset) - 1) * m3 + m3L1) * workingDays));
       break;
       case "M4":
-      setDaily((parseInt(level)-1)*m4+m4L1);
-      setMonthlySalary( Math.round(((parseInt(level) - 1) * m4 + m4L1) * workingDays));
+      setDaily((parseInt(levelset)-1)*m4+m4L1);
+      setMonthlySalary( Math.round(((parseInt(levelset) - 1) * m4 + m4L1) * workingDays));
       break;
       case "M5":
-      setDaily((parseInt(level)-1)*m5+m5L1);
-      setMonthlySalary( Math.round(((parseInt(level) - 1) * m5 + m5L1) * workingDays));
+      setDaily((parseInt(levelset)-1)*m5+m5L1);
+      setMonthlySalary( Math.round(((parseInt(levelset) - 1) * m5 + m5L1) * workingDays));
       break;
       case "F1":
-        setDaily((parseInt(level)-1)*f1+f1L1);
-        setMonthlySalary( Math.round(((parseInt(level) - 1) * f1 + f1L1) * workingDays));
+        setDaily((parseInt(levelset)-1)*f1+f1L1);
+        setMonthlySalary( Math.round(((parseInt(levelset) - 1) * f1 + f1L1) * workingDays));
         break;
         case "F2":
-        setDaily((parseInt(level)-1)*f2+f2L1);
-        setMonthlySalary( Math.round(((parseInt(level) - 1) * f2 + f2L1) * workingDays));
+        setDaily((parseInt(levelset)-1)*f2+f2L1);
+        setMonthlySalary( Math.round(((parseInt(levelset) - 1) * f2 + f2L1) * workingDays));
   
   
         break;
