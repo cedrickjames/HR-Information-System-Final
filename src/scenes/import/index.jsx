@@ -1,6 +1,7 @@
 import React,  { useEffect, useState,  } from 'react';
 import Papa from 'papaparse';
 import Axios from "axios";
+import { ControlOutlined } from '@ant-design/icons';
 
 
 
@@ -62,6 +63,9 @@ const [monthlySalary, setMonthlySalary] = React.useState('');
 const [posRankbg, setPosRankbg] = React.useState('');
 const [posAllowance, setPosAllowance] = React.useState('');
 
+
+
+// const [unsuccessfull, setUnsuccessfull] = React.useState([]);
 //VARIABLES WITH VALUES. 
 const [d1, setD1] = React.useState();
 const [d2, setD2] = React.useState();
@@ -213,9 +217,45 @@ const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	= React.
       };
     }, [d1,d2,d3]); // Passing an empty dependency array
   
+    var unsuccessful= [];
+    function downloadCSV(unsuccessful1) {
+      var rows2 = [];
+    
+      var column1 = 'No.';
+      var column2 = 'IDNumber';
+      var column3 = 'Full Name';
+    
+      rows2.push([column1, column2, column3]);
+    console.log(unsuccessful1)
+      for (var i = 0; i < unsuccessful1.length; i++) {
 
-function finalresult(empNumber,employeeName,totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName){
-  
+        var acolumn1 = i + 1;
+        var acolumn2 = unsuccessful1[i][0];
+        var acolumn3 = unsuccessful1[i][1];
+    
+        rows2.push([acolumn1, acolumn2, acolumn3]);
+      }
+      var rowcsv;
+      var csvContent = "data:text/csv;charset=utf-8,";
+    
+      /* add the column delimiter as comma(,) and each rowcsv splitted by a new line character (\n) */
+      rows2.forEach(function (rowArray) {
+        rowcsv = rowArray.join(",");
+        csvContent += rowcsv + "\r\n";
+      });
+    
+      /* create a hidden <a> DOM node and set its download attribute */
+      var encodedUri = encodeURI(csvContent);
+      var link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "Unsuccessful.csv");
+      document.body.appendChild(link);
+      /* download the data file named "Unsuccessful.csv" */
+      link.click();
+    }
+    
+function finalresult(empNumber,employeeName,totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName, resultsLength, index){
+console.log(resultsLength, index)
   let levelset;
   let finalResult;
   let LevelUpPoints;
@@ -417,62 +457,84 @@ if (allowancesArray) {
 }
 
 console.log(PosRank, Allowance )
- 
+
 if(empclass === "D1" || empclass === "D2" || empclass === "D3" || empclass === "DM1" || empclass === "DM2" || empclass === "DM3")
 {
+
   if(levelset > 40)
   {
-    // setlevelState(true);
-    console.log("ito ay greater than 40",empNumber,empclass)
+    // unsuccessful.push([empNumber, employeeName]);
+    console.log(empNumber)
+
   }
   else{
-    // setlevelState(false);
-    console.log("ito ay hindi greater than 40",empNumber, empclass)
 
+
+    Axios.post("http://192.168.60.53:3001/updatesirecord", {
+      from: "import",
+      id: id,
+      daily: Daily,
+      level :levelset, 
+      basicSalary :BasicSalary, 
+      monthlySalary :MonthlySalary, 
+      posPe :totalPoint, 
+      posAllowance :Allowance, 
+      posRank :PosRank, 
+      dateOfEffectivity: inputValueDate,
+      empNumber : empNumber,
+      fullName: fullName,
+    }).then((response) => {
+      console.log(response)
+      
+    });
 
   }
 }
 else{
+
   if(levelset > 50)
   {
-    // setlevelState(true);
-    console.log("ito ay greater than 50",empNumber,empclass)
+    console.log(empNumber)
 
+    // unsuccessful.push([empNumber, employeeName]);
   }
   else{
-    // setlevelState(false);
-    console.log("ito ay hindi greater than 50",empNumber,empclass)
 
 
+    Axios.post("http://192.168.60.53:3001/updatesirecord", {
+      from: "import",
+      id: id,
+      daily: Daily,
+      level :levelset, 
+      basicSalary :BasicSalary, 
+      monthlySalary :MonthlySalary, 
+      posPe :totalPoint, 
+      posAllowance :Allowance, 
+      posRank :PosRank, 
+      dateOfEffectivity: inputValueDate,
+      empNumber : empNumber,
+      fullName: fullName,
+    }).then((response) => {
+      //console.log(response)
+      
+    });
   }
 }
-// Axios.post("http://192.168.60.53:3001/updatesirecord", {
-//   from: "import",
-//   id: id,
-//   daily: Daily,
-//   level :levelset, 
-//   basicSalary :BasicSalary, 
-//   monthlySalary :MonthlySalary, 
-//   posPe :totalPoint, 
-//   posAllowance :Allowance, 
-//   posRank :PosRank, 
-//   dateOfEffectivity: inputValueDate,
-//   empNumber : empNumber,
-//   fullName: fullName,
-// }).then((response) => {
-//   //console.log(response)
-  
-// });
-
 
 
 }
   const handleFile = (file) => {
     Papa.parse(file, {
       complete: (results) => {
-        // console.log(results.data); // Display data in the console
+        console.log(results.data); // Display data in the console
                 // Accessing and iterating over the data array using map
-                results.data.map((row, index) => {
+                var increment=0;
+                var increment2=0;
+
+                results.data.map((row, index) => {  
+                  console.log(increment)
+                 increment++;
+                  console.log(results.data.length)
                   if(row.IDNumber !==undefined){
 
                   
@@ -482,11 +544,14 @@ else{
     console.log(totalPoint);
     // Display each row in the console
     
- 
+    console.log(increment);
+
                   Axios.post("http://192.168.60.53:3001/selectLatest", {
                     userid: row.IDNumber,
                     
                   }).then((response) => {
+                    increment2++;
+                    console.log(increment2)
                     console.log(response.data.message)
                     if(response.data.message === 'Data found'){
                       console.log(response.data.result[0].Specialization)
@@ -505,17 +570,88 @@ else{
                       let id = response.data.result[0].id;
                       let empNumber = response.data.result[0].empNo;
 
+                      var levelset;
+                      switch (true) {
+                        case (totalPoint > 0 && totalPoint <= 1.99):
+                      levelset = parseInt(level)+1
+                         
+                          break;
+                        case (totalPoint > 1.99 && totalPoint <= 2.99):
+                           levelset = parseInt(level)+2;
+                    
+                          break;
+                        case  (totalPoint > 2.99 && totalPoint <= 3.33):
+                          
+                      levelset = parseInt(level)+3;
+                    
+                          break;
+                        case  (totalPoint > 3.33 && totalPoint <= 3.66):
+                          
+                      levelset = parseInt(level)+3;
+                    
+                          break;
+                        case  (totalPoint > 3.66 && totalPoint <= 3.99):
+                          
+                      levelset = parseInt(level)+3;
+                    
+                          break;
+                          case  (totalPoint > 3.99 && totalPoint <= 4.79):
+                           
+                      levelset = parseInt(level)+4;
+                    
+                            break;
+                            case  (totalPoint > 4.79 && totalPoint <= 5.00):
+                             
+                      levelset = parseInt(level)+5;
+                    
+                              break;
+                        default:
+                        
+                          levelset = parseInt(level);
+                    
+                    
+                      }
+                      console.log(increment2)
+                      console.log(empclass)
 
+                      if(empclass === "D1" || empclass === "D2" || empclass === "D3" || empclass === "DM1" || empclass === "DM2" || empclass === "DM3")
+                      {
+                      
+                        if(levelset > 40)
+                        {
+                  console.log(increment2)
 
+                          unsuccessful.push([empNumber, employeeName]);
+                          console.log(unsuccessful)
 
+                        }
 
+                      }
+                      else{
+                      
+                        if(levelset > 50)
+                        {
+                          console.log(empNumber)
+                      
+                          unsuccessful.push([empNumber, employeeName]);
+                        }
 
-                      finalresult(empNumber, employeeName, totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName);
+                      }
+                      if(increment2===results.data.length-1){
+                        console.log(unsuccessful)
+                        downloadCSV(unsuccessful);
+
+                      }
+                      finalresult(empNumber, employeeName, totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName, results.data.length, index);
+
                       
                     }
               
                   });
+
                 }
+     
+             
                   // Perform any desired operations on each row here
                   return null; // Remember to include a return statement when using map
                 });
@@ -523,6 +659,7 @@ else{
       header: true, // Set this to true if your CSV file has headers
     });
   };
+                      // console.log(unsuccessful)
 
   return (
     <div>
