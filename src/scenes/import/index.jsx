@@ -5,7 +5,7 @@ import { ControlOutlined } from '@ant-design/icons';
 
 
 
-function CSVReader({ handleFile }) {
+function CSVReader({ handleFile,handleCloseModal }) {
   const [file, setFile] = useState();
 
   const handleInputChange = (event) => {
@@ -27,7 +27,7 @@ function CSVReader({ handleFile }) {
      <div className="flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600 border-t"><button
          type="button" onClick={()=> handleFile(file)}
          className=" bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white border border-transparent hover:from-teal-500 hover:via-teal-400 hover:to-teal-400 hover:text-white focus:ring-4 focus:ring-cyan-300 disabled:hover:bg-cyan-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800 dark:disabled:hover:bg-cyan-600 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
-           className="flex items-center rounded-md text-sm px-4 py-2">Continue</span></button><button type="button"  
+           className="flex items-center rounded-md text-sm px-4 py-2">Continue</span></button><button type="button" onClick={()=> handleCloseModal()}
          className="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-cyan-700 disabled:hover:bg-white focus:ring-cyan-700 focus:text-cyan-700 dark:bg-transparent dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 dark:disabled:hover:bg-gray-800 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
            className="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div>
  </div>
@@ -36,6 +36,16 @@ function CSVReader({ handleFile }) {
 
 
 const ImportFile = (props ) => {
+
+  const { closeModalImport } = props;
+
+  // You can now use the closeModalImport function wherever needed in this component
+
+  // Example: calling the closeModalImport function
+  const handleCloseModal = () => {
+    // Call the closeModalImport function to close the modal
+    closeModalImport();
+  };
   const [fullName, setFullName] = useState();
   useEffect(() => {
 
@@ -67,6 +77,17 @@ const [posAllowance, setPosAllowance] = React.useState('');
 
 // const [unsuccessfull, setUnsuccessfull] = React.useState([]);
 //VARIABLES WITH VALUES. 
+
+
+// const [firstHalf, setfirstHalf] = React.useState('');
+// const [firstResult, setFirstResult] = React.useState('');
+// const [secondHalf, setSecondHalf] = React.useState('');
+// const [secondResult, setSecondResult] = React.useState('');
+// const [finalPoint, setFinalPoint] = React.useState(0);
+// const [finalResult, setFinalResult] = React.useState('');
+// const [levelUpPoints, setLevelUpPoints] = React.useState('');
+
+
 const [d1, setD1] = React.useState();
 const [d2, setD2] = React.useState();
 const [d3, setD3] = React.useState();
@@ -254,10 +275,14 @@ const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	= React.
       link.click();
     }
     
-function finalresult(empNumber,employeeName,totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName, resultsLength, index){
+function finalresult(empNumber,employeeName,totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName, resultsLength, index, fh, sh){
 console.log(resultsLength, index)
   let levelset;
   let finalResult;
+  let firstResult;
+  let secondResult;
+
+
   let LevelUpPoints;
   let Daily;
   let MonthlySalary;
@@ -265,6 +290,64 @@ console.log(resultsLength, index)
   let Allowance;
   let BasicSalary;
   console.log("before data: ", employeeName, "Level: ", level, "Class: ", empclass, "Daily: ", daily, "Monthly: ", monthlySalary )
+
+  switch (true) {
+    case (fh > 0 && fh <= 1.99):
+      firstResult = 'P';
+      break;
+    case (fh > 1.99 && fh <= 2.99):
+      firstResult = 'F';
+      break;
+    case  (fh > 2.99 && fh <= 3.33):
+      firstResult = 'S-';
+      break;
+    case  (fh > 3.33 && fh <= 3.66):
+      firstResult = 'S';
+      break;
+    case  (fh > 3.66 && fh <= 3.99):
+      firstResult = 'S+';
+      break;
+      case  (fh > 3.99 && fh <= 4.79):
+        firstResult = 'G';
+        break;
+        case  (fh > 4.79 && fh <= 5.00):
+          firstResult = 'E';
+          break;
+          case  (fh > 5):
+            firstResult = 'N/A';
+            break;
+    default:
+      firstResult = '';
+  }
+  switch (true) {
+    case (sh > 0 && sh <= 1.99):
+      secondResult = 'P';
+      break;
+    case (sh > 1.99 && sh <= 2.99):
+      secondResult = 'F';
+      break;
+    case  (sh > 2.99 && sh <= 3.33):
+      secondResult = 'S-';
+      break;
+    case  (sh > 3.33 && sh <= 3.66):
+      secondResult = 'S';
+      break;
+    case  (sh > 3.66 && sh <= 3.99):
+      secondResult = 'S+';
+      break;
+      case  (sh > 3.99 && sh <= 4.79):
+        secondResult = 'G';
+        break;
+        case  (sh > 4.79 && sh <= 5.00):
+          secondResult = 'E';
+          break;
+          case  (sh > 5):
+            secondResult = 'N/A';
+            break;
+    default:
+      secondResult = '';
+  }
+
   switch (true) {
     case (totalPoint > 0 && totalPoint <= 1.99):
       setFinalResult('P');
@@ -469,6 +552,7 @@ if(empclass === "D1" || empclass === "D2" || empclass === "D3" || empclass === "
   }
   else{
 
+    console.log(fh,firstResult, sh, secondResult, totalPoint, finalResult,)
 
     Axios.post("http://192.168.60.53:3001/updatesirecord", {
       from: "import",
@@ -483,9 +567,15 @@ if(empclass === "D1" || empclass === "D2" || empclass === "D3" || empclass === "
       dateOfEffectivity: inputValueDate,
       empNumber : empNumber,
       fullName: fullName,
+      firsthp:fh,
+      firsthr:firstResult,
+      secondhp:sh,
+      secondhr:secondResult,
+      finalp:totalPoint,
+      finalr:finalResult,
     }).then((response) => {
       console.log(response)
-      
+      handleCloseModal();
     });
 
   }
@@ -500,6 +590,7 @@ else{
   }
   else{
 
+    console.log(fh,firstResult, sh, secondResult, totalPoint, finalResult,)
 
     Axios.post("http://192.168.60.53:3001/updatesirecord", {
       from: "import",
@@ -514,9 +605,15 @@ else{
       dateOfEffectivity: inputValueDate,
       empNumber : empNumber,
       fullName: fullName,
+      firsthp:fh,
+      firsthr:firstResult,
+      secondhp:sh,
+      secondhr:secondResult,
+      finalp:totalPoint,
+      finalr:finalResult,
     }).then((response) => {
       //console.log(response)
-      
+      handleCloseModal();
     });
   }
 }
@@ -542,6 +639,8 @@ else{
                   
     const totalPoint = Math.round(((  (isNaN(parseFloat(row.firsthalf)) ? 0 : parseFloat(row.firsthalf)) +   (isNaN(parseFloat(row.secondhalf)) ? 0 : parseFloat(row.secondhalf))) / 2) * 100) / 100;
     console.log(totalPoint);
+
+
     // Display each row in the console
     
     console.log(increment);
@@ -642,7 +741,7 @@ else{
                         downloadCSV(unsuccessful);
 
                       }
-                      finalresult(empNumber, employeeName, totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName, results.data.length, index);
+                      finalresult(empNumber, employeeName, totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName, results.data.length, index,row.firsthalf, row.secondhalf);
 
                       
                     }
@@ -663,7 +762,7 @@ else{
 
   return (
     <div>
-      <CSVReader handleFile={handleFile} />
+      <CSVReader handleFile={handleFile} handleCloseModal={handleCloseModal} />
     </div>
   );
 }

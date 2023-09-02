@@ -9,7 +9,7 @@ import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 // import "react-pro-sidebar/dist/css/styles.css";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMoneyBillTrendUp, faTable, faCamera, } from '@fortawesome/free-solid-svg-icons'
+import { faMoneyBillTrendUp, faTable, faCamera, faKey} from '@fortawesome/free-solid-svg-icons'
 import React,  { useEffect, useState, useContext } from "react";
 import axios from 'axios';
 
@@ -25,6 +25,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
         onClick={() => setSelected(title)}
         icon={icon}
       >
+        
         <Typography
           style={{ color: colors.grey2[1000], textDecoration: "none" }}
         >
@@ -274,6 +275,14 @@ const SidebarMain = (propsLogout) => {
       title="Salary Table"
       to="/salaryTable"
       icon={<FontAwesomeIcon icon={faTable} size="lg" />}
+      selected={selected}
+      setSelected={setSelected}
+      color={colors.grey2[1000]}
+    />
+    <Item
+      title="Grades Record"
+      to="/gradesRecord"
+      icon={<FontAwesomeIcon icon={faKey} size="lg" />}
       selected={selected}
       setSelected={setSelected}
       color={colors.grey2[1000]}

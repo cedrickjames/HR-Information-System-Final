@@ -178,7 +178,7 @@ app.post("/exportEmployees", (req, res)=>{
   // const sqlSelect = ;
   if(department === "All"){
     db.query(
-      "SELECT * from salaryincrease AND deactivated = 0 order by id desc",
+      "SELECT * from salaryincrease WHERE deactivated = 0 order by id desc",
       // "SELECT * FROM `salaryincrease` WHERE department = ?",
       [],
       (err, result)=>{
@@ -192,7 +192,7 @@ app.post("/exportEmployees", (req, res)=>{
                   return;
               }else{
                 
-                  res.send({message: "No Data Found"});
+                  res.send({ result: result,message: "No Data Found"});
                   return;
                   
 
@@ -310,7 +310,34 @@ app.post("/selectLatest", (req, res)=>{
   //    console.log(err);
   });
 });
+app.post("/selectAnnexD", (req, res)=>{
+  const userid = req.body.userid;
 
+  // const sqlSelect = ;
+  db.query(
+      "SELECT `positionLevel` as 'label' FROM `allowancetable` WHERE `annex` LIKE '%Annex D%'",
+      // "SELECT * FROM `salaryincrease` WHERE department = ?",
+      [userid],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+              return;
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+                  return;
+              }else{
+                
+                  res.send({message: "No Data Found"});
+                  return;
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
 app.post("/maintable", (req, res)=>{
 
 
@@ -529,8 +556,15 @@ app.post("/setsitablebefore", (req, res)=>{
    si.leAllowance as newLEAllowance,
    si.ceAllowance as newCEAllowance,
    si.leLicenseFee as newleLicenseFee,
-   si.ceCertificateOnFee as newceCertificateOnFee
-  
+   si.ceCertificateOnFee as newceCertificateOnFee,
+   si.fstHalfPoint as fstHalfPoint,
+   si.fstHalfResult as fstHalfResult,
+   si.sndHalfPoint as sndHalfPoint,
+   si.sndHalfResult as sndHalfResult,
+   si.FinalPoint as FinalPoint,
+   si.FinalResult as FinalResult,
+   si.LevelUpPoints as LevelUpPoints,
+   si.dateHired as dateHired
  FROM
    salaryincrease si
  LEFT JOIN (
@@ -1145,6 +1179,264 @@ app.post("/beforeData", (req, res)=>{
   const department = req.body.department;
   const selectedemployees = req.body.selectedemployees;
   console.log(selectedemployees)
+  if(department === "All"){
+    if(selectedemployees.length>0){
+      const query = `SELECT
+      si.empNo AS employeeId,
+      COALESCE(MAX(CASE WHEN h.field = 'department' THEN h.hr_from END), si.department) AS department,
+      COALESCE(MAX(CASE WHEN h.field = 'section' THEN h.hr_from END), si.section) AS section,
+      COALESCE(MAX(CASE WHEN h.field = 'employeeName' THEN h.hr_from END), si.employeeName) AS employeeName,
+      COALESCE(MAX(CASE WHEN h.field = 'sex' THEN h.hr_from END), si.sex) AS sex,
+      COALESCE(MAX(CASE WHEN h.field = 'birthday' THEN h.hr_from END), si.birthday) AS birthday,
+      COALESCE(MAX(CASE WHEN h.field = 'age' THEN h.hr_from END), si.age) AS age,
+      COALESCE(MAX(CASE WHEN h.field = 'dateHired' THEN h.hr_from END), si.dateHired) AS dateHired,
+      COALESCE(MAX(CASE WHEN h.field = 'serviceTerm' THEN h.hr_from END), si.serviceTerm) AS serviceTerm,
+      COALESCE(MAX(CASE WHEN h.field = 'position' THEN h.hr_from END), si.position) AS 'position',
+      COALESCE(MAX(CASE WHEN h.field = 'designation' THEN h.hr_from END), si.designation) AS designation,
+      COALESCE(MAX(CASE WHEN h.field = 'class' THEN h.hr_from END), si.class) AS class,
+      COALESCE(MAX(CASE WHEN h.field = 'level' THEN h.hr_from END), si.level) AS level,
+      COALESCE(MAX(CASE WHEN h.field = 'salaryType' THEN h.hr_from END), si.salaryType) AS salaryType,
+      COALESCE(MAX(CASE WHEN h.field = 'basicSalary' THEN h.hr_from END), si.basicSalary) AS basicSalary,
+      COALESCE(MAX(CASE WHEN h.field = 'daily' THEN h.hr_from END), si.daily) AS daily,
+      COALESCE(MAX(CASE WHEN h.field = 'monthlySalary' THEN h.hr_from END), si.monthlySalary) AS monthlySalary,
+      COALESCE(MAX(CASE WHEN h.field = 'pPEPoint' THEN h.hr_from END), si.pPEPoint) AS pPEPoint,
+      COALESCE(MAX(CASE WHEN h.field = 'pAllowance' THEN h.hr_from END), si.pAllowance) AS pAllowance,
+      COALESCE(MAX(CASE WHEN h.field = 'pRank' THEN h.hr_from END), si.pRank) AS pRank,
+      COALESCE(MAX(CASE WHEN h.field = 'tsPEPoint' THEN h.hr_from END), si.tsPEPoint) AS tsPEPoint,
+      COALESCE(MAX(CASE WHEN h.field = 'tsAllowance' THEN h.hr_from END), si.tsAllowance) AS tsAllowance,
+      COALESCE(MAX(CASE WHEN h.field = 'tsRank' THEN h.hr_from END), si.tsRank) AS tsRank,
+      COALESCE(MAX(CASE WHEN h.field = 'leLicenseFee' THEN h.hr_from END), si.leLicenseFee) AS leLicenseFee,
+      COALESCE(MAX(CASE WHEN h.field = 'lePEPoint' THEN h.hr_from END), si.lePEPoint) AS lePEPoint,
+      COALESCE(MAX(CASE WHEN h.field = 'leAllowance' THEN h.hr_from END), si.leAllowance) AS leAllowance,
+      COALESCE(MAX(CASE WHEN h.field = 'leRank' THEN h.hr_from END), si.leRank) AS leRank,
+      COALESCE(MAX(CASE WHEN h.field = 'ceCertificateOnFee' THEN h.hr_from END), si.ceCertificateOnFee) AS ceLicenseFee,
+      COALESCE(MAX(CASE WHEN h.field = 'cePEPoint' THEN h.hr_from END), si.cePEPoint) AS cePEPoint,
+      COALESCE(MAX(CASE WHEN h.field = 'ceAllowance' THEN h.hr_from END), si.ceAllowance) AS ceAllowance,
+      COALESCE(MAX(CASE WHEN h.field = 'ceRank' THEN h.hr_from END), si.ceRank) AS ceRank,
+      COALESCE(MAX(CASE WHEN h.field = 'Specialization' THEN h.hr_from END), si.Specialization) AS Specialization,
+      
+      si.total,
+      si.employeeName as newEmployeeName,
+      si.empNo as newEmpNo,
+      si.dateHired as newDateHired,
+      si.section as newSection,
+      si.department as newDepartment,
+      si.position as newPosition,
+      si.designation as newDesignation,
+      si.class as newClass,
+      si.level as newLevel,
+      si.salaryType as newSalaryType,
+      si.basicSalary as newBasicSalary,
+      si.pAllowance as newPAllowance,
+      si.Specialization as newSpecialization,
+      si.leAllowance as newLEAllowance,
+      si.ceAllowance as newCEAllowance,
+      si.leLicenseFee as newleLicenseFee,
+      si.ceCertificateOnFee as newceCertificateOnFee
+     
+    FROM
+      salaryincrease si
+    LEFT JOIN (
+      SELECT
+        h1.employeeId,
+        h1.field,
+        h1.hr_from
+      FROM
+        history h1
+        JOIN (
+          SELECT
+            employeeId,
+            MAX(dateOfEffectivity) AS maxDate
+          FROM
+            history
+          GROUP BY
+            employeeId
+        ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateOfEffectivity = subquery.maxDate
+      WHERE
+        (h1.employeeId, h1.dateOfEffectivity, h1.field, h1.id) IN (
+          SELECT
+            employeeId,
+            dateOfEffectivity,
+            field,
+            MAX(id)
+          FROM
+            history
+          WHERE
+            (employeeId, dateOfEffectivity, field) IN (
+              SELECT
+                employeeId,
+                dateOfEffectivity,
+                field
+              FROM
+                history
+              GROUP BY
+                employeeId,
+                dateOfEffectivity,
+                field
+              HAVING
+                MAX(id) = MAX(CASE WHEN dateOfEffectivity = subquery.maxDate THEN id END)
+            )
+          GROUP BY
+            employeeId,
+            dateOfEffectivity,
+            field
+        )
+    ) h ON si.empNo = h.employeeId WHERE si.deactivated = 0 AND id IN  (?)
+    GROUP BY
+      si.empNo
+    ORDER BY
+      si.empNo;
+      `;
+      console.log(selectedemployees);
+    
+      // const sqlSelect = ;
+      db.query(
+        query,[selectedemployees],
+          (err, result)=>{
+              if(err){
+                  res.send({err: err});
+              }
+                  if(result.length > 0){
+                      res.send(result)
+                  }else{
+                      res.send({message: "No Data Found"});
+                      
+    
+                  }
+              
+      //    console.log(err);
+      });
+    }
+    else if(selectedemployees.length === 0){
+      console.log("walang laman")
+      const query = `SELECT
+      si.empNo AS employeeId,
+      COALESCE(MAX(CASE WHEN h.field = 'department' THEN h.hr_from END), si.department) AS department,
+      COALESCE(MAX(CASE WHEN h.field = 'section' THEN h.hr_from END), si.section) AS section,
+      COALESCE(MAX(CASE WHEN h.field = 'employeeName' THEN h.hr_from END), si.employeeName) AS employeeName,
+      COALESCE(MAX(CASE WHEN h.field = 'sex' THEN h.hr_from END), si.sex) AS sex,
+      COALESCE(MAX(CASE WHEN h.field = 'birthday' THEN h.hr_from END), si.birthday) AS birthday,
+      COALESCE(MAX(CASE WHEN h.field = 'age' THEN h.hr_from END), si.age) AS age,
+      COALESCE(MAX(CASE WHEN h.field = 'dateHired' THEN h.hr_from END), si.dateHired) AS dateHired,
+      COALESCE(MAX(CASE WHEN h.field = 'serviceTerm' THEN h.hr_from END), si.serviceTerm) AS serviceTerm,
+      COALESCE(MAX(CASE WHEN h.field = 'position' THEN h.hr_from END), si.position) AS 'position',
+      COALESCE(MAX(CASE WHEN h.field = 'designation' THEN h.hr_from END), si.designation) AS designation,
+      COALESCE(MAX(CASE WHEN h.field = 'class' THEN h.hr_from END), si.class) AS class,
+      COALESCE(MAX(CASE WHEN h.field = 'level' THEN h.hr_from END), si.level) AS level,
+      COALESCE(MAX(CASE WHEN h.field = 'salaryType' THEN h.hr_from END), si.salaryType) AS salaryType,
+      COALESCE(MAX(CASE WHEN h.field = 'basicSalary' THEN h.hr_from END), si.basicSalary) AS basicSalary,
+      COALESCE(MAX(CASE WHEN h.field = 'daily' THEN h.hr_from END), si.daily) AS daily,
+      COALESCE(MAX(CASE WHEN h.field = 'monthlySalary' THEN h.hr_from END), si.monthlySalary) AS monthlySalary,
+      COALESCE(MAX(CASE WHEN h.field = 'pPEPoint' THEN h.hr_from END), si.pPEPoint) AS pPEPoint,
+      COALESCE(MAX(CASE WHEN h.field = 'pAllowance' THEN h.hr_from END), si.pAllowance) AS pAllowance,
+      COALESCE(MAX(CASE WHEN h.field = 'pRank' THEN h.hr_from END), si.pRank) AS pRank,
+      COALESCE(MAX(CASE WHEN h.field = 'tsPEPoint' THEN h.hr_from END), si.tsPEPoint) AS tsPEPoint,
+      COALESCE(MAX(CASE WHEN h.field = 'tsAllowance' THEN h.hr_from END), si.tsAllowance) AS tsAllowance,
+      COALESCE(MAX(CASE WHEN h.field = 'tsRank' THEN h.hr_from END), si.tsRank) AS tsRank,
+      COALESCE(MAX(CASE WHEN h.field = 'leLicenseFee' THEN h.hr_from END), si.leLicenseFee) AS leLicenseFee,
+      COALESCE(MAX(CASE WHEN h.field = 'lePEPoint' THEN h.hr_from END), si.lePEPoint) AS lePEPoint,
+      COALESCE(MAX(CASE WHEN h.field = 'leAllowance' THEN h.hr_from END), si.leAllowance) AS leAllowance,
+      COALESCE(MAX(CASE WHEN h.field = 'leRank' THEN h.hr_from END), si.leRank) AS leRank,
+      COALESCE(MAX(CASE WHEN h.field = 'ceCertificateOnFee' THEN h.hr_from END), si.ceCertificateOnFee) AS ceLicenseFee,
+      COALESCE(MAX(CASE WHEN h.field = 'cePEPoint' THEN h.hr_from END), si.cePEPoint) AS cePEPoint,
+      COALESCE(MAX(CASE WHEN h.field = 'ceAllowance' THEN h.hr_from END), si.ceAllowance) AS ceAllowance,
+      COALESCE(MAX(CASE WHEN h.field = 'ceRank' THEN h.hr_from END), si.ceRank) AS ceRank,
+      COALESCE(MAX(CASE WHEN h.field = 'Specialization' THEN h.hr_from END), si.Specialization) AS Specialization,
+      
+      si.total,
+      si.employeeName as newEmployeeName,
+      si.empNo as newEmpNo,
+      si.dateHired as newDateHired,
+      si.section as newSection,
+      si.department as newDepartment,
+      si.position as newPosition,
+      si.designation as newDesignation,
+      si.class as newClass,
+      si.level as newLevel,
+      si.salaryType as newSalaryType,
+      si.basicSalary as newBasicSalary,
+      si.pAllowance as newPAllowance,
+      si.Specialization as newSpecialization,
+      si.leAllowance as newLEAllowance,
+      si.ceAllowance as newCEAllowance,
+      si.leLicenseFee as newleLicenseFee,
+      si.ceCertificateOnFee as newceCertificateOnFee
+     
+    FROM
+      salaryincrease si
+    LEFT JOIN (
+      SELECT
+        h1.employeeId,
+        h1.field,
+        h1.hr_from
+      FROM
+        history h1
+        JOIN (
+          SELECT
+            employeeId,
+            MAX(dateOfEffectivity) AS maxDate
+          FROM
+            history
+          GROUP BY
+            employeeId
+        ) subquery ON h1.employeeId = subquery.employeeId AND h1.dateOfEffectivity = subquery.maxDate
+      WHERE
+        (h1.employeeId, h1.dateOfEffectivity, h1.field, h1.id) IN (
+          SELECT
+            employeeId,
+            dateOfEffectivity,
+            field,
+            MAX(id)
+          FROM
+            history
+          WHERE
+            (employeeId, dateOfEffectivity, field) IN (
+              SELECT
+                employeeId,
+                dateOfEffectivity,
+                field
+              FROM
+                history
+              GROUP BY
+                employeeId,
+                dateOfEffectivity,
+                field
+              HAVING
+                MAX(id) = MAX(CASE WHEN dateOfEffectivity = subquery.maxDate THEN id END)
+            )
+          GROUP BY
+            employeeId,
+            dateOfEffectivity,
+            field
+        )
+    ) h ON si.empNo = h.employeeId WHERE si.deactivated = 0
+    GROUP BY
+      si.empNo
+    ORDER BY
+      si.empNo;
+      `;
+  
+    
+      // const sqlSelect = ;
+      db.query(
+        query,[],
+          (err, result)=>{
+              if(err){
+                  res.send({err: err});
+              }
+                  if(result.length > 0){
+                      res.send(result)
+                  }else{
+                      res.send({message: "No Data Found"});
+                      
+    
+                  }
+              
+      //    console.log(err);
+      });
+    }
+  }
+  else{
   if(selectedemployees.length>0){
     const query = `SELECT
     si.empNo AS employeeId,
@@ -1400,7 +1692,7 @@ app.post("/beforeData", (req, res)=>{
     //    console.log(err);
     });
   }
-
+  }
 });
 app.post("/addemployee", (req, res)=>{
   const department = req.body.department;
@@ -1476,7 +1768,18 @@ app.post("/updatesirecord", (req, res)=>{
     const position = req.body.position;
     const designation = req.body.designation;
     const empClass = req.body.empClass;
- 
+ console.log(designation)
+//  const insertValues = designation.map((item) => [item]);
+//  console.log(insertValues)
+const insertValues = designation.map((item) => {
+  if (typeof item === 'string') {
+    return `${item}`;
+  } else if (typeof item === 'object' && item.label) {
+    return `${item.label}`;
+  }
+  return ''; // Handle other cases as needed
+}).join(', ');
+ console.log(insertValues);
     const salary = req.body.salary;
 
     const tsPEPoint = req.body.tsPEPoint;
@@ -1494,10 +1797,17 @@ app.post("/updatesirecord", (req, res)=>{
     const birthday = req.body.birthday;
     const age = req.body.age;
     const sex = req.body.sex;
+    const firsthp = req.body.firsthp;
+      const firsthr = req.body.firsthr;
+      const secondhp = req.body.secondhp;
+      const secondhr = req.body.secondhr;
+      const finalp = req.body.finalp;
+      const finalr = req.body.finalr;
+      const levelup = req.body.levelup;
     const dateHired = req.body.dateHired;
     const serviceTerm = req.body.serviceTerm;
     const fullName = req.body.fullName;
-console.log(id);
+console.log("fisthalfpoint" ,firsthp);
 
   // }
    
@@ -1900,7 +2210,7 @@ if(from === "manual"){
   if (designation !== previousRecord.designation) {
     updatedFields.designation = {
       previousValue: previousRecord.designation,
-      updatedValue: designation,
+      updatedValue: insertValues ,
     };
     console.log("Previous designation:", previousRecord.designation);
     console.log("Updated designation:", designation);
@@ -1916,14 +2226,14 @@ if(from === "manual"){
         if (rows.length > 0) {
           db.query(
             "UPDATE `history` SET `dateModified` = ? , `hr_to`=?,`modifier`=? WHERE `id` = ?",
-            [dateModified, designation, modifier, rows[0].id],
-     
+            [dateModified, insertValues, modifier, rows[0].id],
+      
           );
         }
         else{
           db.query(
             "INSERT INTO `history`(`employeeId`, `dateModified`, `category`, `field`, `hr_from`, `hr_to`, `modifier`, `dateOfEffectivity`) VALUES (?,?,?,?,?,?,?,?)",
-            [empNumber, dateModified, category, field, previousRecord.designation, designation, modifier, dateOfEffectivity],
+            [empNumber, dateModified, category, field, previousRecord.designation, insertValues, modifier, dateOfEffectivity],
      
           );
         }
@@ -2706,7 +3016,7 @@ if(from === "manual"){
  
     //   );
   }
-  
+   
   if (posAllowance !== previousRecord.pAllowance) {
     updatedFields.pAllowance = {
       previousValue: previousRecord.pAllowance,
@@ -2746,7 +3056,7 @@ if(from === "manual"){
  
     //   );
   }
-  
+   
   if (posRank !== previousRecord.pRank) {
     updatedFields.pRank = {
       previousValue: previousRecord.pRank,
@@ -2794,13 +3104,13 @@ if(from === "manual"){
             // Perform the update query
             if(from === "import"){
               db.query(
-                "UPDATE `salaryincrease` SET  `level`=?, `basicSalary`=?, `daily`=?, `monthlySalary`=?, `pPEPoint`=?, `pAllowance`=?, `pRank`=? WHERE `id` = ?",
-                [ level, basicSalary, daily, monthlySalary, posPe, posAllowance, posRank, id],
+                "UPDATE `salaryincrease` SET  `level`=?, `basicSalary`=?, `daily`=?, `monthlySalary`=?, `pPEPoint`=?, `pAllowance`=?, `pRank`=?, `fstHalfPoint`=?,`fstHalfResult`=?,`sndHalfPoint`=?,`sndHalfResult`=?,`FinalPoint`=?,`FinalResult`=? WHERE `id` = ?",
+                [ level, basicSalary, daily, monthlySalary, posPe, posAllowance, posRank, firsthp, firsthr, secondhp, secondhr, finalp, finalr, id],
                 (err, result) => {
                   if (err) {
                     res.send({ err: err });
                     return; 
-  
+   
                   } else {
                     if (result.affectedRows > 0) {
                       res.send({ message: "Data updated successfully", updatedFields: updatedFields });
@@ -2815,13 +3125,13 @@ if(from === "manual"){
             }
             else{
             db.query(
-              "UPDATE `salaryincrease` SET `department`=?, `section`=?, `employeeName`=?, `sex`=?, `birthday`=?, `age`=?, `empNo`=?, `dateHired`=?, `serviceTerm`=?, `position`=?, `designation`=?, `class`=?, `level`=?, `salaryType`=?, `basicSalary`=?, `daily`=?, `monthlySalary`=?, `pPEPoint`=?, `pAllowance`=?, `pRank`=?, `tsPEPoint`=?, `tsAllowance`=?, `tsRank`=?, `leLicenseFee`=?, `lePEPoint`=?, `leAllowance`=?, `leRank`=?, `ceCertificateOnFee`=?, `cePEPoint`=?, `ceAllowance`=?, `ceRank`=?, `Specialization`=? WHERE `id` = ?",
-              [department, section, empName, sex, birthday, age, empNumber, dateHired, serviceTerm, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, posPe, posAllowance, posRank, tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, id],
+              "UPDATE `salaryincrease` SET `department`=?, `section`=?, `employeeName`=?, `sex`=?, `birthday`=?, `age`=?, `empNo`=?, `dateHired`=?, `serviceTerm`=?, `position`=?, `designation`=?, `class`=?, `level`=?, `salaryType`=?, `basicSalary`=?, `daily`=?, `monthlySalary`=?, `pPEPoint`=?, `pAllowance`=?, `pRank`=?, `tsPEPoint`=?, `tsAllowance`=?, `tsRank`=?, `leLicenseFee`=?, `lePEPoint`=?, `leAllowance`=?, `leRank`=?, `ceCertificateOnFee`=?, `cePEPoint`=?, `ceAllowance`=?, `ceRank`=?, `Specialization`=?, `fstHalfPoint`=?,`fstHalfResult`=?,`sndHalfPoint`=?,`sndHalfResult`=?,`FinalPoint`=?,`FinalResult`=?,`LevelUpPoints`=? WHERE `id` = ?",
+              [department, section, empName, sex, birthday, age, empNumber, dateHired, serviceTerm, position, insertValues, empClass, level, salary, basicSalary, daily, monthlySalary, posPe, posAllowance, posRank, tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, firsthp, firsthr, secondhp, secondhr, finalp, finalr, levelup, id],
               (err, result) => {
                 if (err) {
                   res.send({ err: err });
                   return;
-
+ 
                 } else {
                   if (result.affectedRows > 0) {
                     res.send({ message: "Data updated successfully", updatedFields: updatedFields });

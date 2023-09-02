@@ -19,7 +19,15 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import dayjs from 'dayjs';
 import CompareIcon from '@mui/icons-material/Compare';
-
+import Chip from '@mui/material/Chip';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import { useAutocomplete } from '@mui/base/useAutocomplete';
+import FormControl from '@mui/material/FormControl';
+import Autocomplete from '@mui/material/Autocomplete';
+import Stack from '@mui/material/Stack';
+import { autocompleteClasses } from '@mui/material/Autocomplete';
+import CheckIcon from '@mui/icons-material/Check';
 import '../../css/style.css';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
@@ -46,19 +54,49 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import ImportFile from "../import";
 import EnhancedTable from './history';
-import { Button } from 'flowbite-react';
+import { Button, TextInput } from 'flowbite-react';
 
 // import  SalaryIncrease  from './index';
 import { Modal } from 'flowbite-react';
 import { Dropdown } from 'flowbite-react';
 import { HiCog, HiCurrencyDollar, HiLogout, HiViewGrid } from 'react-icons/hi';
 
+
+
+// function Tag(props) {
+//   const { label, onDelete, ...other } = props;
+//   return (
+//     <div {...other}>
+//       <span>{label}</span>
+//       <CloseIcon onClick={onDelete} />
+//     </div>
+//   );
+// }
+
+// Tag.propTypes = {
+//   label: PropTypes.string.isRequired,
+//   onDelete: PropTypes.func.isRequired,
+// };
+
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-
+function createDataPosition (positions){
+  return{
+    positions
+  }
+}
 // tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total
-function createData(no,section, name, empNo, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank,tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total, birthday, age, department, sex, dateHired, serviceTerm,dateModified) {
+function createData(no,section, name, empNo, position, designation, empClass, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank,tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization, total, birthday, age, department, sex, firstp, firstr, secondp, secondr, finalp, finalr, levelupp, dateHired, serviceTerm,dateModified) {
   return {
     no,
     section,
@@ -91,7 +129,7 @@ function createData(no,section, name, empNo, position, designation, empClass, le
     birthday,
     age,
     department,
-    sex,
+    sex, firstp, firstr, secondp, secondr, finalp, finalr, levelupp,
     dateHired,
     serviceTerm,
     dateModified,
@@ -342,8 +380,33 @@ function EnhancedTableHead(props) {
   };
   
 const SIAdmin = (props ) => {
+  const [movieOptions, setMovieOptions] = useState([]);
+  useEffect(() => {
+    // Fetch movie data from your backend API endpoint using Axios
+    Axios.post('http://192.168.60.53:3001/selectAnnexD')
+      .then(response => {
+        console.log(response.data.result)
+        const data = response.data.result; // Assuming your response data is an array of movies
+        setMovieOptions(data); // Update the options with fetched data
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
 
 
+  const top100Films = [
+    { positionLevel: 'The Shawshank Redemption'},
+    { positionLevel: 'The Godfather'},
+    { positionLevel: 'The Godfather: Part II'},
+    { positionLevel: 'The Dark Knight'},
+    { positionLevel: '12 Angry Men'},
+    { positionLevel: "Schindler's List"},
+    { positionLevel: 'Pulp Fiction'},
+    
+  ];
+console.log(top100Films)
+  const [rowsPosition ,  setRowsPosition] = React.useState([]);
 
   const [hideGrid, setHideGrid] = useState(true);
   
@@ -392,8 +455,20 @@ const SIAdmin = (props ) => {
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenImport, setIsModalOpenImport] = useState(false);
+  const [isSave, setIsModalSave] = useState(false);
 
 
+
+
+
+  const closeModalSave = () => {
+    setIsModalSave(false);
+  };
+
+  const openModalSave = () => {
+    handleClose();
+    setIsModalSave(true);
+  };
 
   const closeModalImport = () => {
     setIsModalOpenImport(false);
@@ -517,6 +592,10 @@ const [position1, setPosition1] = React.useState('');
   const [finalResult, setFinalResult] = React.useState('');
   const [levelUpPoints, setLevelUpPoints] = React.useState('');
   const [levelSet, setLevelSet] = React.useState('');
+
+  const [positionState, setPositionState] = React.useState(false);
+
+
   const [d1, setD1] = React.useState();
   const [d2, setD2] = React.useState();
   const [d3, setD3] = React.useState();
@@ -586,8 +665,45 @@ const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	= React.
 
   const[arrayOfProfAllowances, setarrayOfProfAllowances] = React.useState([]);
 
+  const handleRemoveOption = (removedOption) => {
+    console.log('Removed Option:', removedOption);
+  };
+  const handleAutocompleteChange = (event, newValue) => {
+
+console.log(newValue)
+setDesignation(newValue);
+
+    // if (newValue) {
+      
+    //   // Check if newValue is defined
+    //   // const newValueLabels = newValue
+    //   //   .filter((item) => item && item.label) // Filter out undefined/null items
+    //   //   .map((item) => item.label);
+      
+    //   // // Concatenate the new values with the existing designation array
+    //   // setDesignation((prevDesignation) => prevDesignation.concat(newValueLabels));
+  
+    //   // console.log('Selected Values:', designation);
+    // } else {
+    //   setDesignation([]); // Handle the case where newValue is undefined
+    //   console.log('Selected Values: []'); // Log an empty array in this case
+    // }
+  };
+
   function getsettings(){
     console.log("123")
+
+    Axios.post("http://192.168.60.53:3001/positions", {
+    }).then((response) => {
+      console.log([response.data.result]);
+      if(response.data.message === 'Data found'){
+        const newRows = response.data.result.map(row => createDataPosition(
+          row.positionLevel
+          
+          ));
+          setRowsPosition(newRows);
+      }
+    });
     Axios.post("http://192.168.60.53:3001/basicallowancesettings", {
     }).then((response) => {
       console.log(response);
@@ -699,10 +815,11 @@ const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	= React.
   }, [arrayOfProfAllowances]);
   
   function exportEmployees(){
+    console.log(department)
     Axios.post("http://192.168.60.53:3001/exportEmployees", {
       department: department,
     }).then((response) => {
-      console.log(response.data.result.length);
+      console.log(response);
       var rows =[];
   
       var column1 = 'No.';
@@ -771,7 +888,7 @@ var csvContent = "data:text/csv;charset=utf-8,";
 
   //Data of the employee
   const [position, setPosition] = React.useState('');
-  const [designation, setDesignation] = React.useState('');
+  const [designation, setDesignation] = React.useState([]);
   const [empClass, setEmpClass] = React.useState('');
   const [level, setLevel] = React.useState('');
   const [levelbg, setLevelbg] = React.useState('');
@@ -810,6 +927,16 @@ var csvContent = "data:text/csv;charset=utf-8,";
   const [age, setage] = React.useState('');
   const [department2, setdepartment2] = React.useState('');
   const [sex, setsex] = React.useState('');
+
+  const [firstp, setfirstp] = React.useState('');
+  const [firstr, setfirstr] = React.useState('');
+  const [secondp, setsecondp] = React.useState('');
+  const [secondr, setscondr] = React.useState('');
+  const [finalp, setfinalp] = React.useState('');
+  const [finalr, setfinalr] = React.useState('');
+  const [leveluppoints, setleveluppoints] = React.useState('');
+
+
   const [dateHired, setdateHired] = React.useState('');
   const [serviceTerm, setserviceTerm] = React.useState('');
   const [section, setSection] = React.useState('');
@@ -943,6 +1070,10 @@ if (allowancesArray) {
 
 
     }
+  }
+  function setPositionMain(value){
+    setPosition(value);
+    getsettings();
   }
   function levelUp(firstPoint, secondPoint) {
     setfirstHalf(firstPoint);
@@ -1315,6 +1446,7 @@ React.useEffect(() => {
         row.age,
         row.department,
         row.sex,
+        row.fstHalfPoint,row.fstHalfResult, row.sndHalfPoint, row.sndHalfResult, row.FinalPoint, row.FinalResult, row.LevelUpPoints,
         row.dateHired,
         row.serviceTerm,
         row.dateModified,
@@ -1372,6 +1504,7 @@ React.useEffect(() => {
         row.age,
         row.department,
         row.sex,
+         row.fstHalfPoint,row.fstHalfResult, row.sndHalfPoint, row.sndHalfResult, row.FinalPoint, row.FinalResult, row.LevelUpPoints,
         row.dateHired,
         row.serviceTerm,
         row.dateModified,
@@ -1432,12 +1565,20 @@ React.useEffect(() => {
       age :age, 
       department :department2, 
       sex :sex, 
+      firsthp:firstHalf,
+      firsthr:firstResult,
+      secondhp:secondHalf,
+      secondhr:secondResult,
+      finalp:finalPoint,
+      finalr:finalResult,
+      levelup:levelUpPoints,
       dateHired :dateHired, 
       serviceTerm :serviceTerm, 
       fullName: fullName,
       dateOfEffectivity: inputValueDate,
     }).then((response) => {
-      //console.log(response)
+      console.log(response)
+      closeModalSave();
       refreshTable();
       setValue(tabNumber);
       //console.log("this is it: "+tabNumber);
@@ -1639,6 +1780,7 @@ const setAction = (action) =>{
       Axios.post("http://192.168.60.53:3001/setsitablebefore", {
         empNo: employee.empNo,
       }).then((response) => {
+        console.log(response)
         setEmpName1(response.data[0].employeeName);
         setEmpNumber1(response.data[0].employeeId);
         
@@ -1681,7 +1823,13 @@ const setAction = (action) =>{
       setEmpNumber(employee.empNo);
 
       setPosition(employee.position);
-      setDesignation(employee.designation);
+      // setDesignation(employee.designation);
+      // const newLabel = { label: employee.designation };
+      const designationArray = employee.designation.split(',').map(item => item.trim());
+      // setDesignation([{label: employee.position}]);
+      // setDesignation([...designation, designationArray]);
+      setDesignation(designationArray);
+      // setPersonName()
       setEmpClass(employee.empClass);
       setLevel(employee.level);
       setLevelbg(employee.level);
@@ -1719,6 +1867,13 @@ const setAction = (action) =>{
       setage(employee.age)
       setdepartment2(employee.department)
       setsex(employee.sex)
+      setfirstp(employee.firstp)
+setfirstr(employee.firstr)
+setsecondp(employee.secondp)
+setscondr(employee.secondr)
+setfinalp(employee.finalp)
+setfinalr(employee.finalr)
+setleveluppoints(employee.levelupp)
       setdateHired(employee.dateHired)
      
        setfirstHalf('');
@@ -1952,7 +2107,7 @@ const setAction = (action) =>{
     <div data-testid="flowbite-tooltip" tabIndex="-1" className={showOptionValue} id=":r4:" role="tooltip">
       <div className="py-1 text-sm text-gray-700 dark:text-gray-200">
         <ul className="py-1 bg-white drop-shadow-md"
-          style={{ paddingLeft: '0px', position: 'absolute', top: '61px', left: '1389.px', minWidth: '84px' }}>
+          style={{ paddingLeft: '0px', position: 'absolute', top: '61px', left: '1589px', minWidth: '84px' }}>
           <div className="block py-2 px-4 text-sm text-gray-700 dark:text-gray-200"><span
               className="block text-sm">Options</span></div>
           <div className="my-1 h-px bg-gray-100 dark:bg-gray-600"></div>
@@ -1984,40 +2139,96 @@ const setAction = (action) =>{
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
             </svg></button>
         </div>
-        <ImportFile/>
-
-        {/* <div class="p-6 flex-1 overflow-auto">
-          <div class="space-y-6">
-          <ImportFile/>
-          </div>
-        </div>
-        <div class="flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600 border-t"><button
-            type="button"
-            class=" bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white border border-transparent hover:bg-cyan-600 hover:text-white focus:ring-4 focus:ring-cyan-300 disabled:hover:bg-cyan-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800 dark:disabled:hover:bg-cyan-600 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
-              class="flex items-center rounded-md text-sm px-4 py-2">Continue</span></button><button type="button"
-            class="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-cyan-700 disabled:hover:bg-white focus:ring-cyan-700 focus:text-cyan-700 dark:bg-transparent dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 dark:disabled:hover:bg-gray-800 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
-              class="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div> */}
+        <div className="p-4">
+        <div className="relative  w-96 mr-2 mb-4">
+    <input   value={inputValue}
+      onChange={handleInputChange} type="text" id="floating_outlined" className=" h-10 block  w-full  bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+    {selected.length > 0 ? (
+         <label 
+         style={{ backgroundColor: colors.grey[900] }}
+         
+         className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Nature of Action</label>
+        ) : (
+          <label 
+     style={{ backgroundColor: colors.lebelbg[100] }}
+     
+     className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Nature of Action</label>
+        )}
+    
+</div>
+    <div className="relative  w-96 mr-2">
+    <input    value={inputValueDate}
+      onChange={handleInputChangeDate}  type="date" id="floating_outlined" className=" h-10 block  w-full bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+    {selected.length > 0 ? (
+         <label 
+         style={{ backgroundColor: colors.grey[900] }}
+         
+         className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Date of Effectivity</label>
+        ) : (
+          <label 
+     style={{ backgroundColor: colors.lebelbg[100] }}
+     
+     className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Date of Effectivity</label>
+        )}
+    
+</div>
+</div>
+        <ImportFile closeModalImport={closeModalImport}/>
       </div>
-        {/* <Modal.Header  className="modalheader" >Terms of Service</Modal.Header>
-        <Modal.Body>
-          <div className="space-y-6">
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              With less than a month to go before the European Union enacts new consumer privacy laws for its citizens,
-              companies around the world are updating their terms of service agreements to comply.
-            </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              The European Union’s General Data Protection Regulation (G.D.P.R.) goes into effect on May 25 and is meant to
-              ensure a common set of data rights in the European Union. It requires organizations to notify users as soon as
-              possible of high-risk data breaches that could personally affect them.
-            </p>
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => props.setOpenModal(undefined)}>I accept</Button>
-          <Button color="gray" onClick={closeModalImport}>
-            Decline
-          </Button>
-        </Modal.Footer> */}
+
+      </Modal>
+      <Modal    show={isSave} onClose={closeModalSave}>
+      <div className="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
+        <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Confirm</h3><button  onClick={closeModalSave} aria-label="Close"
+            className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+            type="button"><svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true"
+              className="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg></button>
+        </div>
+            <div className="p-4">
+        <div className="relative  w-96 mr-2 mb-4">
+    <input   value={inputValue}
+      onChange={handleInputChange} type="text" id="floating_outlined" className=" h-10 block  w-full  bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+    {selected.length > 0 ? (
+         <label 
+         style={{ backgroundColor: colors.grey[900] }}
+         
+         className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Nature of Action</label>
+        ) : (
+          <label 
+     style={{ backgroundColor: colors.lebelbg[100] }}
+     
+     className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Nature of Action</label>
+        )}
+    
+</div>
+    <div className="relative  w-96 mr-2">
+    <input    value={inputValueDate}
+      onChange={handleInputChangeDate}  type="date" id="floating_outlined" className=" h-10 block  w-full bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+    {selected.length > 0 ? (
+         <label 
+         style={{ backgroundColor: colors.grey[900] }}
+         
+         className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Date of Effectivity</label>
+        ) : (
+          <label 
+     style={{ backgroundColor: colors.lebelbg[100] }}
+     
+     className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Date of Effectivity</label>
+        )}
+    
+</div>
+</div>
+        <div className="flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600 border-t"><button
+         type="button" onClick={()=>  updateSI(empId)}
+         className=" bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white border border-transparent hover:from-teal-500 hover:via-teal-400 hover:to-teal-400 hover:text-white focus:ring-4 focus:ring-cyan-300 disabled:hover:bg-cyan-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800 dark:disabled:hover:bg-cyan-600 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           className="flex items-center rounded-md text-sm px-4 py-2">Continue</span></button><button type="button"  onClick={closeModalSave} 
+         className="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-cyan-700 disabled:hover:bg-white focus:ring-cyan-700 focus:text-cyan-700 dark:bg-transparent dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 dark:disabled:hover:bg-gray-800 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           className="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div>
+      </div>
+
       </Modal>
          {/* <TextField
             label="Search"
@@ -2118,7 +2329,7 @@ const setAction = (action) =>{
             <CompareIcon fontSize="large"  />
           </IconButton>
         </Tooltip>
-              <Button autoFocus color="inherit"  onClick={() => updateSI(empId)}>
+              <Button autoFocus color="inherit"  onClick={openModalSave}>
                 SAVE
               </Button>
             </Toolbar>
@@ -2332,8 +2543,100 @@ const setAction = (action) =>{
                 <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
                 
                 <Grid container spacing={2}>
-                <Grid xs={12} sm={6}><TextField required  label="Position" defaultValue={position} onChange={(e) => setPosition(e.target.value)}  fullWidth /></Grid>
-                  <Grid xs={12} sm={6}> <TextField required  label="Designation" defaultValue={designation}  onChange={(e) => setDesignation(e.target.value)}   fullWidth /> </Grid>
+                <Grid xs={12} sm={6}>
+                <Select   required error={positionState}  fullWidth  value={position} style={{  padding:'0px', textAlign:'left' }} onChange={(e) => setPositionMain(e.target.value)}  >
+              
+              <MenuItem  selected value={"Positions"} disabled>Positions</MenuItem>
+              <MenuItem   value={"Staff"} >Staff</MenuItem>
+              <MenuItem   value={"Senior Staff"} >Senior Staff</MenuItem>
+              <MenuItem   value={"Operator"} >Operator</MenuItem>
+              <MenuItem   value={"Senior Operator"} >Senior Operator</MenuItem>
+
+
+
+              {rowsPosition.map((row, index) => (
+    <MenuItem key={index} value={row.positions}>
+      {row.positions}
+    </MenuItem>
+  ))}
+           </Select>
+                  {/* <TextField required  label="Position" defaultValue={designation} onChange={(e) => setPosition(e.target.value)}  fullWidth /> */}
+                  </Grid>
+                  <Grid xs={12} sm={6}>
+                  <Stack spacing={2} sx={{ width: 300 }}>
+                  <Autocomplete
+                 freeSolo // Enable free text entry
+                 multiple // Enable multiple selections
+                 disableClearable // Prevent clearing the input
+      id="combo-box-demo"
+      options={movieOptions}
+      sx={{ width: 300 }}
+      defaultValue={designation.map((item, index) => (
+       item
+      ))}
+      onChange={handleAutocompleteChange}
+      renderInput={(params) => <TextField   {...params} label="Designation"   InputProps={{
+        ...params.InputProps,
+        type: 'search',
+      }}
+      />}
+    />
+      
+    </Stack>
+                  
+                   {/* <TextField required  label="Designation" defaultValue={designation}  onChange={(e) => setDesignation(e.target.value)}   fullWidth /> */}
+                   {/* <InputLabel id="demo-multiple-chip-label">Chip</InputLabel> */}
+        {/* <Select
+        label="Designation" 
+        // defaultValue={designation}  onChange={(e) => setDesignation(e.target.value)}
+        fullWidth
+        style={{ marginTop: '0px', marginLeft: '8px', padding:'0px', textAlign:'left' }}
+          labelId="demo-multiple-chip-label"
+          id="demo-multiple-chip"
+          multiple
+          // value={designation}
+          defaultValue={personName}
+          onChange={handleChangeselect}
+          input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+          renderValue={(selected) => (
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} />
+              ))}
+            </Box>
+          )}
+          MenuProps={MenuProps}
+        >
+          {names.map((name) => (
+            <MenuItem
+              key={name}
+              value={name}
+              style={getStyles(name, personName, theme)}
+            >
+              {name}
+            </MenuItem>
+          ))}
+        </Select> */}
+        {/* <div {...getRootProps()}>
+        <Label {...getInputLabelProps()}>Customized hook</Label>
+        <InputWrapper ref={setAnchorEl} className={focused ? 'focused' : ''}>
+          {value.map((option, index) => (
+            <StyledTag label={option.title} {...getTagProps({ index })} />
+          ))}
+          <input {...getInputProps()} />
+        </InputWrapper>
+      </div>
+      {groupedOptions.length > 0 ? (
+        <Listbox {...getListboxProps()}>
+          {groupedOptions.map((option, index) => (
+            <li {...getOptionProps({ option, index })}>
+              <span>{option.title}</span>
+              <CheckIcon fontSize="small" />
+            </li>
+          ))}
+        </Listbox>
+      ) : null} */}
+                    </Grid>
                   </Grid>  
                   <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
                     Basic Salary
@@ -2518,7 +2821,42 @@ const setAction = (action) =>{
               </Grid>
           
             </Grid>
-                
+            <Grid  container hidden={!hideGrid} spacing={2} sx={{mb: 2, '& .MuiInputLabel-root': {fontSize: '20px'},'& .MuiOutlinedInput-root': {
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'green',
+                  }, fontSize:'20px'
+                }, ...(isSmallScreen && { height: 'auto' })}}>
+                  <Grid  noValidate autoComplete="off"    lg={4} sm={6} xs={12}
+                sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
+                <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
+                <Grid container spacing={2} >
+                <Grid xs={12} sm={6}><TextField required  label="1st Half Point" defaultValue={firstp}  readOnly fullWidth /></Grid>
+                  <Grid xs={12} sm={6}> <TextField required  label="Result" value={firstr}  readOnly  fullWidth /> </Grid>
+                  </Grid>  
+                </Item>
+                </Grid>
+                <Grid  noValidate autoComplete="off"    lg={4} sm={6} xs={12}
+                sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
+                <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
+                <Grid container spacing={2} >
+                <Grid xs={12} sm={6}><TextField required  label="2nd Half Point" defaultValue={secondp} readOnly fullWidth /></Grid>
+                  <Grid xs={12} sm={6}> <TextField required  label="Result" value={secondr} readOnly fullWidth /> </Grid>
+                  </Grid>  
+                </Item>
+                </Grid>
+                <Grid  noValidate autoComplete="off"    lg={4} sm={6} xs={12}
+                sx={{ ...(isSmallScreen && { height: 'auto' }), '& .MuiTextField-root': { m: 1},'& .MuiTypography-root': { m: 1},}}>
+                <Item component="form" sx={{height: '100%' , ...(isSmallScreen && { height: 'auto' })}}>
+                <Grid container spacing={2} >
+                <Grid xs={12} sm={4}><TextField required  label="Final Point" value={finalp} readOnly fullWidth /></Grid>
+                  <Grid xs={12} sm={4}> <TextField required  label="Result" value={finalr}  readOnly   fullWidth /> </Grid>
+                  <Grid xs={12} sm={4}> <TextField required  label="Level Up Points" value={leveluppoints}  readOnly fullWidth /> </Grid>
+
+                  </Grid>  
+                </Item>
+                </Grid>
+
+            </Grid>
                 <EnhancedTable employeeid={empNumber} />
                 
           </Box>
