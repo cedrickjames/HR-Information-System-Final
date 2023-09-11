@@ -468,7 +468,7 @@ console.log(sample)
           <div data-testid="flowbite-tooltip" tabIndex="-1" className={showOptionValue} id=":r4:" role="tooltip">
       <div className="py-1 text-sm text-gray-700 dark:text-gray-200">
         <ul className="py-1 bg-white drop-shadow-md"
-          style={{ paddingLeft: '0px', position: 'absolute', top: '61px', left: '1389.px', minWidth: '84px' }}>
+          style={{ paddingLeft: '0px', position: 'absolute', top: '61px', right: '10px', minWidth: '84px' }}>
           <div className="block py-2 px-4 text-sm text-gray-700 dark:text-gray-200"><span
               className="block text-sm">Options</span></div>
           <div className="my-1 h-px bg-gray-100 dark:bg-gray-600"></div>

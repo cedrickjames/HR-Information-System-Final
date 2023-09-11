@@ -256,10 +256,55 @@ const headCells = [
     checkboxLike: false,
   },
 ];
+const headCells2 = [
+  {
+    id: 'no',
+    numeric: false,
+    disablePadding: false,
+    checkboxLike: true,
+    label: 'No.',
+    
+  },
+  {
+    id: 'department',
+    numeric: true,
+    disablePadding: false,
+    label: 'Department',
+    checkboxLike: true,
+  },
+  {
+    id: 'name',
+    numeric: true,
+    disablePadding: false,
+    label: 'Employee Name',
+    checkboxLike: false,
+  },
+  {
+    id: 'empnumber',
+    numeric: true,
+    disablePadding: false,
+    label: 'Employee Number',
+    checkboxLike: false,
+  },
+  {
+    id: 'position',
+    numeric: true,
+    disablePadding: false,
+    label: 'Position',
+    checkboxLike: false,
+  },
+  {
+    id: 'dateModified',
+    numeric: true,
+    disablePadding: false,
+    label: 'Last Date Modified',
+    checkboxLike: false,
+  },
+];
 
 
 function EnhancedTableHead(props) {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
+    const { department, onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
       props;
     const createSortHandler = (property) => (event) => {
       onRequestSort(event, property);
@@ -279,7 +324,58 @@ function EnhancedTableHead(props) {
             }}
             />
           </TableCell>
-          {headCells.map((headCell) => (
+          {/* {department !== "All" ? (
+  <TableCell padding="checkbox" align="left">{row.section}</TableCell>
+) : (
+  <TableCell padding="checkbox" align="left">{row.department}</TableCell>
+)} */}
+
+{department !== "All" ? (
+  headCells.map((headCell) => (
+    <TableCell
+      key={headCell.id}
+      align={headCell.numeric ? 'center' : 'left'}
+      padding={headCell.checkboxLike ? 'checkbox' : (headCell.disablePadding ? 'none' : 'normal')}
+      sortDirection={orderBy === headCell.id ? order : false}
+    >
+      <TableSortLabel
+        active={orderBy === headCell.id}
+        direction={orderBy === headCell.id ? order : 'asc'}
+        onClick={createSortHandler(headCell.id)}
+      >
+        {headCell.label}
+        {orderBy === headCell.id ? (
+          <Box component="span" sx={visuallyHidden}>
+            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+          </Box>
+        ) : null}
+      </TableSortLabel>
+    </TableCell>
+  ))
+) : (
+  headCells2.map((headCell) => (
+    <TableCell
+      key={headCell.id}
+      align={headCell.numeric ? 'center' : 'left'}
+      padding={headCell.checkboxLike ? 'checkbox' : (headCell.disablePadding ? 'none' : 'normal')}
+      sortDirection={orderBy === headCell.id ? order : false}
+    >
+      <TableSortLabel
+        active={orderBy === headCell.id}
+        direction={orderBy === headCell.id ? order : 'asc'}
+        onClick={createSortHandler(headCell.id)}
+      >
+        {headCell.label}
+        {orderBy === headCell.id ? (
+          <Box component="span" sx={visuallyHidden}>
+            {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+          </Box>
+        ) : null}
+      </TableSortLabel>
+    </TableCell>
+  ))
+)}
+          {/* {headCells.map((headCell) => (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? 'center' : 'left'}
@@ -301,13 +397,14 @@ function EnhancedTableHead(props) {
                 ) : null}
               </TableSortLabel>
             </TableCell>
-          ))}
+          ))} */}
         </TableRow>
       </TableHead>
     );
   }
   
   EnhancedTableHead.propTypes = {
+    department: PropTypes.string.isRequired,
     numSelected: PropTypes.number.isRequired,
     onRequestSort: PropTypes.func.isRequired,
     onSelectAllClick: PropTypes.func.isRequired,
@@ -395,17 +492,6 @@ const SIAdmin = (props ) => {
   }, []);
 
 
-  const top100Films = [
-    { positionLevel: 'The Shawshank Redemption'},
-    { positionLevel: 'The Godfather'},
-    { positionLevel: 'The Godfather: Part II'},
-    { positionLevel: 'The Dark Knight'},
-    { positionLevel: '12 Angry Men'},
-    { positionLevel: "Schindler's List"},
-    { positionLevel: 'Pulp Fiction'},
-    
-  ];
-console.log(top100Films)
   const [rowsPosition ,  setRowsPosition] = React.useState([]);
 
   const [hideGrid, setHideGrid] = useState(true);
@@ -1975,7 +2061,7 @@ setleveluppoints(employee.levelupp)
 </Button> */}
     <div className="relative  w-96 mr-2">
     <input   value={inputValue}
-      onChange={handleInputChange} type="text" id="floating_outlined" className=" h-10 block  w-full  bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      onChange={handleInputChange} type="text" id="floating_outlined8" className=" h-10 block  w-full  bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
     {selected.length > 0 ? (
          <label 
          style={{ backgroundColor: colors.grey[900] }}
@@ -1991,7 +2077,7 @@ setleveluppoints(employee.levelupp)
 </div>
     <div className="relative  w-96 mr-2">
     <input    value={inputValueDate}
-      onChange={handleInputChangeDate}  type="date" id="floating_outlined" className=" h-10 block  w-full bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      onChange={handleInputChangeDate}  type="date" id="floating_outlined2" className=" h-10 block  w-full bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
     {selected.length > 0 ? (
          <label 
          style={{ backgroundColor: colors.grey[900] }}
@@ -2078,7 +2164,7 @@ setleveluppoints(employee.levelupp)
   </Modal.Body>
 </Modal>
     <div className="relative  w-96 mr-2">
-    <input  onChange={(event) => setSearchQuery(event.target.value)} type="text" id="floating_outlined" className=" h-10 block  w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+    <input  onChange={(event) => setSearchQuery(event.target.value)} type="text" id="floating_outlined3" className=" h-10 block  w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
     {selected.length > 0 ? (
          <label 
          style={{ backgroundColor: colors.grey[900] }}
@@ -2107,7 +2193,7 @@ setleveluppoints(employee.levelupp)
     <div data-testid="flowbite-tooltip" tabIndex="-1" className={showOptionValue} id=":r4:" role="tooltip">
       <div className="py-1 text-sm text-gray-700 dark:text-gray-200">
         <ul className="py-1 bg-white drop-shadow-md"
-          style={{ paddingLeft: '0px', position: 'absolute', top: '61px', left: '1589px', minWidth: '84px' }}>
+          style={{ paddingLeft: '0px', position: 'absolute', top: '61px', right: '10px', minWidth: '84px' }}>
           <div className="block py-2 px-4 text-sm text-gray-700 dark:text-gray-200"><span
               className="block text-sm">Options</span></div>
           <div className="my-1 h-px bg-gray-100 dark:bg-gray-600"></div>
@@ -2142,7 +2228,7 @@ setleveluppoints(employee.levelupp)
         <div className="p-4">
         <div className="relative  w-96 mr-2 mb-4">
     <input   value={inputValue}
-      onChange={handleInputChange} type="text" id="floating_outlined" className=" h-10 block  w-full  bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      onChange={handleInputChange} type="text" id="floating_outlined4" className=" h-10 block  w-full  bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 " placeholder=" " />
     {selected.length > 0 ? (
          <label 
          style={{ backgroundColor: colors.grey[900] }}
@@ -2158,7 +2244,7 @@ setleveluppoints(employee.levelupp)
 </div>
     <div className="relative  w-96 mr-2">
     <input    value={inputValueDate}
-      onChange={handleInputChangeDate}  type="date" id="floating_outlined" className=" h-10 block  w-full bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      onChange={handleInputChangeDate}  type="date" id="floating_outlined5" className=" h-10 block  w-full bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
     {selected.length > 0 ? (
          <label 
          style={{ backgroundColor: colors.grey[900] }}
@@ -2190,7 +2276,7 @@ setleveluppoints(employee.levelupp)
             <div className="p-4">
         <div className="relative  w-96 mr-2 mb-4">
     <input   value={inputValue}
-      onChange={handleInputChange} type="text" id="floating_outlined" className=" h-10 block  w-full  bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      onChange={handleInputChange} type="text" id="floating_outlined6" className=" h-10 block  w-full  bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
     {selected.length > 0 ? (
          <label 
          style={{ backgroundColor: colors.grey[900] }}
@@ -2206,7 +2292,7 @@ setleveluppoints(employee.levelupp)
 </div>
     <div className="relative  w-96 mr-2">
     <input    value={inputValueDate}
-      onChange={handleInputChangeDate}  type="date" id="floating_outlined" className=" h-10 block  w-full bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+      onChange={handleInputChangeDate}  type="date" id="floating_outlined7" className=" h-10 block  w-full bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
     {selected.length > 0 ? (
          <label 
          style={{ backgroundColor: colors.grey[900] }}
@@ -2242,7 +2328,7 @@ setleveluppoints(employee.levelupp)
           <TableContainer sx={{ maxHeight: 440 }}>
             <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? 'small' : 'medium' } stickyHeader
               aria-label="sticky table">
-              <EnhancedTableHead numSelected={selected.length} order={order} orderBy={orderBy}
+              <EnhancedTableHead department = {department} numSelected={selected.length} order={order} orderBy={orderBy}
                 onSelectAllClick={handleSelectAllClick} onRequestSort={handleRequestSort} rowCount={rows.length} />
                 
               <TableBody>
@@ -2288,7 +2374,12 @@ setleveluppoints(employee.levelupp)
                   <TableCell component="th" id={labelId} scope="row" padding="checkbox">
                     {count}
                   </TableCell>
-                  <TableCell padding="checkbox" align="left">{row.section}</TableCell>
+                  {department !== "All" ? (
+  <TableCell padding="checkbox" align="left">{row.section}</TableCell>
+) : (
+  <TableCell padding="checkbox" align="left">{row.department}</TableCell>
+)}
+                  {/* <TableCell padding="checkbox" align="left">{row.section}</TableCell> */}
                   <TableCell align="center">{row.name}</TableCell>
                   <TableCell align="center">{row.empNo}</TableCell>
                   <TableCell align="center">{row.position}</TableCell>
@@ -2329,9 +2420,14 @@ setleveluppoints(employee.levelupp)
             <CompareIcon fontSize="large"  />
           </IconButton>
         </Tooltip>
-              <Button autoFocus color="inherit"  onClick={openModalSave}>
+        {department !== "All" && (
+  <Button autoFocus color="inherit" onClick={openModalSave}>
+    SAVE
+  </Button>
+)}
+              {/* <Button autoFocus color="inherit"  onClick={openModalSave}>
                 SAVE
-              </Button>
+              </Button> */}
             </Toolbar>
           </AppBar>
           <Box sx={{ mt: 2 , padding: 1}} className="grid-container" >

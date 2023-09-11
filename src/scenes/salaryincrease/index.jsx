@@ -7,6 +7,17 @@
   import Tabs from '@mui/material/Tabs';
   import Tab from '@mui/material/Tab';
   import SIAdmin from "./admin";
+
+
+
+  function createDataPosition (department){
+    return{
+      department
+    }
+  }
+
+
+
   function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
@@ -130,12 +141,32 @@
     //console.log({name});
     const [department, setDepartment] = useState([]);
     const [tabNumber, setTabNumber] = useState([]);
-
+    const [rowsDepartment ,  setRowsDepartment] = React.useState([]);
     const [data, setData] = useState([]);
     // const [fullName, setFullName] = useState([]);
 
     const [rows, setRows] = useState([]);
     // setFullName({name});
+
+    function getDepartment(){
+      Axios.post("http://192.168.60.53:3001/department", {
+      }).then((response) => {
+        console.log([response.data.result]);
+        if(response.data.message === 'Data found'){
+          const newRows = response.data.result.map(row => createDataPosition(
+            row.department
+            
+            ));
+            setRowsDepartment(newRows);
+        }
+      });
+    }
+    
+    React.useEffect(() => {
+      //  console.log(arrayOfProfAllowances)
+      getDepartment();
+    
+      }, []);
 
       const choosedept = (dept) => {
         Axios.post("http://192.168.60.53:3001/setsitable", {
@@ -242,7 +273,13 @@
   indicatorColor="secondary" onChange={handleChange} aria-label="basic tabs example"   variant="scrollable" scrollButtons="auto" >
             <Tab label="All" sx={{  borderColor: 'Violet' }} onClick={() => choosedept("All")}  {...a11yProps(0)} />
 
-            <Tab label="Administration" sx={{  borderColor: 'Violet' }} onClick={() => choosedept("Administration")}  {...a11yProps(1)} />
+            {rowsDepartment.map((row, index) => (
+              <Tab key={index} label={row.department} sx={{  borderColor: 'Violet' }} onClick={() => choosedept(row.department)}  {...a11yProps({index})} />
+    // <MenuItem key={index} value={row.positions}>
+    //   {row.positions}
+    // </MenuItem>
+  ))}
+            {/* <Tab label="Administration" sx={{  borderColor: 'Violet' }} onClick={() => choosedept("Administration")}  {...a11yProps(1)} />
             <Tab label="Accounting"  onClick={() => choosedept("Accounting")}  {...a11yProps(2)} />
             <Tab label="Japanese" onClick={() => choosedept("Japanese")} {...a11yProps(3)} />
             <Tab label="Parts Inspection" onClick={() => choosedept("Parts Inspection")}  {...a11yProps(4)} />
@@ -257,14 +294,23 @@
             <Tab label="Quality Control" onClick={() => choosedept("Quality Control")}  {...a11yProps(13)} />
             <Tab label="System Kaizen" onClick={() => choosedept("System Kaizen")}  {...a11yProps(14)} />
             <Tab label="Warehouse" onClick={() => choosedept("Warehouse")}  {...a11yProps(15)} />
-            <Tab label="DOK" onClick={() => choosedept("DOK")}  {...a11yProps(16)} />
+            <Tab label="DOK" onClick={() => choosedept("DOK")}  {...a11yProps(16)} /> */}
 
           </Tabs>
         </Box>
         <TabPanel value={value} index={0}>
         <SIAdmin department={"All"} fullName = {name} tabNumber = {0} setValue={setValue} date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
-        <TabPanel value={value} index={1}>
+        {rowsDepartment.map((row, index) => (
+              // <Tab key={index} label={row.department} sx={{  borderColor: 'Violet' }} onClick={() => choosedept(row.department)}  {...a11yProps({index})} />
+              <TabPanel key={index+1} value={value} index={index+1}>
+        <SIAdmin department={row.department} fullName = {name} tabNumber = {index+1} setValue={setValue} date={localStorage.getItem("dateOfEffectivity")}/>
+        </TabPanel>
+    // <MenuItem key={index} value={row.positions}>
+    //   {row.positions}
+    // </MenuItem>
+  ))}
+        {/* <TabPanel value={value} index={1}>
         <SIAdmin department={"Administration"} fullName = {name} tabNumber = {1} setValue={setValue} date={localStorage.getItem("dateOfEffectivity")}/>
         </TabPanel>
         <TabPanel value={value} index={2}>
@@ -312,7 +358,7 @@
         </TabPanel>
         <TabPanel value={value} index={16}>
         <SIAdmin department={"DOK"} fullName = {name} tabNumber = {16} setValue={setValue}  date={localStorage.getItem("dateOfEffectivity")}/>
-        </TabPanel>
+        </TabPanel> */}
 
       </Box>
     

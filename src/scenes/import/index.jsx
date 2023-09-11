@@ -275,7 +275,7 @@ const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	= React.
       link.click();
     }
     
-function finalresult(empNumber,employeeName,totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName, resultsLength, index, fh, sh){
+function finalresult(empNumber,employeeName,totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName, resultsLength, index, fh, sh, pepoint, pallowance){
 console.log(resultsLength, index)
   let levelset;
   let finalResult;
@@ -286,8 +286,9 @@ console.log(resultsLength, index)
   let LevelUpPoints;
   let Daily;
   let MonthlySalary;
-  let PosRank;
-  let Allowance;
+  let PosRank = rank;
+  let Allowance = pallowance;
+  let pePoint = pepoint;
   let BasicSalary;
   console.log("before data: ", employeeName, "Level: ", level, "Class: ", empclass, "Daily: ", daily, "Monthly: ", monthlySalary )
 
@@ -475,30 +476,44 @@ MonthlySalary = Math.round(((parseInt(levelset) - 1) * d1 + d1L1) * workingDays)
       case "M1":
         setDaily((parseInt(levelset)-1)*m1+m1L1);
         setMonthlySalary( Math.round(((parseInt(levelset) - 1) * m1 + m1L1) * workingDays));
+        Daily  = (parseInt(levelset)-1)*m1+m1L1;
+        MonthlySalary = Math.round(((parseInt(levelset) - 1) * m1 + m1L1) * workingDays);
       break;
       case "M2":
       setDaily((parseInt(levelset)-1)*m2+m2L1);
       setMonthlySalary( Math.round(((parseInt(levelset) - 1) * m2 + m2L1) * workingDays));
+      Daily  = (parseInt(levelset)-1)*m2+m2L1;
+      MonthlySalary = Math.round(((parseInt(levelset) - 1) * m2 + m2L1) * workingDays);
       break;
       case "M3":
       setDaily((parseInt(levelset)-1)*m3+m3L1);
       setMonthlySalary( Math.round(((parseInt(levelset) - 1) * m3 + m3L1) * workingDays));
+      Daily  = (parseInt(levelset)-1)*m3+m3L1;
+      MonthlySalary = Math.round(((parseInt(levelset) - 1) * m3 + m3L1) * workingDays);
       break;
       case "M4":
       setDaily((parseInt(levelset)-1)*m4+m4L1);
       setMonthlySalary( Math.round(((parseInt(levelset) - 1) * m4 + m4L1) * workingDays));
+      Daily  = (parseInt(levelset)-1)*m4+m4L1;
+      MonthlySalary = Math.round(((parseInt(levelset) - 1) * m4 + m4L1) * workingDays);
       break;
       case "M5":
       setDaily((parseInt(levelset)-1)*m5+m5L1);
       setMonthlySalary( Math.round(((parseInt(levelset) - 1) * m5 + m5L1) * workingDays));
+      Daily  = (parseInt(levelset)-1)*m5+m5L1;
+      MonthlySalary = Math.round(((parseInt(levelset) - 1) * m5 + m5L1) * workingDays);
       break;
       case "F1":
         setDaily((parseInt(levelset)-1)*f1+f1L1);
         setMonthlySalary( Math.round(((parseInt(levelset) - 1) * f1 + f1L1) * workingDays));
+        Daily  = (parseInt(levelset)-1)*f1+f1L1;
+      MonthlySalary = Math.round(((parseInt(levelset) - 1) * f1 + f1L1)* workingDays);
         break;
         case "F2":
         setDaily((parseInt(levelset)-1)*f2+f2L1);
         setMonthlySalary( Math.round(((parseInt(levelset) - 1) * f2 + f2L1) * workingDays));
+        Daily  = (parseInt(levelset)-1)*f2+f2L1;
+      MonthlySalary = Math.round(((parseInt(levelset) - 1) * f2 + f2L1)* workingDays);
   
   
         break;
@@ -538,6 +553,9 @@ if (allowancesArray) {
   console.log('samplePosition not found in arrayOfProfAllowances');
 }
 }
+else{
+  totalPoint = pePoint;
+}
 
 console.log(PosRank, Allowance )
 
@@ -554,7 +572,7 @@ if(empclass === "D1" || empclass === "D2" || empclass === "D3" || empclass === "
 
     console.log(fh,firstResult, sh, secondResult, totalPoint, finalResult,)
 
-    Axios.post("http://192.168.60.53:3001/updatesirecord", {
+    Axios.post("http://192.168.60.53:3001/updatesirecordImport", {
       from: "import",
       id: id,
       daily: Daily,
@@ -592,7 +610,7 @@ else{
 
     console.log(fh,firstResult, sh, secondResult, totalPoint, finalResult,)
 
-    Axios.post("http://192.168.60.53:3001/updatesirecord", {
+    Axios.post("http://192.168.60.53:3001/updatesirecordImport", {
       from: "import",
       id: id,
       daily: Daily,
@@ -651,7 +669,7 @@ else{
                   }).then((response) => {
                     increment2++;
                     console.log(increment2)
-                    console.log(response.data.message)
+                    console.log(response.data.result[0])
                     if(response.data.message === 'Data found'){
                       console.log(response.data.result[0].Specialization)
                       setLevel(response.data.result[0].level)
@@ -664,6 +682,10 @@ else{
                       let monthlySalary = response.data.result[0].monthlySalary;
                       let position = response.data.result[0].position;
                       let rank = response.data.result[0].pRank;
+                      let pepoint = response.data.result[0].pPEPoint;
+                      let pallowance = response.data.result[0].pAllowance;
+
+
                       let employeeName = response.data.result[0].employeeName;
                       let salaryType = response.data.result[0].salaryType;
                       let id = response.data.result[0].id;
@@ -741,7 +763,7 @@ else{
                         downloadCSV(unsuccessful);
 
                       }
-                      finalresult(empNumber, employeeName, totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName, results.data.length, index,row.firsthalf, row.secondhalf);
+                      finalresult(empNumber, employeeName, totalPoint, level, empclass, daily, monthlySalary, position, rank, salaryType, id, fullName, results.data.length, index,row.firsthalf, row.secondhalf, pepoint, pallowance);
 
                       
                     }
