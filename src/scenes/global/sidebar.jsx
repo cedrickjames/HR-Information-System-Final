@@ -9,7 +9,7 @@ import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 // import "react-pro-sidebar/dist/css/styles.css";
 import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMoneyBillTrendUp, faTable, faCamera, faKey} from '@fortawesome/free-solid-svg-icons'
+import { faMoneyBillTrendUp, faTable, faCamera, faKey, faUser} from '@fortawesome/free-solid-svg-icons'
 import React,  { useEffect, useState, useContext } from "react";
 import axios from 'axios';
 
@@ -283,6 +283,14 @@ const SidebarMain = (propsLogout) => {
       title="Grades Record"
       to="/gradesRecord"
       icon={<FontAwesomeIcon icon={faKey} size="lg" />}
+      selected={selected}
+      setSelected={setSelected}
+      color={colors.grey2[1000]}
+    />
+        <Item
+      title="Users"
+      to="/users"
+      icon={<FontAwesomeIcon icon={faUser} size="lg" />}
       selected={selected}
       setSelected={setSelected}
       color={colors.grey2[1000]}

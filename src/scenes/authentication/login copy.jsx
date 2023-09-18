@@ -126,21 +126,30 @@ function Login(props) {
     // console.log(data.message);
 
     if (data.message==="Success") {
-      // Login successful
-      console.log(data);
+      if(data.result[0].approved ===0){
+        setloginStatus("This account is not activated yet. Please contact the administrator.");
+        // console.log(loginStatus)
+          handleClick();
+        console.error(data.message);
+      }
+      else{
+ // Login successful
+ console.log(data);
 
-      // setFullName(data[0].name);
-      localStorage.setItem('fullName', data.result[0].name);
-      localStorage.setItem('profilePicture', data.result[0].profile_picture);
-      localStorage.setItem('userid', data.result[0].id);
+ // setFullName(data[0].name);
+ localStorage.setItem('fullName', data.result[0].name);
+ localStorage.setItem('profilePicture', data.result[0].profile_picture);
+ localStorage.setItem('userid', data.result[0].id);
 
 
 
-      // setName(fullName);
+ // setName(fullName);
 
-      props.onLogin(username);
+ props.onLogin(username);
 
-      console.log(data.result[0].name);
+ console.log(data.result[0].name);
+      }
+     
     } else {
       // Login failed
       setloginStatus(data.message);

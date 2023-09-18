@@ -13,6 +13,7 @@ import SidebarMain from "./scenes/global/sidebar.jsx";
 // import Contacts from "./scenes/Contacts"
 import SalaryIncrease from "./scenes/salaryincrease"
 import Salarytable from "./scenes/salaryTable"
+import Users from "./scenes/users"
 
 // import Form from "./scenes/form"
 import Line from "./scenes/line"
@@ -110,6 +111,8 @@ if (loggedIn) {
               <Route path="/pdffiles" element={<PDFDocument/>}/>
               <Route path="/import" element={<ImportFile/>}/>
               <Route path="/salaryTable" element={<Salarytable/>}/>
+              <Route path="/users" element={<Users/>}/>
+
               <Route path="/sample" element={<MergedRowTable/>}/>
               <Route path="/uploadProfile" element={<UploadProfilePictureModal/>}/>
               </Routes>

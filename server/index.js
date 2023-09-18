@@ -128,6 +128,30 @@ app.post("/login", (req, res)=>{
     });
 });
 
+app.post("/users", (req, res)=>{
+
+  // const sqlSelect = ;
+  db.query(
+      "SELECT * FROM `user`",
+      [],
+      (err, result)=>{
+          if(err){
+              res.send({err: err});
+          }
+              if(result.length > 0){
+                const message = 'Data found';
+                res.send({ result: result, message: message });
+              }else{
+                  res.send({message: "No Data Found"});
+                  
+
+              }
+          
+  //    console.log(err);
+  });
+});
+
+
 app.post("/deactivate", (req, res)=>{
   const arrayOfUser = req.body.arrayofuser;
   db.query(
@@ -148,6 +172,31 @@ app.post("/deactivate", (req, res)=>{
 });
 
 console.log(arrayOfUser);
+
+});
+
+
+app.post("/updateUserStatus", (req, res)=>{
+  const userStatus = req.body.userStatus;
+  const id = req.body.id;
+
+  db.query(
+    "UPDATE `user` SET `approved` = ? WHERE id =?",
+    [ userStatus, id],
+    (err, result)=>{
+      if(err){
+          res.send({err: err});
+      }else {
+          if (result.affectedRows > 0) {
+            res.send({ message: "Data updated successfully" });
+          } else {
+            res.send({ message: "There is an error in adding employee" });
+          }
+        }
+      
+//    console.log(err);
+});
+
 
 });
 // app.post("/setsitable", (req, res)=>{
