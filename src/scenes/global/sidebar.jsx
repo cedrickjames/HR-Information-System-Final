@@ -54,12 +54,12 @@ const SidebarMain = (propsLogout) => {
     
     const userid = localStorage.getItem('userid');
 
-    const modifiedProfilePics = profilePic.replace(/\\/g, '/').substring(6);
+    // const modifiedProfilePics = profilePic.replace(/\\/g, '/').substring(6);
 
-    console.log(modifiedProfilePics)
+    // console.log(modifiedProfilePics)
     setName(fullName);
     setUserId(userid)
-    setProfilePic("http://192.168.60.53:3001"+ modifiedProfilePics);
+    setProfilePic("../../assets/"+profilePic);
 
 
    
@@ -74,7 +74,7 @@ const SidebarMain = (propsLogout) => {
     const reader = new FileReader();
 
     reader.onloadend = () => {
-      setProfilePic(reader.result);
+      // setProfilePic(reader.result);
     };
 
     if (file) {
@@ -92,9 +92,12 @@ const SidebarMain = (propsLogout) => {
         const modifiedProfilePics3 = response.data.filePath;
         console.log(modifiedProfilePics3)
         localStorage.setItem('profilePicture',modifiedProfilePics3);
-        const modifiedProfilePics4 = modifiedProfilePics3.replace(/\\/g, '/').substring(6);
-        setProfilePic("http://192.168.60.53:3001"+ modifiedProfilePics4);
+        // const modifiedProfilePics4 = modifiedProfilePics3.replace(/\\/g, '/').substring(6);
+        setProfilePic("../../assets/"+modifiedProfilePics3);
+        
         console.log(response.data); // File is successfully uploaded and moved
+        console.log("../../assets/"+ modifiedProfilePics3); // File is successfully uploaded and moved
+
       })
       .catch((error) => {
         console.error('Error uploading file:', error);
@@ -279,14 +282,14 @@ const SidebarMain = (propsLogout) => {
       setSelected={setSelected}
       color={colors.grey2[1000]}
     />
-    <Item
+    {/* <Item
       title="Grades Record"
       to="/gradesRecord"
       icon={<FontAwesomeIcon icon={faKey} size="lg" />}
       selected={selected}
       setSelected={setSelected}
       color={colors.grey2[1000]}
-    />
+    /> */}
         <Item
       title="Users"
       to="/users"

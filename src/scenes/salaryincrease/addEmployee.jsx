@@ -26,6 +26,8 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import Autocomplete from '@mui/material/Autocomplete';
+import Stack from '@mui/material/Stack';
 import FormControl from '@mui/material/FormControl';
 import '../../css/style.css';
 const Item = styled(Paper)(({ theme }) => ({
@@ -116,7 +118,21 @@ function getComparator(order, orderBy) {
   }
 const AddEmployee = ({ open, department, setRows, onClose }) => {
 
- 
+  const [movieOptions, setMovieOptions] = useState([]);
+  useEffect(() => {
+    // Fetch movie data from your backend API endpoint using Axios
+    Axios.post('http://192.168.60.53:3001/selectAnnexD')
+      .then(response => {
+        console.log(response.data.result)
+        const data = response.data.result; // Assuming your response data is an array of movies
+        setMovieOptions(data); // Update the options with fetched data
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+
       const [employeeId, setEmployeeId] = useState([]);
 
       const theme = useTheme();
@@ -377,6 +393,18 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
           
           });
         }
+
+
+
+        const handleAutocompleteChange = (event, newValue) => {
+
+          console.log(newValue)
+          setDesignation(newValue);
+
+            };
+
+
+
         React.useEffect(() => {
         //  console.log(arrayOfProfAllowances)
        getsettings();
@@ -816,7 +844,30 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
   ))}
            </Select>
             </Grid>
-            <Grid xs={12} sm={6}> <TextField required error={designationState}  label="Designation" defaultValue={designation}  onChange={(e) => setDesignation(e.target.value)}   fullWidth /> </Grid>
+            <Grid xs={12} sm={6}> 
+            {/* <TextField required error={designationState}  label="Designation" defaultValue={designation}  onChange={(e) => setDesignation(e.target.value)}  sx={{margin:'0'}}  fullWidth />  */}
+           
+                  <Stack spacing={2} sx={{ width: '100%' }}>
+                  <Autocomplete
+                 freeSolo // Enable free text entry
+                 multiple // Enable multiple selections
+                 disableClearable // Prevent clearing the input
+      id="combo-box-demo"
+      options={movieOptions}
+      sx={{ width: '100%' }}
+      // defaultValue={designation.map((item, index) => (
+      //  item
+      // ))}
+      onChange={handleAutocompleteChange}
+      renderInput={(params) => <TextField   {...params} label="Designation"   InputProps={{
+        ...params.InputProps,
+        type: 'search',
+      }}
+      />}
+    />
+      
+    </Stack>
+            </Grid>
             </Grid>  
             <Typography variant="h5" gutterBottom align="left" sx={{textDecoration: 'solid', fontWeight: 'bold', color:'#505050', fontFamily:'system-ui', fontSize: 'large'}}>
               Basic Salary
@@ -846,7 +897,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
            </Select>
            {/* <TextField  required error={empClassState} label="Class" defaultValue={empClass} onChange={(e) => setEmpClass(e.target.value)}   fullWidth /> */}
            </Grid>
-              <Grid lg={4} sm={6} xs={12}><TextField required error={levelState} label="Level" defaultValue={level} onChange={(e) => setLevel(e.target.value)}   fullWidth /></Grid>
+              <Grid lg={4} sm={6} xs={12}><TextField required error={levelState} label="Level" defaultValue={level} onChange={(e) => setLevel(e.target.value)} sx={{margin:'0'}}  fullWidth /></Grid>
               <Grid lg={4} sm={6} xs={12}>
               <Select   required error={salaryState}  fullWidth  value={salary} style={{  padding:'0px', textAlign:'left' }}  onChange={(e) => setSalary(e.target.value)}  >
               
@@ -857,9 +908,9 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
            </Select>
                 {/* <TextField required error={salaryState} label="Salary Type" defaultValue={salary} onChange={(e) => setSalary(e.target.value)}    fullWidth /> */}
                 </Grid>
-              <Grid lg={4} sm={6} xs={12}><TextField required error={basicSalaryState} label="Basic Salary" value={basicSalary} onChange={(e) => setBasicSalary(e.target.value)}   fullWidth /></Grid>
-              <Grid lg={4} sm={6} xs={12}><TextField  label="Daily" value={daily} onChange={(e) => setDaily(e.target.value)} fullWidth /></Grid>
-              <Grid lg={4} sm={6} xs={12}><TextField required error={monthlySalaryState} label="Monthly Salary" value={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)}   fullWidth /></Grid>
+              <Grid lg={4} sm={6} xs={12}><TextField required error={basicSalaryState} label="Basic Salary" value={basicSalary} onChange={(e) => setBasicSalary(e.target.value)} sx={{margin:'0'}}  fullWidth /></Grid>
+              <Grid lg={4} sm={6} xs={12}><TextField  label="Daily" value={daily} onChange={(e) => setDaily(e.target.value)} fullWidth sx={{margin:'0'}} /></Grid>
+              <Grid lg={4} sm={6} xs={12}><TextField required error={monthlySalaryState} label="Monthly Salary" value={monthlySalary} onChange={(e) => setMonthlySalary(e.target.value)} sx={{margin:'0'}}  fullWidth /></Grid>
 
             </Grid>  
             
@@ -867,9 +918,9 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
               Position
             </Typography>
             <Grid container  spacing={2}>
-              <Grid lg={3} sm={6} xs={12}><TextField required  label="PE Point" value={posPe} onChange={(e) => setPosPe(e.target.value)} fullWidth /></Grid>
-              <Grid lg={6} sm={6} xs={12}><TextField required  label="Allowance" value={posAllowance} onChange={(e) => setPosAllowance(e.target.value)} fullWidth /></Grid>
-              <Grid lg={3} sm={6} xs={12}><TextField required  label="Rank" defaultValue={posRank} onChange={(e) => levelUp(e.target.value)}   fullWidth/></Grid>
+              <Grid lg={3} sm={6} xs={12}><TextField required  label="PE Point" value={posPe} onChange={(e) => setPosPe(e.target.value)} sx={{margin:'0'}} fullWidth /></Grid>
+              <Grid lg={6} sm={6} xs={12}><TextField required  label="Allowance" value={posAllowance} onChange={(e) => setPosAllowance(e.target.value)} sx={{margin:'0'}} fullWidth /></Grid>
+              <Grid lg={3} sm={6} xs={12}><TextField required  label="Rank" defaultValue={posRank} onChange={(e) => levelUp(e.target.value)} sx={{margin:'0'}}  fullWidth/></Grid>
             </Grid>
            
 

@@ -62,7 +62,7 @@ app.post("/register", (req, res)=>{
 // Create a storage engine to define the destination and filename
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/uploads'); // Destination folder path
+    cb(null, 'public/assets'); // Destination folder path
   },
   filename: function (req, file, cb) {
     const uniquePrefix = Date.now() + '-' + Math.round(Math.random() * 1e9);
@@ -81,7 +81,26 @@ app.post('/upload', upload.single('image'), (req, res) => {
 
   const userId = req.body.userId;
   // File is successfully uploaded and moved
-  const filePath = req.file.path;
+  const filePath = req.file.filename;
+  console.log("a "+req.file.destination)
+  console.log("b "+req.file.filePath)
+  console.log("c "+req.file.filename)
+  console.log('File path of index.js:', __filename);
+
+  const fs = require('fs');
+const path = require('path');
+
+const directoryPath = path.dirname(__filename);
+
+fs.readdir(directoryPath, (err, files) => {
+  if (err) {
+    console.error('Error reading directory:', err);
+    return;
+  }
+
+  console.log('Files in the directory:', files);
+});
+
   // res.status(200).send('File is successfully uploaded and moved.');
   db.query(
     "UPDATE user SET profile_picture = ? WHERE id = ?",
@@ -141,6 +160,7 @@ app.post("/users", (req, res)=>{
               if(result.length > 0){
                 const message = 'Data found';
                 res.send({ result: result, message: message });
+                
               }else{
                   res.send({message: "No Data Found"});
                   
@@ -1775,6 +1795,14 @@ app.post("/addemployee", (req, res)=>{
   const empNumber = req.body.empNumber;
   const position = req.body.position;
   const designation = req.body.designation;
+  const insertValues = designation.map((item) => {
+    if (typeof item === 'string') {
+      return `${item}`;
+    } else if (typeof item === 'object' && item.label) {
+      return `${item.label}`;
+    }
+    return ''; // Handle other cases as needed
+  }).join(', ');
   const empClass = req.body.empClass;
   const level = req.body.level;
   const salary = req.body.salary;
@@ -1802,13 +1830,13 @@ app.post("/addemployee", (req, res)=>{
   console.log(empName)
 
       db.query("INSERT INTO salaryincrease( department, section, employeeName, sex, birthday, age, empNo, dateHired, position, designation, class, level, salaryType, basicSalary, daily, monthlySalary, pPEPoint, pAllowance, pRank, tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)",
-    [department, section, empName, sex, birthday,age, empNumber,dateHired, position, designation, empClass, level, salary, basicSalary, daily, monthlySalary, posPe, posAllowance, posRank, tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization], 
+    [department, section, empName, sex, birthday,age, empNumber,dateHired, position, insertValues, empClass, level, salary, basicSalary, daily, monthlySalary, posPe, posAllowance, posRank, tsPEPoint, tsAllowance, tsRank, leLicenseFee, lePEPoint, leAllowance, leRank, ceCertificateOnFee, cePEPoint, ceAllowance, ceRank, Specialization], 
         (err, result)=>{
             if(err){
                 res.send({err: err});
             }else {
                 if (result.affectedRows > 0) {
-                  res.send({ message: "Data updated successfully" });
+                  res.send({ message: "Data Added successfully" });
                 } else {
                   res.send({ message: "There is an error in adding employee" });
                 }

@@ -1984,6 +1984,12 @@ setleveluppoints(employee.levelupp)
       var computedService = (date.getTime() - employeeDateHired.getTime()) / (1000 * 60 * 60 * 24 * 365);
       var computedServiceDecimal = computedService.toFixed(2);
       setserviceTerm(computedServiceDecimal)
+
+      var birthday = new Date(employee.birthday);
+            
+      var computedAge = (date.getTime() - birthday.getTime()) / (1000 * 60 * 60 * 24 * 365);
+      var computedAgeDecimal = computedAge.toFixed(0);
+      setage(computedAgeDecimal)
       if(type==="checkbox"){
         setOpen(false);
 
@@ -2659,14 +2665,14 @@ setleveluppoints(employee.levelupp)
                   {/* <TextField required  label="Position" defaultValue={designation} onChange={(e) => setPosition(e.target.value)}  fullWidth /> */}
                   </Grid>
                   <Grid xs={12} sm={6}>
-                  <Stack spacing={2} sx={{ width: 300 }}>
+                  <Stack spacing={2} sx={{ width: '100%' }}>
                   <Autocomplete
                  freeSolo // Enable free text entry
                  multiple // Enable multiple selections
                  disableClearable // Prevent clearing the input
       id="combo-box-demo"
       options={movieOptions}
-      sx={{ width: 300 }}
+      sx={{ width: '100%' }}
       defaultValue={designation.map((item, index) => (
        item
       ))}

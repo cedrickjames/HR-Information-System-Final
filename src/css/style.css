@@ -756,14 +756,10 @@
           text-size-adjust: none;
   font-weight: 700;
   display: block;
-  -webkit-margin-before: 1.33em;
-          margin-block-start: 1.33em;
-  -webkit-margin-after: 1.33em;
-          margin-block-end: 1.33em;
-  -webkit-margin-start: 0px;
-          margin-inline-start: 0px;
-  -webkit-margin-end: 0px;
-          margin-inline-end: 0px;
+  margin-block-start: 1.33em;
+  margin-block-end: 1.33em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
   max-width: 100%;
   white-space: nowrap;
   text-overflow: ellipsis;

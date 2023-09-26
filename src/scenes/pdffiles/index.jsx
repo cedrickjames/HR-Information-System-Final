@@ -209,6 +209,11 @@ const PDFDocument = () =>  {
   const [dateEffect, setDateEffect] = useState();
   const [natureOfAction, setNatureOfAction] = useState();
 
+  const formatter = new Intl.NumberFormat('en-US', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+  
 
   const location = useLocation();
   // console.log(employeeid);
@@ -540,10 +545,19 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.basicSalary}</Text> 
+          {/* <Text style={styles.tableCell}>{item.basicSalary.toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text> */}
+          {/* <Text style={styles.tableCell}>{formatter.format(item.basicSalary)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.basicSalary) ? item.basicSalary : formatter.format(item.basicSalary)}</Text>
+
+
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newBasicSalary}</Text> 
+            {/* <Text style={styles.tableCell}>{item.newBasicSalary}</Text>  */}
+            {/* <Text style={styles.tableCell}>{item.newBasicSalary.toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text> */}
+          {/* <Text style={styles.tableCell}>{formatter.format(item.newBasicSalary)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.newBasicSalary) ? item.newBasicSalary : formatter.format(item.newBasicSalary)}</Text>
+
+            
           </View> 
           
         </View>
@@ -553,10 +567,16 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.pAllowance}</Text> 
+            {/* <Text style={styles.tableCell}>{item.pAllowance}</Text>  */}
+          {/* <Text style={styles.tableCell}>{formatter.format(item.pAllowance)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.pAllowance) ? item.pAllowance : formatter.format(item.pAllowance)}</Text>
+
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newPAllowance}</Text> 
+            {/* <Text style={styles.tableCell}>{item.newPAllowance}</Text>  */}
+          {/* <Text style={styles.tableCell}>{formatter.format(item.newPAllowance)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.newPAllowance) ? item.newPAllowance : formatter.format(item.newPAllowance)}</Text>
+
           </View> 
           
         </View>
@@ -581,10 +601,17 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.Specialization}</Text> 
+            {/* <Text style={styles.tableCell}>{item.Specialization}</Text>  */}
+          {/* <Text style={styles.tableCell}>{isNaN(item.Specialization) ? item.Specialization : formatter.format(item.Specialization)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.Specialization) ? item.Specialization : formatter.format(item.Specialization)}</Text>
+            
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newSpecialization}</Text> 
+          {/* <Text style={styles.tableCell}>{isNaN(item.Specialization) ? item.Specialization : formatter.format(item.newSpecialization)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.newSpecialization) ? item.newSpecialization : formatter.format(item.newSpecialization)}</Text>
+
+          
+            {/* <Text style={styles.tableCell}>{item.newSpecialization}</Text>  */}
           </View> 
           
         </View>
@@ -594,10 +621,17 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.leLicenseFee}</Text> 
+            {/* <Text style={styles.tableCell}>{item.leLicenseFee}</Text>  */}
+          {/* <Text style={styles.tableCell}>{formatter.format(item.leLicenseFee)}</Text> */}
+          {/* <Text style={styles.tableCell}>{isNaN(item.Specialization) ? item.leLicenseFee : formatter.format(item.leLicenseFee)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.leLicenseFee) ? item.leLicenseFee : formatter.format(item.leLicenseFee)}</Text>
+
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newleLicenseFee}</Text> 
+          {/* <Text style={styles.tableCell}>{formatter.format(item.newleLicenseFee)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.newleLicenseFee) ? item.newleLicenseFee : formatter.format(item.newleLicenseFee)}</Text>
+
+            {/* <Text style={styles.tableCell}>{item.newleLicenseFee}</Text>  */}
           </View> 
           
         </View> 
@@ -607,10 +641,18 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.ceLicenseFee}</Text> 
+            {/* <Text style={styles.tableCell}>{item.ceLicenseFee}</Text>  */}
+          {/* <Text style={styles.tableCell}>{formatter.format(item.ceLicenseFee)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.ceLicenseFee) ? item.ceLicenseFee : formatter.format(item.ceLicenseFee)}</Text>
+
+
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newceCertificateOnFee}</Text> 
+          {/* <Text style={styles.tableCell}>{formatter.format(item.newceCertificateOnFee)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.newceCertificateOnFee) ? item.newceCertificateOnFee : formatter.format(item.newceCertificateOnFee)}</Text>
+
+
+            {/* <Text style={styles.tableCell}>{item.newceCertificateOnFee}</Text>  */}
           </View> 
           
         </View>
@@ -906,10 +948,17 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.basicSalary}</Text> 
+            {/* <Text style={styles.tableCell}>{item.basicSalary}</Text>  */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.basicSalary)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.basicSalary) ? item.basicSalary : formatter.format(item.basicSalary)}</Text>
+
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newBasicSalary}</Text> 
+            {/* <Text style={styles.tableCell}>{item.newBasicSalary}</Text>  */}
+            {/* <Text style={styles.tableCell}>asd{item.newBasicSalary.toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text> */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.newBasicSalary)}</Text> */}
+            <Text style={styles.tableCell}>{isNaN(item.newBasicSalary) ? item.newBasicSalary : formatter.format(item.newBasicSalary)}</Text>
+
           </View> 
           
         </View>
@@ -919,10 +968,16 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.pAllowance}</Text> 
+            {/* <Text style={styles.tableCell}>{item.pAllowance}</Text>  */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.pAllowance)}</Text> */}
+            <Text style={styles.tableCell}>{isNaN(item.pAllowance) ? item.pAllowance : formatter.format(item.pAllowance)}</Text>
+
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newPAllowance}</Text> 
+            {/* <Text style={styles.tableCell}>{item.newPAllowance}</Text>  */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.newPAllowance)}</Text> */}
+            <Text style={styles.tableCell}>{isNaN(item.newPAllowance) ? item.newPAllowance : formatter.format(item.newPAllowance)}</Text>
+            
           </View> 
           
         </View>
@@ -947,10 +1002,17 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.Specialization}</Text> 
+            {/* <Text style={styles.tableCell}>{item.Specialization}</Text>  */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.Specialization)}</Text> */}
+            <Text style={styles.tableCell}>{isNaN(item.Specialization) ? item.Specialization : formatter.format(item.Specialization)}</Text>
+
+            
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newSpecialization}</Text> 
+            {/* <Text style={styles.tableCell}>{item.newSpecialization}</Text>  */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.newSpecialization)}</Text> */}
+            <Text style={styles.tableCell}>{isNaN(item.newSpecialization) ? item.newSpecialization : formatter.format(item.newSpecialization)}</Text>
+
           </View> 
           
         </View>
@@ -960,10 +1022,16 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.leLicenseFee}</Text> 
+            {/* <Text style={styles.tableCell}>{item.leLicenseFee}</Text>  */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.leLicenseFee)}</Text> */}
+            <Text style={styles.tableCell}>{isNaN(item.leLicenseFee) ? item.leLicenseFee : formatter.format(item.leLicenseFee)}</Text>
+            
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newleLicenseFee}</Text> 
+          {/* <Text style={styles.tableCell}>{formatter.format(item.newleLicenseFee)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.newleLicenseFee) ? item.newleLicenseFee : formatter.format(item.newleLicenseFee)}</Text>
+
+            {/* <Text style={styles.tableCell}>{item.newleLicenseFee}</Text>  */}
           </View> 
           
         </View> 
@@ -973,10 +1041,18 @@ return(
           </View> 
           
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.ceLicenseFee}</Text> 
+            {/* <Text style={styles.tableCell}>{item.ceLicenseFee}</Text>  */}
+          {/* <Text style={styles.tableCell}>{formatter.format(item.ceLicenseFee)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.ceLicenseFee) ? item.ceLicenseFee : formatter.format(item.ceLicenseFee)}</Text>
+
+
           </View> 
           <View style={styles.tableColLine}> 
-            <Text style={styles.tableCell}>{item.newceCertificateOnFee}</Text> 
+          {/* <Text style={styles.tableCell}>{formatter.format(item.newceCertificateOnFee)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.newceCertificateOnFee) ? item.newceCertificateOnFee : formatter.format(item.newceCertificateOnFee)}</Text>
+
+          
+            {/* <Text style={styles.tableCell}>{item.newceCertificateOnFee}</Text>  */}
           </View>  
           
         </View>
