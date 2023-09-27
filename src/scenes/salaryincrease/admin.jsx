@@ -57,12 +57,24 @@ import EnhancedTable from './history';
 import { Button, TextInput } from 'flowbite-react';
 
 // import  SalaryIncrease  from './index';
-import { Modal } from 'flowbite-react';
+// import { Modal } from 'flowbite-react';
+import Modal from '@mui/material/Modal';
 import { Dropdown } from 'flowbite-react';
 import { HiCog, HiCurrencyDollar, HiLogout, HiViewGrid } from 'react-icons/hi';
+import Backdrop from '@mui/material/Backdrop';
+import Fade from '@mui/material/Fade';
 
-
-
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 500,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 // function Tag(props) {
 //   const { label, onDelete, ...other } = props;
 //   return (
@@ -1036,6 +1048,9 @@ var csvContent = "data:text/csv;charset=utf-8,";
   const [percentage, setPercentage] = useState(0);
   const [showOptionValue1, setShowOptionValue1] = useState(false)
   const [showOptionValue, setShowOptionValue] = useState('invisible opacity-0 z-10 bg-white w-fit rounded divide-y divide-gray-100 shadow transition-opacity duration-100 border border-gray-200 bg-white text-gray-900 dark:border-none dark:bg-gray-700 dark:text-white iconColor');
+  const [d1value, setD1Value] = React.useState('');
+  const [d2value, setD2Value] = React.useState('');
+  const [d3value, setD3Value] = React.useState('');
 
 
   React.useEffect(() => {
@@ -2012,6 +2027,18 @@ setleveluppoints(employee.levelupp)
         <svg className="w-6 h-6 iconColor" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"></path></svg>
       );
     }
+    const [openIncrement, setOpenIncrement] = React.useState(false);
+    const handleOpenIncrement = () => {
+      setD1Value(d1)
+      setD2Value(d2)
+      setD3Value(d3)
+      setOpenIncrement(true);
+    
+    };
+
+
+    const handleCloseIncrement = () => setOpenIncrement(false);
+
     return (
  
       <Box sx={{ width: '100%' }}>
@@ -2065,7 +2092,7 @@ setleveluppoints(employee.levelupp)
         {/* <Button gradientMonochrome="info">
   Info
 </Button> */}
-    <div className="relative  w-96 mr-2">
+    <div className="relative  w-full mr-2">
     <input   value={inputValue}
       onChange={handleInputChange} type="text" id="floating_outlined8" className=" h-10 block  w-full  bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
     {selected.length > 0 ? (
@@ -2081,7 +2108,7 @@ setleveluppoints(employee.levelupp)
         )}
     
 </div>
-    <div className="relative  w-96 mr-2">
+    <div className="relative  w-full mr-2">
     <input    value={inputValueDate}
       onChange={handleInputChangeDate}  type="date" id="floating_outlined2" className=" h-10 block  w-full bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
     {selected.length > 0 ? (
@@ -2102,7 +2129,7 @@ setleveluppoints(employee.levelupp)
           hidden = {deleteButtonState}
 
       type="button"
-      className="h-10 w-96  text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2"
+      className="h-10 w-full  text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2"
     >
      Deactivate
     </button>
@@ -2113,7 +2140,7 @@ setleveluppoints(employee.levelupp)
        onClick={() => openPDF({department})}
       type="button"
       data-custom-attribute="some value"
-      className=" text-white h-10 w-96  bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 "
+      className=" text-white h-10 w-full  bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-teal-300 dark:focus:ring-teal-800 font-medium rounded-lg text-sm px-1 py-2.5 text-center mr-2 "
     >
      P.A. Form
    
@@ -2124,12 +2151,46 @@ setleveluppoints(employee.levelupp)
         getsettings();
         }}
       type="button"
-      className=" text-white h-10 w-96 bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-5 py-2.5 text-center mr-2 "
+      className=" text-white h-10 w-full bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg px-1 py-2.5 text-center mr-2 "
     >
      Add Employee
     </button>
+    {/* <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={openIncrement}
+        onClose={handleCloseIncrement}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+      >
+        <Fade in={openIncrement}>
+          <Box sx={style} className="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
+         <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Rank and file employee (Increments)</h3><button  onClick={handleCloseIncrement} aria-label="Close"
+            className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+            type="button"><svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true"
+              className="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg></button>
+        </div>
+          <div className="p-6 flex-1 overflow-auto">
+       <div className="space-y-6">
+    
+       <TextField    label="D1 Increment" value = {d1value} onChange={(e) => setD1Value(e.target.value)}    fullWidth />
+       <TextField    label="D2 Increment" value = {d2value} onChange={(e) => setD2Value(e.target.value)}  fullWidth />
+       <TextField    label="D3 Increment" value = {d3value}  onChange={(e) => setD3Value(e.target.value)}  fullWidth />
+       </div>
+     </div>
 
-<Modal
+          </Box>
+        </Fade>
+      </Modal> */}
+{/* <Modal
   onClose={closeModal}
   popup
   size="md"
@@ -2142,7 +2203,7 @@ setleveluppoints(employee.levelupp)
     <div className="text-center">
     <svg aria-hidden="true" className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                
-      {/* <AlertCircleOutline className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" /> */}
+  
       <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
         <p>
           Are you sure you want to deactivate this employee/s?
@@ -2168,14 +2229,14 @@ setleveluppoints(employee.levelupp)
       </div>
     </div>
   </Modal.Body>
-</Modal>
-    <div className="relative  w-96 mr-2">
+</Modal> */}
+    <div className="relative  w-full mr-2">
     <input  onChange={(event) => setSearchQuery(event.target.value)} type="text" id="floating_outlined3" className=" h-10 block  w-full text-sm text-gray-900 bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
     {selected.length > 0 ? (
          <label 
          style={{ backgroundColor: colors.grey[900] }}
          
-         className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Search</label>
+         className="absolute  text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Search</label>
         ) : (
           <label 
      style={{ backgroundColor: colors.lebelbg[100] }}
@@ -2210,7 +2271,7 @@ setleveluppoints(employee.levelupp)
     <path d="M14.707 7.793a1 1 0 0 0-1.414 0L11 10.086V1.5a1 1 0 0 0-2 0v8.586L6.707 7.793a1 1 0 1 0-1.414 1.414l4 4a1 1 0 0 0 1.416 0l4-4a1 1 0 0 0-.002-1.414Z"/>
     <path d="M18 12h-2.55l-2.975 2.975a3.5 3.5 0 0 1-4.95 0L4.55 12H2a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2Zm-3 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
   </svg>Export Employees</li>
-          <li onClick={openModalImport}
+          <li onClick={handleOpenIncrement}
             className="flex items-center justify-start py-2 px-4 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
               <svg stroke="currentColor" fill="currentColor" strokeWidth="0" viewBox="0 0 20 20" aria-hidden="true"
               className="mr-2 h-4 w-4" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg" >
@@ -2218,13 +2279,33 @@ setleveluppoints(employee.levelupp)
     <path d="M14.067 0H7v5a2 2 0 0 1-2 2H0v4h7.414l-1.06-1.061a1 1 0 1 1 1.414-1.414l2.768 2.768a1 1 0 0 1 0 1.414l-2.768 2.768a1 1 0 0 1-1.414-1.414L7.414 13H0v5a1.969 1.969 0 0 0 1.933 2h12.134A1.97 1.97 0 0 0 16 18V2a1.97 1.97 0 0 0-1.933-2Z"/>
   </svg>
            Import Grades</li>
+           {/* <li onClick={handleOpenIncrement}
+            className="flex items-center justify-start py-2 px-4 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white">
+               
+              Change Increment</li> */}
         </ul>
       </div>
     </div>
-    <Modal    show={isModalOpenImport} onClose={closeModalImport}>
-      <div className="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
+    <Modal   
+     aria-labelledby="transition-modal-title"
+     aria-describedby="transition-modal-description"
+     open={openIncrement}
+     onClose={handleCloseIncrement}
+     closeAfterTransition
+     slots={{ backdrop: Backdrop }}
+     slotProps={{
+       backdrop: {
+         timeout: 500,
+       },
+     }}
+      // show={isModalOpenImport} onClose={closeModalImport}
+      
+      >
+        <Fade in={openIncrement}> 
+        <Box sx={style} className="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
+      <div >
         <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
-          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Import Grades</h3><button  onClick={closeModalImport} aria-label="Close"
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Import Grades</h3><button  onClick={handleCloseIncrement} aria-label="Close"
             className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
             type="button"><svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true"
               className="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -2267,9 +2348,10 @@ setleveluppoints(employee.levelupp)
 </div>
         <ImportFile closeModalImport={closeModalImport}/>
       </div>
-
+      </Box>
+</Fade>
       </Modal>
-      <Modal    show={isSave} onClose={closeModalSave}>
+      {/* <Modal    show={isSave} onClose={closeModalSave}>
       <div className="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
         <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
           <h3 className="text-xl font-medium text-gray-900 dark:text-white">Confirm</h3><button  onClick={closeModalSave} aria-label="Close"
@@ -2321,7 +2403,7 @@ setleveluppoints(employee.levelupp)
            className="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div>
       </div>
 
-      </Modal>
+      </Modal> */}
          {/* <TextField
             label="Search"
             value={searchQuery}

@@ -421,7 +421,7 @@ var csvContent = "data:text/csv;charset=utf-8,";
          <Box>
    <Paper sx={{ width: 320 }}>
       <MenuList dense>
-        <MenuItem>
+        {/* <MenuItem>
           <ListItemText inset>Single</ListItemText>
         </MenuItem>
         <MenuItem>
@@ -439,7 +439,7 @@ var csvContent = "data:text/csv;charset=utf-8,";
         <Divider />
         <MenuItem>
           <ListItemText>Add space before paragraph</ListItemText>
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem>
           <ListItemText
           onClick={exportEmployees}

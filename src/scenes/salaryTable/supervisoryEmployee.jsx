@@ -391,8 +391,8 @@ const [d2value, setD2Value] = React.useState();
           <div className="p-6 flex-1 overflow-auto">
        <div className="space-y-6">
     
-       <TextField    label="D1 level 1" value = {dailyValue1} onChange={(e) => setDailyValue1(e.target.value)}    fullWidth />
-       <TextField    label="D2 level 1" value = {dailyValue2} onChange={(e) => setDailyValue2(e.target.value)}  fullWidth />
+       <TextField    label="M1 level 1" value = {dailyValue1} onChange={(e) => setDailyValue1(e.target.value)}    fullWidth />
+       <TextField    label="M2 level 1" value = {dailyValue2} onChange={(e) => setDailyValue2(e.target.value)}  fullWidth />
     
      
 
