@@ -188,7 +188,7 @@ const SidebarMain = (propsLogout) => {
                 justifyContent="center"
               >
                 <Typography variant="h3" color={colors.grey2[1000]}>
-                  HR Information Sys.
+                  Employee Salary Mgt.
                 </Typography>
               </Box>
             ) : (
@@ -200,7 +200,7 @@ const SidebarMain = (propsLogout) => {
                 padding="10px"
               >
                 <Typography variant="h3" color={colors.grey2[1000]}>
-                  HRIS
+                  ESM
                 </Typography>
               </Box>
             )}
