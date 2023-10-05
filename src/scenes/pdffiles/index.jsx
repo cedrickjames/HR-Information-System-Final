@@ -221,8 +221,22 @@ const PDFDocument = () =>  {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-  
 
+  const [fullName, setFullName] = useState();
+  const [userType, setUserType] = useState();
+
+  useEffect(() => {
+    const fullName = localStorage.getItem('fullName');
+    const usertype = localStorage.getItem('usertype');
+
+    setFullName(fullName)
+    setUserType(usertype)
+
+
+
+   
+  }, []);
+  console.log({userType});
   const location = useLocation();
   // console.log(employeeid);
   useEffect(() => {
@@ -354,17 +368,21 @@ return(
         
 
         
-
         if (index % 2 === 1) { // Check if index is odd
-          return (
-            <View>
-             
+          console.log('userType:', userType);
+console.log('item.empClass:', item.empClass);
 
+          return (
+            
+            <View >
+              {userType === 'user'? (
+  !['M3', 'M4', 'M5', 'F1', 'F2'].includes(item.newClass) ? (
+        <View >
                  <Text style={styles.header} >GLORY (PHILIPPINES), INC.</Text>
         <Text style={styles.header2}>Administration Department / HR Section</Text>
         <Text style={styles.header}>PERSONNEL ACTION FORM</Text>
         {/* <Text style={styles.header2}>PAF01WI14-09-051523</Text> */}
-        <Text style={styles.header2}>PAF01<span style={styles.underline}>WI14</span>-09-051523</Text>
+        <Text style={styles.header2}>PAF01<Text  style={styles.underline}>WI14</Text>-09-051523</Text>
         <View style={styles.table}> 
         <View style={styles.tableRow}> 
           <View style={styles.tableCol1}> 
@@ -752,7 +770,410 @@ return(
         <Text style={styles.header} > {'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}</Text>
         
         </View>
+        </View>
+         ) : (
+          <View>
+        </View>
+         )
+        ) : (
+          <View >
+          <Text style={styles.header} >GLORY (PHILIPPINES), INC.</Text>
+ <Text style={styles.header2}>Administration Department / HR Section</Text>
+ <Text style={styles.header}>PERSONNEL ACTION FORM</Text>
+ {/* <Text style={styles.header2}>PAF01WI14-09-051523</Text> */}
+ <Text style={styles.header2}>PAF01<Text  style={styles.underline}>WI14</Text>-09-051523</Text>
+ <View style={styles.table}> 
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol1}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   <View style={styles.tableCol1}> 
+     <Text style={styles.tableCell}></Text> 
+   </View>
+   
+   <View style={styles.tableCol1Effect}> 
+     <Text style={styles.tableCell}>EFFECTIVITY DATE: </Text> 
+   </View> 
+   <View style={styles.tableColLine1Effect}> 
+     <Text style={styles.tableCell}>{dateEffect}</Text> 
+   </View> 
+   
+ </View>
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>NAME OF EMPLOYEE                              :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.newEmployeeName}</Text> 
+   </View> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   
+ </View>
 
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>EMPLOYEE NO.                                        :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.newEmpNo}</Text> 
+   </View> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   
+ </View>
+
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>HIRING DATE                                           :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.newDateHired}</Text> 
+   </View> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   
+ </View>
+
+ <View style={styles.tableRowFT}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}></Text>  
+   </View> 
+   
+   
+   <View style={styles.tableCol2}> 
+     <Text style={styles.header}>FROM</Text> 
+   </View> 
+   <View style={styles.tableCol2}> 
+     <Text style={styles.header}>TO</Text> 
+   </View> 
+   
+ </View>
+
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>A. SECTION                                                               :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.section}</Text> 
+   </View> 
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.newSection}</Text> 
+   </View> 
+   
+ </View>
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}>
+     <Text style={styles.tableCellLeft}>B. DEPARTMENT                                                   :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.department}</Text> 
+   </View> 
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.newDepartment}</Text> 
+   </View> 
+   
+ </View>
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>C. POSITION LEVEL                                              :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.position}</Text> 
+   </View> 
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.newPosition}</Text> 
+   </View> 
+   
+ </View>
+
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>D. DESIGNATION                                                  :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.designation}</Text> 
+   </View> 
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.newDesignation}</Text> 
+   </View> 
+   
+ </View>
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>E. SALARY CLASS                                              :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.empClass}</Text> 
+   </View> 
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.newClass}</Text> 
+   </View> 
+   
+ </View>
+
+
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>F. SALARY LEVEL                                              :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.level}</Text> 
+   </View> 
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.newLevel}</Text> 
+   </View> 
+   
+ </View>
+
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>G. SALARY TYPE                                              :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.salaryType}</Text> 
+   </View> 
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{item.newSalaryType}</Text> 
+   </View> 
+   
+ </View>
+
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>H. COMPENSATION & BENEFITS</Text>  
+   </View> 
+   
+   <View style={styles.tableCol2}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   <View style={styles.tableCol2}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   
+ </View>
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}BASIC SALARY                                   :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+   {/* <Text style={styles.tableCell}>{item.basicSalary.toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text> */}
+   {/* <Text style={styles.tableCell}>{formatter.format(item.basicSalary)}</Text> */}
+   <Text style={styles.tableCell}>{isNaN(item.basicSalary) ? item.basicSalary : formatter.format(item.basicSalary)}</Text>
+
+
+   </View> 
+   <View style={styles.tableColLine}> 
+     {/* <Text style={styles.tableCell}>{item.newBasicSalary}</Text>  */}
+     {/* <Text style={styles.tableCell}>{item.newBasicSalary.toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text> */}
+   {/* <Text style={styles.tableCell}>{formatter.format(item.newBasicSalary)}</Text> */}
+   <Text style={styles.tableCell}>{isNaN(item.newBasicSalary) ? item.newBasicSalary : formatter.format(item.newBasicSalary)}</Text>
+
+     
+   </View> 
+   
+ </View>
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}POSITION ALLOWANCE(per month):</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     {/* <Text style={styles.tableCell}>{item.pAllowance}</Text>  */}
+   {/* <Text style={styles.tableCell}>{formatter.format(item.pAllowance)}</Text> */}
+   <Text style={styles.tableCell}>{isNaN(item.pAllowance) ? item.pAllowance : formatter.format(item.pAllowance)}</Text>
+
+   </View> 
+   <View style={styles.tableColLine}> 
+     {/* <Text style={styles.tableCell}>{item.newPAllowance}</Text>  */}
+   {/* <Text style={styles.tableCell}>{formatter.format(item.newPAllowance)}</Text> */}
+   <Text style={styles.tableCell}>{isNaN(item.newPAllowance) ? item.newPAllowance : formatter.format(item.newPAllowance)}</Text>
+
+   </View> 
+   
+ </View>
+
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol3}> 
+     <Text style={styles.tableCellLeft}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}PROFESSIONAL ALLOWANCE (per month)</Text>  
+   </View> 
+   
+   <View style={styles.tableCol2}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   <View style={styles.tableCol2}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   
+ </View>
+ 
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft1}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}SPECIALIZATION                                    :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     {/* <Text style={styles.tableCell}>{item.Specialization}</Text>  */}
+   {/* <Text style={styles.tableCell}>{isNaN(item.Specialization) ? item.Specialization : formatter.format(item.Specialization)}</Text> */}
+   <Text style={styles.tableCell}>{isNaN(item.Specialization) ? item.Specialization : formatter.format(item.Specialization)}</Text>
+     
+   </View> 
+   <View style={styles.tableColLine}> 
+   {/* <Text style={styles.tableCell}>{isNaN(item.Specialization) ? item.Specialization : formatter.format(item.newSpecialization)}</Text> */}
+   <Text style={styles.tableCell}>{isNaN(item.newSpecialization) ? item.newSpecialization : formatter.format(item.newSpecialization)}</Text>
+
+   
+     {/* <Text style={styles.tableCell}>{item.newSpecialization}</Text>  */}
+   </View> 
+   
+ </View>
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft1}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}LICENSURE                                                     : </Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     {/* <Text style={styles.tableCell}>{item.leLicenseFee}</Text>  */}
+   {/* <Text style={styles.tableCell}>{formatter.format(item.leLicenseFee)}</Text> */}
+   {/* <Text style={styles.tableCell}>{isNaN(item.Specialization) ? item.leLicenseFee : formatter.format(item.leLicenseFee)}</Text> */}
+   <Text style={styles.tableCell}>{isNaN(item.leLicenseFee) ? item.leLicenseFee : formatter.format(item.leLicenseFee)}</Text>
+
+   </View> 
+   <View style={styles.tableColLine}> 
+   {/* <Text style={styles.tableCell}>{formatter.format(item.newleLicenseFee)}</Text> */}
+   <Text style={styles.tableCell}>{isNaN(item.newleLicenseFee) ? item.newleLicenseFee : formatter.format(item.newleLicenseFee)}</Text>
+
+     {/* <Text style={styles.tableCell}>{item.newleLicenseFee}</Text>  */}
+   </View> 
+   
+ </View> 
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft1}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}CERTIFICATION                                    :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     {/* <Text style={styles.tableCell}>{item.ceLicenseFee}</Text>  */}
+   {/* <Text style={styles.tableCell}>{formatter.format(item.ceLicenseFee)}</Text> */}
+   <Text style={styles.tableCell}>{isNaN(item.ceLicenseFee) ? item.ceLicenseFee : formatter.format(item.ceLicenseFee)}</Text>
+
+
+   </View> 
+   <View style={styles.tableColLine}> 
+   {/* <Text style={styles.tableCell}>{formatter.format(item.newceCertificateOnFee)}</Text> */}
+   <Text style={styles.tableCell}>{isNaN(item.newceCertificateOnFee) ? item.newceCertificateOnFee : formatter.format(item.newceCertificateOnFee)}</Text>
+
+
+     {/* <Text style={styles.tableCell}>{item.newceCertificateOnFee}</Text>  */}
+   </View> 
+   
+ </View>
+
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>A. NATURE OF ACTION                                 :</Text>  
+   </View> 
+   
+   <View style={styles.tableCol2Wage}> 
+     <Text style={styles.header}>{natureOfAction}</Text> 
+   </View> 
+   
+   
+ </View>
+
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft1}>{'\n'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}Recommending Approval                                      :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}>{'\n'}{'\n'}{'\n'}</Text> 
+   </View> 
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   
+ </View>
+
+ <View style={styles.tableRow}> 
+ <View style={styles.tableCol}> 
+     <Text style={styles.tableCell}></Text>  
+   </View> 
+   
+   <View style={styles.tableCol2}> 
+     <Text style={styles.tableCell}>Administration Head</Text> 
+   </View> 
+   <View style={styles.tableCol2}> 
+     <Text style={styles.tableCell}>President</Text> 
+   </View> 
+   
+ </View>
+
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}Received by:</Text>  
+   </View> 
+   
+   <View style={styles.tableCol2}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   <View style={styles.tableCol2}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   
+ </View>
+
+ 
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}Employee                                                :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   <View style={styles.tableCol2}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   
+ </View>
+ <View style={styles.tableRow}> 
+   <View style={styles.tableCol}> 
+     <Text style={styles.tableCellLeft}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}Date                                                    :</Text>  
+   </View> 
+   
+   <View style={styles.tableColLine}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   <View style={styles.tableCol2}> 
+     <Text style={styles.tableCell}></Text> 
+   </View> 
+   
+ </View>
+ <Text style={styles.header} > {'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}</Text>
+ <Text style={styles.header} > {'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}</Text>
+ <Text style={styles.header} > {'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}</Text>
+ 
+ </View>
+ </View> 
+        
+       
+  )}
+  {console.log(item.newClass)}
             </View>
         
         
@@ -761,7 +1182,11 @@ return(
         else if(index === 0 || index % 2 === 0){
           
           return (
+            
             <View>
+           {userType === 'user' ? (
+  !['M3', 'M4', 'M5', 'F1', 'F2'].includes(item.newClass) ? (
+        <View>
              
 
                  <Text style={styles.header} >GLORY (PHILIPPINES), INC.</Text>
@@ -1155,11 +1580,416 @@ return(
         <Text style={styles.header} > {'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}</Text>
         </View>
 
+        </View>
+         ) : (
+          <View>
+      {/* Render content for other employees */}
+    </View>
+  )
+          
+  ) : (
+    <View>
+             
 
-            </View>
+                 <Text style={styles.header} >GLORY (PHILIPPINES), INC.</Text>
+        <Text style={styles.header2}>Administration Department / HR Section</Text>
+        <Text style={styles.header}>PERSONNEL ACTION FORM</Text>
+        {/* <Text style={styles.header2}>PAF01PM02-08-121120</Text>
+         */}
+        <Text style={styles.header2}>PAF01<Text  style={styles.underline}>WI14</Text>-09-051523</Text>
+
+        <View style={styles.table}> 
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol1}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          <View style={styles.tableCol1}> 
+            <Text style={styles.tableCell}></Text> 
+          </View>
+          
+          <View style={styles.tableCol1Effect}> 
+            <Text style={styles.tableCell}>EFFECTIVITY DATE: </Text> 
+          </View> 
+          <View style={styles.tableColLine1Effect}> 
+            <Text style={styles.tableCell}>{dateEffect}</Text> 
+          </View> 
+          
+        </View>
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>NAME OF EMPLOYEE                              :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.newEmployeeName}</Text> 
+          </View> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          
+        </View>
+
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>EMPLOYEE NO.                                        :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.newEmpNo}</Text> 
+          </View> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          
+        </View>
+
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>HIRING DATE                                           :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.newDateHired}</Text> 
+          </View> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          
+        </View>
+
+        <View style={styles.tableRowFT}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}></Text>  
+          </View> 
+          
+          
+          <View style={styles.tableCol2}> 
+            <Text style={styles.header}>FROM</Text> 
+          </View> 
+          <View style={styles.tableCol2}> 
+            <Text style={styles.header}>TO</Text> 
+          </View> 
+          
+        </View>
+
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>A. SECTION                                                               :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.section}</Text> 
+          </View> 
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.newSection}</Text> 
+          </View> 
+          
+        </View>
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}>
+            <Text style={styles.tableCellLeft}>B. DEPARTMENT                                                   :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.department}</Text> 
+          </View> 
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.newDepartment}</Text> 
+          </View> 
+          
+        </View>
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>C. POSITION LEVEL                                              :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.position}</Text> 
+          </View> 
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.newPosition}</Text> 
+          </View> 
+          
+        </View>
+
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>D. DESIGNATION                                                  :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.designation}</Text> 
+          </View> 
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.newDesignation}</Text> 
+          </View> 
+          
+        </View>
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>E. SALARY CLASS                                              :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.empClass}</Text> 
+          </View> 
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.newClass}</Text> 
+          </View> 
+          
+        </View>
+
+      
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>F. SALARY LEVEL                                              :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.level}</Text> 
+          </View> 
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.newLevel}</Text> 
+          </View> 
+          
+        </View>
+
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>G. SALARY TYPE                                              :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.salaryType}</Text> 
+          </View> 
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{item.newSalaryType}</Text> 
+          </View> 
+          
+        </View>
+
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>H. COMPENSATION & BENEFITS</Text>  
+          </View> 
+          
+          <View style={styles.tableCol2}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          <View style={styles.tableCol2}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          
+        </View>
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}BASIC SALARY                                   :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            {/* <Text style={styles.tableCell}>{item.basicSalary}</Text>  */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.basicSalary)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.basicSalary) ? item.basicSalary : formatter.format(item.basicSalary)}</Text>
+
+          </View> 
+          <View style={styles.tableColLine}> 
+            {/* <Text style={styles.tableCell}>{item.newBasicSalary}</Text>  */}
+            {/* <Text style={styles.tableCell}>asd{item.newBasicSalary.toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 2, maximumFractionDigits: 2 })}</Text> */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.newBasicSalary)}</Text> */}
+            <Text style={styles.tableCell}>{isNaN(item.newBasicSalary) ? item.newBasicSalary : formatter.format(item.newBasicSalary)}</Text>
+
+          </View> 
+          
+        </View>
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}POSITION ALLOWANCE(per month):</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            {/* <Text style={styles.tableCell}>{item.pAllowance}</Text>  */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.pAllowance)}</Text> */}
+            <Text style={styles.tableCell}>{isNaN(item.pAllowance) ? item.pAllowance : formatter.format(item.pAllowance)}</Text>
+
+          </View> 
+          <View style={styles.tableColLine}> 
+            {/* <Text style={styles.tableCell}>{item.newPAllowance}</Text>  */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.newPAllowance)}</Text> */}
+            <Text style={styles.tableCell}>{isNaN(item.newPAllowance) ? item.newPAllowance : formatter.format(item.newPAllowance)}</Text>
+            
+          </View> 
+          
+        </View>
+
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol3}> 
+            <Text style={styles.tableCellLeft}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}PROFESSIONAL ALLOWANCE (per month)</Text>  
+          </View> 
+          
+          <View style={styles.tableCol2}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          <View style={styles.tableCol2}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          
+        </View>
         
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft1}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}SPECIALIZATION                                    :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            {/* <Text style={styles.tableCell}>{item.Specialization}</Text>  */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.Specialization)}</Text> */}
+            <Text style={styles.tableCell}>{isNaN(item.Specialization) ? item.Specialization : formatter.format(item.Specialization)}</Text>
+
+            
+          </View> 
+          <View style={styles.tableColLine}> 
+            {/* <Text style={styles.tableCell}>{item.newSpecialization}</Text>  */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.newSpecialization)}</Text> */}
+            <Text style={styles.tableCell}>{isNaN(item.newSpecialization) ? item.newSpecialization : formatter.format(item.newSpecialization)}</Text>
+
+          </View> 
+          
+        </View>
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft1}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}LICENSURE                                                     : </Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            {/* <Text style={styles.tableCell}>{item.leLicenseFee}</Text>  */}
+            {/* <Text style={styles.tableCell}>{formatter.format(item.leLicenseFee)}</Text> */}
+            <Text style={styles.tableCell}>{isNaN(item.leLicenseFee) ? item.leLicenseFee : formatter.format(item.leLicenseFee)}</Text>
+            
+          </View> 
+          <View style={styles.tableColLine}> 
+          {/* <Text style={styles.tableCell}>{formatter.format(item.newleLicenseFee)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.newleLicenseFee) ? item.newleLicenseFee : formatter.format(item.newleLicenseFee)}</Text>
+
+            {/* <Text style={styles.tableCell}>{item.newleLicenseFee}</Text>  */}
+          </View> 
+          
+        </View> 
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft1}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}CERTIFICATION                                    :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            {/* <Text style={styles.tableCell}>{item.ceLicenseFee}</Text>  */}
+          {/* <Text style={styles.tableCell}>{formatter.format(item.ceLicenseFee)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.ceLicenseFee) ? item.ceLicenseFee : formatter.format(item.ceLicenseFee)}</Text>
+
+
+          </View> 
+          <View style={styles.tableColLine}> 
+          {/* <Text style={styles.tableCell}>{formatter.format(item.newceCertificateOnFee)}</Text> */}
+          <Text style={styles.tableCell}>{isNaN(item.newceCertificateOnFee) ? item.newceCertificateOnFee : formatter.format(item.newceCertificateOnFee)}</Text>
+
+          
+            {/* <Text style={styles.tableCell}>{item.newceCertificateOnFee}</Text>  */}
+          </View>  
+          
+        </View>
+
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>A. NATURE OF ACTION                                 :</Text>  
+          </View> 
+          
+          <View style={styles.tableCol2Wage}> 
+            <Text style={styles.header}>{natureOfAction}</Text> 
+          </View> 
+          
+          
+        </View>
+
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft1}>{'\n'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}Recommending Approval                                      :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}>{'\n'}{'\n'}{'\n'}</Text> 
+          </View> 
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          
+        </View>
+
+        <View style={styles.tableRow}> 
+        <View style={styles.tableCol}> 
+            <Text style={styles.tableCell}></Text>  
+          </View> 
+          
+          <View style={styles.tableCol2}> 
+            <Text style={styles.tableCell}>Administration Head</Text> 
+          </View> 
+          <View style={styles.tableCol2}> 
+            <Text style={styles.tableCell}>President</Text> 
+          </View> 
+          
+        </View>
+
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}Received by:</Text>  
+          </View> 
+          
+          <View style={styles.tableCol2}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          <View style={styles.tableCol2}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          
+        </View>
+
         
-          );
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}Employee                                                :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          <View style={styles.tableCol2}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          
+        </View>
+        <View style={styles.tableRow}> 
+          <View style={styles.tableCol}> 
+            <Text style={styles.tableCellLeft}>{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}Date                                                    :</Text>  
+          </View> 
+          
+          <View style={styles.tableColLine}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          <View style={styles.tableCol2}> 
+            <Text style={styles.tableCell}></Text> 
+          </View> 
+          
+          
+        </View>
+        <Text style={styles.header} > {'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}</Text>
+        <Text style={styles.header} > {'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}{'\u00A0'}</Text>
+        </View>
+
+        </View>
+        
+        )}
+
+  {console.log(item.newClass)}
+
+      </View>
+    );
         }
   
         
