@@ -140,6 +140,8 @@ function Login(props) {
  localStorage.setItem('fullName', data.result[0].name);
  localStorage.setItem('profilePicture', data.result[0].profile_picture);
  localStorage.setItem('userid', data.result[0].id);
+ localStorage.setItem('usertype', data.result[0].level);
+
 
 
 

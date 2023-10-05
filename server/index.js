@@ -27,9 +27,9 @@ app.post("/register", (req, res)=>{
     const name = req.body.fullname;
     const password = req.body.password;
     const confirmPass = req.body.confirmpassword;
-    const level = "user";
+    const level = req.body.usertype;
     // const sqlSelect = ;
-    if(confirmPass != password){
+    if(confirmPass !== password){
       res.send({message: "Passwords does not matched."});
 
     }

@@ -603,14 +603,20 @@ const SIAdmin = (props ) => {
   }
 
   const [fullName, setFullName] = useState();
+  const [userType, setUserType] = useState();
+
   useEffect(() => {
     const fullName = localStorage.getItem('fullName');
+    const usertype = localStorage.getItem('usertype');
+
     setFullName(fullName)
+    setUserType(usertype)
+
 
 
    
   }, []);
-// //console.log({fullName});
+console.log({userType});
   const [employeeId, setEmployeeId] = useState([]);
   const [deleteButtonState, setdeleteButtonState] = useState(true);
   const [dateOfEffectiveness, setDateOfEffectiveness] = React.useState('');
@@ -2442,6 +2448,7 @@ setleveluppoints(employee.levelupp)
                   tabIndex={0}
                   key={count}
                   selected={isItemSelected}
+                  style={{ display: userType === 'user' && (['M3', 'M4', 'M5', 'F1', 'F2'].includes(row.empClass) ? 'none' : 'table-row') }}
                   >
                   <TableCell padding="checkbox">
                     <Checkbox // onClick={(event)=> handleClick(event, count)}

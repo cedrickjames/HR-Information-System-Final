@@ -31,12 +31,16 @@ import Checkbox from "@mui/material/Checkbox";
 import AuthFooter from "../global/AuthFooter";
 import Grid from "@mui/material/Grid";
 import MuiAlert from '@mui/material/Alert';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 function LoginFormtest(props) {
   const [usernameReg, setUsernameReg] = useState('')
+  const [userType, setUserType] = useState('')
+
   const [name, setName] = useState('')
 
   const [passwordReg, setPasswordReg] = useState('')
@@ -86,6 +90,7 @@ function LoginFormtest(props) {
     Axios.post("http://192.168.60.53:3001/register",{
       fullname: name,
         username: usernameReg,
+        usertype: userType,
         password: passwordReg,
         confirmpassword: conPassword,
     }).then((response)=>{
@@ -256,6 +261,13 @@ function LoginFormtest(props) {
               id="outlined-required"
               label="Full Name"
             />
+             <Select onChange={(e)=> {
+                setUserType(e.target.value)
+                }}  labelId="demo-simple-select-label"  fullWidth  id="demo-simple-select" sx={{ m: 1 }} >
+    <MenuItem  value={"user"}>Supervisor</MenuItem>
+    <MenuItem  value={"manager"}>Manager</MenuItem>
+
+    </Select>
             <TextField
               name="username"
               onChange={(e)=> {

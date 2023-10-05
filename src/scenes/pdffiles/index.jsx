@@ -86,6 +86,14 @@ const styles = StyleSheet.create({
     fontSize: '10px'
 
   },
+  underline:{
+    textAlign: "center",
+    margin: 0,
+    fontWeight: "bold",
+    fontSize: '10px',
+    textDecoration: 'underline',
+
+  },
   table: { 
     display: "table", 
     width: "auto", 
@@ -355,7 +363,8 @@ return(
                  <Text style={styles.header} >GLORY (PHILIPPINES), INC.</Text>
         <Text style={styles.header2}>Administration Department / HR Section</Text>
         <Text style={styles.header}>PERSONNEL ACTION FORM</Text>
-        <Text style={styles.header2}>PAF01PM02-08-121120</Text>
+        {/* <Text style={styles.header2}>PAF01WI14-09-051523</Text> */}
+        <Text style={styles.header2}>PAF01<span style={styles.underline}>WI14</span>-09-051523</Text>
         <View style={styles.table}> 
         <View style={styles.tableRow}> 
           <View style={styles.tableCol1}> 
@@ -758,7 +767,10 @@ return(
                  <Text style={styles.header} >GLORY (PHILIPPINES), INC.</Text>
         <Text style={styles.header2}>Administration Department / HR Section</Text>
         <Text style={styles.header}>PERSONNEL ACTION FORM</Text>
-        <Text style={styles.header2}>PAF01PM02-08-121120</Text>
+        {/* <Text style={styles.header2}>PAF01PM02-08-121120</Text>
+         */}
+        <Text style={styles.header2}>PAF01<Text  style={styles.underline}>WI14</Text>-09-051523</Text>
+
         <View style={styles.table}> 
         <View style={styles.tableRow}> 
           <View style={styles.tableCol1}> 
