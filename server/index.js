@@ -1246,7 +1246,7 @@ LEFT JOIN (
 GROUP BY
   si.empNo
 ORDER BY
-  si.empNo;
+  si.employeeName;
   `;
   // const sqlSelect = ;
   db.query(
@@ -1378,7 +1378,7 @@ app.post("/beforeData", (req, res)=>{
     GROUP BY
       si.empNo
     ORDER BY
-      si.empNo;
+      si.employeeName;
       `;
       console.log(selectedemployees);
     
@@ -1506,7 +1506,7 @@ app.post("/beforeData", (req, res)=>{
     GROUP BY
       si.empNo
     ORDER BY
-      si.empNo;
+      si.employeeName;
       `;
   
     
@@ -1635,7 +1635,7 @@ app.post("/beforeData", (req, res)=>{
   GROUP BY
     si.empNo
   ORDER BY
-    si.empNo;
+    si.employeeName;
     `;
     console.log(selectedemployees);
   
@@ -1763,7 +1763,7 @@ app.post("/beforeData", (req, res)=>{
   GROUP BY
     si.empNo
   ORDER BY
-    si.empNo;
+    si.employeeName;
     `;
 
   
