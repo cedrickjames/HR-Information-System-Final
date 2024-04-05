@@ -671,6 +671,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
       };
       
       const addemployee = () => {
+        console.log("ced");
 
         if(empName===''){
           setEmpNameState(true);
@@ -742,7 +743,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
         }else{
           setMonthlySalaryState(false);
         }
-        if(empName!=='' && department2!=='' && birthday!=='' && age!=='' && sex!=='' && empNumber!=='' && dateHired!=='' && position!=='' && designation!=='' && empClass!=='' && level!=='' && salary!=='' && basicSalary!=='' && monthlySalary){
+        if(empName!=='' && department2!=='' && birthday!=='' && age!=='' && sex!=='' && empNumber!=='' && dateHired!=='' && position!==''  && empClass!=='' && level!=='' && salary!=='' && basicSalary!=='' && monthlySalary!==''){
         const formattedDate = new Date(birthday).toLocaleDateString('en-US', { 
           year: 'numeric', 
           month: 'long', 
@@ -753,6 +754,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
           month: 'long', 
           day: 'numeric' 
         });
+        console.log("james");
 
         Axios.post("http://192.168.60.53:3001/addemployee", {
             section: section,
@@ -791,6 +793,8 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
     
           }).then((response) => {
             console.log(response)
+            console.log("asdasd");
+
             refreshTable();
             onClose();
             // // setValue(tabNumber);
@@ -811,7 +815,7 @@ const AddEmployee = ({ open, department, setRows, onClose }) => {
           
         </Typography>
         <Button autoFocus color="inherit"  onClick={() => addemployee()} >
-          save
+          Add
         </Button>
       </Toolbar>
     </AppBar>

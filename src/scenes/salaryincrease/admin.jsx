@@ -553,8 +553,9 @@ const SIAdmin = (props ) => {
   };
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenImport, setIsModalOpenImport] = useState(false);
-  const [isSave, setIsModalSave] = useState(false);
+  // const [isSave, setIsModalSave] = useState(true);
 
+  const [isSave, setIsModalSave] = React.useState(false);
 
 
 
@@ -768,9 +769,15 @@ const [Employeewithspecialexperience,setEmployeewithspecialexperience ]	= React.
 
 
   const[arrayOfProfAllowances, setarrayOfProfAllowances] = React.useState([]);
-
+  const [inputValue1, setInputValue1] = useState('');
   const handleRemoveOption = (removedOption) => {
     console.log('Removed Option:', removedOption);
+  };  
+  const handleInputChange1 = (event, newInputValue) => {
+    // This function will be called when the input value changes
+    setInputValue1(newInputValue);
+    setMovieOptions([...movieOptions, newInputValue]);
+    console.log('Typed text:', newInputValue);
   };
   const handleAutocompleteChange = (event, newValue) => {
 
@@ -1141,13 +1148,14 @@ else{
   setPosPe(totalPoint)
   finalresult(totalPoint);
 
+  console.log(totalPoint, position);
 
     if(totalPoint>=4 && (position !=="Staff" && position !=="Senior Staff" && position !=="Operator" && position !=="Senior Operator")){
    
 
     let samplePosition = position;
    let sampleRank = (isNaN(parseInt(posRankbg)) ? 0 : parseInt(posRankbg)) +1;
-console.log(sampleRank)
+console.log("rank",sampleRank)
 if(sampleRank<=5){
   setPosRank((isNaN(parseInt(posRankbg)) ? 0 : parseInt(posRankbg)) +1);
   const allowancesArray = arrayOfProfAllowances.find(
@@ -1868,7 +1876,7 @@ const setAction = (action) =>{
 
     const handleClickOpen = (type, employee) => {
 
-
+console.log("this is what im looking for: ",employee.pRank)
  getsettings();
 
 
@@ -1887,7 +1895,7 @@ const setAction = (action) =>{
       Axios.post("http://192.168.60.53:3001/setsitablebefore", {
         empNo: employee.empNo,
       }).then((response) => {
-        console.log(response)
+        console.log("this is the result: ",response)
         setEmpName1(response.data[0].employeeName);
         setEmpNumber1(response.data[0].employeeId);
         
@@ -2357,6 +2365,78 @@ setleveluppoints(employee.levelupp)
       </Box>
 </Fade>
       </Modal>
+      <Modal   
+     aria-labelledby="transition-modal-title"
+     aria-describedby="transition-modal-description"
+     open={isSave}
+     onClose={handleCloseIncrement}
+     closeAfterTransition
+     slots={{ backdrop: Backdrop }}
+     slotProps={{
+       backdrop: {
+         timeout: 500,
+       },
+     }}
+      // show={isModalOpenImport} onClose={closeModalImport}
+      
+      >
+        <Fade in={isSave}> 
+        <Box sx={style} className="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
+      <div >
+      <div className="">
+        <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
+          <h3 className="text-xl font-medium text-gray-900 dark:text-white">Confirm</h3><button  onClick={closeModalSave} aria-label="Close"
+            className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
+            type="button"><svg stroke="currentColor" fill="none" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true"
+              className="h-5 w-5" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg></button>
+        </div>
+            <div className="p-4">
+        <div className="relative  w-96 mr-2 mb-4">
+    <input   value={inputValue}
+      onChange={handleInputChange} type="text" id="floating_outlined6" className=" h-10 block  w-full  bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+    {selected.length > 0 ? (
+         <label 
+         style={{ backgroundColor: colors.grey[900] }}
+         
+         className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Nature of Action</label>
+        ) : (
+          <label 
+     style={{ backgroundColor: colors.lebelbg[100] }}
+     
+     className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Nature of Action</label>
+        )}
+    
+</div>
+    <div className="relative  w-96 mr-2">
+    <input    value={inputValueDate}
+      onChange={handleInputChangeDate}  type="date" id="floating_outlined7" className=" h-10 block  w-full bg-transparent rounded-lg border-1 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " />
+    {selected.length > 0 ? (
+         <label 
+         style={{ backgroundColor: colors.grey[900] }}
+         
+         className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Date of Effectivity</label>
+        ) : (
+          <label 
+     style={{ backgroundColor: colors.lebelbg[100] }}
+     
+     className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Date of Effectivity</label>
+        )}
+    
+</div>
+</div>
+        <div className="flex items-center space-x-2 rounded-b border-gray-200 p-6 dark:border-gray-600 border-t"><button
+         type="button" onClick={()=>  updateSI(empId)}
+         className=" bg-gradient-to-r from-teal-400 via-teal-500 to-teal-600 text-white border border-transparent hover:from-teal-500 hover:via-teal-400 hover:to-teal-400 hover:text-white focus:ring-4 focus:ring-cyan-300 disabled:hover:bg-cyan-700 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800 dark:disabled:hover:bg-cyan-600 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           className="flex items-center rounded-md text-sm px-4 py-2">Continue</span></button><button type="button"  onClick={closeModalSave} 
+         className="text-gray-900 bg-white border border-gray-200 hover:bg-gray-100 hover:text-cyan-700 disabled:hover:bg-white focus:ring-cyan-700 focus:text-cyan-700 dark:bg-transparent dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700 focus:ring-2 dark:disabled:hover:bg-gray-800 focus:!ring-2 group flex h-min items-center justify-center p-0.5 text-center font-medium focus:z-10 rounded-lg"><span
+           className="flex items-center rounded-md text-sm px-4 py-2">Cancel</span></button></div>
+      </div>
+      </div>
+      </Box>
+</Fade>
+      </Modal>
       {/* <Modal    show={isSave} onClose={closeModalSave}>
       <div className="relative rounded-lg bg-white shadow dark:bg-gray-700 flex flex-col max-h-[90vh]">
         <div className="flex items-start justify-between rounded-t dark:border-gray-600 border-b p-3" >
@@ -2766,6 +2846,8 @@ setleveluppoints(employee.levelupp)
        item
       ))}
       onChange={handleAutocompleteChange}
+      inputValue={inputValue1}
+      onInputChange={handleInputChange1}
       renderInput={(params) => <TextField   {...params} label="Designation"   InputProps={{
         ...params.InputProps,
         type: 'search',

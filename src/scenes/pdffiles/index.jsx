@@ -360,7 +360,9 @@ return(
         if(item.ceAllowance===""){item.ceAllowance="-"}
         if(item.newCEAllowance===""){item.newCEAllowance="-"}
         if(item.Specialization===""){item.Specialization="-"}
+        if(item.Specialization==="0"){item.Specialization="-"}
         if(item.newSpecialization===""){item.newSpecialization="-"}
+        if(item.newSpecialization==="0"){item.newSpecialization="-"}
         if(item.leLicenseFee===""){item.leLicenseFee="-"}
         if(item.newleLicenseFee===""){item.newleLicenseFee="-"}
         if(item.ceLicenseFee===""){item.ceLicenseFee="-"}

@@ -59,7 +59,126 @@ const Topbar = (propsLogout) => {
       const id = open ? 'simple-popover' : undefined;
     
 
-      
+      function exportTemplate(){
+      Axios.post("http://192.168.60.53:3001/maintable", {
+      }).then((response) => {
+        console.log(response.data);
+        
+        var rows =[];
+    
+        var column1= 'department';
+        var column2= 'section';
+        var column3= 'employeeName';
+        var column4= 'sex';
+        var column5= 'birthday';
+        var column6= 'age';
+        var column7= 'empNo';
+        var column8= 'dateHired';
+        var column9= 'serviceTerm';
+        var column10= 'position';
+        var column11= 'designation';
+        var column12= 'class';
+        var column13= 'level';
+        var column14= 'salaryType';
+        var column15= 'basicSalary';
+        var column16= 'daily';
+        var column17= 'monthlySalary';
+        var column18= 'PEPoint';
+        var column19= 'Allowance';
+        var column20= 'Rank';
+        var column21= 'tsPEPoint';
+        var column22= 'tsAllowance';
+        var column23= 'tsRank';
+        var column24= 'leLicenseFee';
+        var column25= 'lePEPoint';
+        var column26= 'leAllowance';
+        var column27= 'leRank';
+        var column28= 'ceCertificateOnFee';
+        var column29= 'cePEPoint';
+        var column30= 'ceAllowance';
+        var column31= 'ceRank';
+        var column32= 'Specialization';
+        var column33= 'total';
+        var column34= 'fstHalfPoint';
+        var column35= 'fstHalfResult';
+        var column36= 'sndHalfPoint';
+        var column37= 'sndHalfResult';
+        var column38= 'FinalPoint';
+        var column39= 'FinalResult';
+        var column40= 'LevelUpPoints';
+        var column41= 'deactivated';
+        
+  
+  
+  
+  
+        rows.push(
+            [
+              column1,
+              column2,
+              column3,
+              column4,
+              column5,
+              column6,
+              column7,
+              column8,
+              column9,
+              column10,
+              column11,
+              column12,
+              column13,
+              column14,
+              column15,
+              column16,
+              column17,
+              column18,
+              column19,
+              column20,
+              column21,
+              column22,
+              column23,
+              column24,
+              column25,
+              column26,
+              column27,
+              column28,
+              column29,
+              column30,
+              column31,
+              column32,
+              column33,
+              column34,
+              column35,
+              column36,
+              column37,
+              column38,
+              column39,
+              column40,
+              column41,
+             
+            ]
+        );
+     
+  var csvContent = "data:text/csv;charset=utf-8,";
+     /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
+    rows.forEach(function(rowArray){
+        var row = rowArray.join('","');
+        row = '"' + row + '"';
+        csvContent += row + "\r\n";
+    });
+  
+    /* create a hidden <a> DOM node and set its download attribute */
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "Import Template.csv");
+    document.body.appendChild(link);
+     /* download the data file named "Stock_Price_Report.csv" */
+    link.click();
+  
+      });
+    }
+  
   function exportEmployees(){
     Axios.post("http://192.168.60.53:3001/maintable", {
     }).then((response) => {
@@ -444,6 +563,19 @@ var csvContent = "data:text/csv;charset=utf-8,";
           <ListItemText
           onClick={exportEmployees}
           >Export All Employees Information</ListItemText>
+          
+        </MenuItem>
+        <MenuItem>
+          <ListItemText
+          onClick={exportTemplate}
+          >Export Template</ListItemText>
+          
+        </MenuItem>
+        <MenuItem>
+          <ListItemText
+          onClick={exportTemplate}
+          >Import New Employees</ListItemText>
+          
         </MenuItem>
         <Divider />
         <Link to={"/login"}>

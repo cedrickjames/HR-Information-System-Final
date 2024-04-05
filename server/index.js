@@ -1509,7 +1509,7 @@ app.post("/beforeData", (req, res)=>{
       si.employeeName;
       `;
   
-    
+     
       // const sqlSelect = ;
       db.query(
         query,[],
@@ -1636,7 +1636,7 @@ app.post("/beforeData", (req, res)=>{
     si.empNo
   ORDER BY
     si.employeeName;
-    `;
+    `; 
     console.log(selectedemployees);
   
     // const sqlSelect = ;
@@ -1788,6 +1788,7 @@ app.post("/beforeData", (req, res)=>{
   }
 });
 app.post("/addemployee", (req, res)=>{
+  console.log("success"); 
   const department = req.body.department;
   const daily = req.body.daily;
   const section = req.body.section;
@@ -1842,7 +1843,7 @@ app.post("/addemployee", (req, res)=>{
                 }
               }
             
-    //    console.log(err);
+       console.log(err);
     });
 
  
